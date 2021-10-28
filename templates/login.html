@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href={{url_for('static', filename='styles/login/styles.css' ) }}>
+    <title>Document</title>
+</head>
+
+<body>
+    <script src={{url_for('static', filename='/js/login/pages.js' )}}></script>
+    <div class="bg-img">
+        <div class="content">
+            <header>Login Form</header>
+            <form action="POST">
+                {{form.hidden_tag() }}
+                <div class="field">
+                    <span class="fa fa-user"></span>
+                    {{form.email}}
+                </div>
+                <div class="field space">
+                    <span class="fa fa-lock"></span>
+                    {{form.password}}
+                    <span class="show">SHOW</span>
+                </div>
+                <div class="pass">
+                    <a href={{url_for('forgotpassword')}}>Forgot Password?</a>
+                </div>
+                <div class="field">
+                    {{form.submit}}
+                </div>
+            </form>
+            <br>
+            <div class="signup">Don't have account?
+                <a href={{url_for('register')}}>Signup Now</a>
+            </div>
+        </div>
+    </div>
+</body>
