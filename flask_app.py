@@ -1,7 +1,7 @@
 from enum import unique
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
@@ -31,15 +31,38 @@ class LoginForm(FlaskForm):
 
     submit = SubmitField("Login")
 
+class RegisterForm(FlaskForm):
+    email = StringField(validators=[InputRequired(), Length(
+        min=4, max=20)], render_kw={"placeholder":"email"})
+    
+    password = PasswordField(validators=[InputRequired(), Length(
+        min=4, max=20)], render_kw={"placeholder":"password"})
+
+    rePassword = PasswordField(validators=[InputRequired(), Length(
+        min=4, max=20)], render_kw={"placeholder":"repeat password"})
+
+    name = StringField(validators=[InputRequired(), Length(
+        min=4, max=50)], render_kw={"placeholder":"name"})
+
+    position = StringField(validators=[InputRequired(), Length(
+        min=4, max=50)], render_kw={"placeholder":"position"}) 
+
+    submit = SubmitField("Login")
+
 @app.route("/",methods=['GET','POST'])
 def login():
     form = LoginForm()
+
+
     return render_template('login.html',form=form)
 
 
 @app.route("/register")
 def register():
-    return render_template('register.html')
+
+    form = RegisterForm()
+
+    return render_template('register.html',form = form)
 
 @app.route("/forgotpassword")
 def forgotpassword():
@@ -48,3 +71,6 @@ def forgotpassword():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+## https://www.youtube.com/watch?v=71EU8gnZqZQ
