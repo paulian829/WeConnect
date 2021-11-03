@@ -10,24 +10,23 @@
 </head>
 
 <body>
-    <script src={{url_for('static', filename='/js/login/pages.js' )}}></script>
-    <div class="bg-img">
+    <div id="app" class="bg-img">
         <div class="content">
             <header>
                 <div class='logo-container'></div>WeConnect
             </header>
-            <form action="POST">
-                {{form.hidden_tag() }}
+            <form action="/" method='POST'>
+                <p>[[test]]</p>
                 <div class="field">
-                    {{form.email}}
+                    <input v-model='test' type="email" placeholder="Email" name="Email">
                 </div>
                 <div class="field space">
-                    {{form.password}}
+                    <input type="password" placeholder="Password" name="Password">
                     <span class="show">SHOW</span>
                 </div>
                 <br>
                 <div class="field field-button">
-                    {{form.submit}}
+                    <input type="submit">
                 </div>
             </form>
             <div class="pass">
@@ -38,3 +37,32 @@
         </div>
     </div>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
+    integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {
+            test: ''
+        },
+        methods: {
+            testVue: function () {
+                this.$http.get('/test').then(response => {
+                    this.test = response.data.data.test
+                    console.log(response.data.data)
+                })
+            }
+        },
+        mounted() {
+            this.testVue()
+        },
+    }
+    )
+
+
+
+</script>

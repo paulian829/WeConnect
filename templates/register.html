@@ -14,31 +14,31 @@
     <div class="bg-img">
         <div class="content">
             <header>Registration form</header>
-            <form action="#">
-                <div class="field">
-                    <span class="fa fa-user"></span>
-                    <input type="text" required placeholder="Email">
+            <form action="/register" method='POST'>
+                <div class="field" id="email">
+                    <input type="text" required placeholder="Email" name="Email">
                 </div>
                 <br>
-                <div class="field">
-                    <span class="fa fa-user"></span>
-                    <input type="text" required placeholder="Email">
+                <div class="field" id="password">
+                    <input type="password" required placeholder="Password" name="Password">
                 </div>
                 <br>
-                <div class="field">
-                    <span class="fa fa-user"></span>
-                    <input type="text" required placeholder="Email">
+                <div class="field" id="repeatPass">
+                    <input type="password" required placeholder="Repeat Password" name="RepeatPass">
                 </div>
-                <div class="field space">
-                    <span class="fa fa-lock"></span>
-                    <input type="password" class="pass-key" required placeholder="Password">
-                    <span class="show">SHOW</span>
+                <br>
+                <div class="field" id="name">
+                    <input type="text" required placeholder="Name" name="Name">
                 </div>
-                <div class="field space">
-                    <span class="fa fa-lock"></span>
-                    <input type="password" class="pass-key" required placeholder="Repeat Password">
-                    <span class="show">SHOW</span>
+                <br>
+                <div class="field" id="phoneNumber">
+                    <input type="text" required placeholder="Phone number" name="PhoneNumber">
                 </div>
+                <br>
+                <div class="field" id="position">
+                    <input type="text" required placeholder="Position" name='Position'>
+                </div>
+                <br>
                 <br>
                 <div class="field">
                     <input type="submit" value="REGISTER">
@@ -54,3 +54,9 @@
         </div>
     </div>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+<script>
+
+</script>
