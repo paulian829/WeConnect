@@ -1,6 +1,6 @@
 from enum import unique
 from flask import Flask, render_template,request,json,redirect,url_for
-from database import registerNewUser
+#from database import registerNewUser
 
 app = Flask(__name__)
 
@@ -27,7 +27,7 @@ def register():
         name = request.form.get('Name')
         phoneNumber = request.form.get('PhoneNumber')
         position = request.form.get('Position')
-        registerNewUser(email)
+        #registerNewUser(email)
 
     return render_template('register.html')
 
