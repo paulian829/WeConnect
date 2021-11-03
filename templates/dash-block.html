@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="asset/style.css">
+    <link rel="stylesheet" type="text/css" href={{url_for('static', filename='styles/dashboard/style.css' ) }}>
+
+    <script src={{url_for('static', filename='styles/dashboard/fontawesome.js' ) }}></script>
+    <title>{{title}}</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="aside">
+            <div class="logo">
+                <a href={{url_for('home')}}>WeConnect</a>
+            </div>
+            <nav>
+                <ul>
+                    <li>
+                        <a {% if title=='HOME' %} class='active' {% endif %} href={{url_for('home')}}>
+                            <i class="fas fa-home"></i>Home</a>
+                    </li>
+                    <li>
+                        <a {% if title=='DASHBOARD' %} class='active' {% endif %} href={{url_for('dashboard')}}>
+                            <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                    </li>
+                    <li>
+                        <a {% if title=='PINNED' %} class='active' {% endif %} href={{url_for('pinned')}}>
+                            <i class="fas fa-thumbtack"></i>Pinnned Files</a>
+                    </li>
+                    <li>
+                        <a {% if title=='SHARED' %} class='active' {% endif %} href={{url_for('shared')}}>
+                            <i class="fas fa-network-wired"></i>Shared Files</a>
+                    </li>
+                    <li>
+                        <a {% if title=='DELETED' %} class='active' {% endif %} href={{url_for('deleted')}}>
+                            <i class="fas fa-trash"></i>Deleted Files</a>
+                    </li>
+                    <li>
+                        <a {% if title=='SETTINGS' %} class='active' {% endif %} href={{url_for('settings')}}>
+                            <i class="fas fa-cogs"></i>Settings</a>
+                    </li>
+                    <li>
+                        <a {% if title=='ADMIN' %} class='active' {% endif %} href={{url_for('admin')}}>
+                            <i class="fas fa-user-lock"></i>Admin</a>
+                    </li>
+                    <li>
+                        <a {% if title=='ADMIN' %} class='active' {% endif %} href={{url_for('admin')}}>
+                            <i class="fas fa-sign-out-alt"></i> Log out</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="page-content">
+            <div class="header">
+                <div class="header-content">
+                    <div class="row">
+                        <div class="form-group title">
+                            <div class="title-header">
+                                <span><i class="fas fa-bars"></i></span>
+                                <h2>{{title}}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='data-container'>
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
