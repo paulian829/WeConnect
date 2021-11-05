@@ -1,6 +1,79 @@
 {% extends "dash-block.html" %}
 {% block content %}
-<div>
-    <h1>{{title}}</h1>
+<div id="app" class="personal-data-section">
+    <h1>PERSONAL INFORMATION</h1>
+    <div class='profile-data-container'>
+        <div class="profile-image-containr">
+            <div class="image-upload">
+                <label for="file-input">
+                    <img :src=[[profileImgSrc]] />
+                </label>
+
+                <input id="file-input" @change="previewFiles" type="file" accept="image/jpeg, image/png" />
+            </div>
+            <h3>Enter Name Here</h3>
+            <p>INSERT POSITION HERE</p>
+
+        </div>
+        <div class="profile-details">
+            <div class="profile-settings ">
+                <h3>Profile Settings</h3>
+                <button v-on:click="editProfile">Edit Profile</button>
+            </div>
+            <div class="info-container">
+                <form>
+                    <label for="uname">Username</label>
+                    <input type="text" id="uname" name="Username" placeholder="Username" value="USERNAME"
+                        :disabled="disabled">
+                    <label for="fname">Full Name</label>
+                    <input type="text" id="fname" name="Fullname" placeholder="Full Name" value="FULL NAME"
+                        :disabled="disabled">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="Email" placeholder="Email" value="Email" :disabled="disabled">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" id="phone" name="Phone" placeholder="Phone Number" value="Phone Number"
+                        :disabled="disabled">
+                    <label for="position">Position</label>
+                    <input type="text" id="position" name="Position" placeholder="Position" value="Position"
+                        :disabled="disabled">
+                    <input type="submit" value="SUBMIT" :disabled="disabled">
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
+    integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {
+            disabled: true,
+            profileImgSrc: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+        },
+
+        methods: {
+            editProfile() {
+                this.disabled = !this.disabled
+            },
+            previewFiles(event) {
+                console.log(event.target.files);
+                file = event.target.files[0]
+                this.profileImgSrc = window.URL.createObjectURL(file);
+            },
+        },
+        mounted() {
+        },
+    }
+    )
+
+
+
+</script>
+
 {% endblock %}

@@ -78,7 +78,8 @@ def admin():
 
 @app.route("/profile/")
 def profile():
-    return render_template("profile.html")
+    title = 'PROFILE'
+    return render_template("profile.html",title=title)
 
 
 if __name__ == "__main__":
