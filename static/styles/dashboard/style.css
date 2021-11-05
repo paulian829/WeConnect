@@ -99,17 +99,12 @@ a i{
 
 .header-content{
 
-	width: 97%;
-	max-width: 97%;
+	width: 100%;
+	max-width: 100%;
+	padding-left: 30px;
 
 }
 
-.header-content .row{
-
-	display: grid;
-	grid-template-columns: 1fr 2fr 1fr;
-
-}
 
 .title-header{
 
@@ -521,4 +516,28 @@ table td{
 }
 .data-container{
 	padding:20px
+}
+.row{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.profile-container a{
+    display: flex;
+    align-content: center;
+	align-items: center;
+	padding: 5px 20px;
+
+}
+.profile-container a:hover{
+
+	background-color:#ccc ;
+}
+
+.profile-img {
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    border-radius: 100px;
+    margin-right: 20px;
 }
