@@ -39,6 +39,10 @@
                     <input type="submit" value="SUBMIT" :disabled="disabled">
                 </form>
             </div>
+
+        </div>
+        <div class="details-container">
+            test
         </div>
     </div>
 </div>
@@ -66,6 +70,9 @@
                 file = event.target.files[0]
                 this.profileImgSrc = window.URL.createObjectURL(file);
             },
+            sendFiles() {
+                console.log('test')
+            }
         },
         mounted() {
         },
