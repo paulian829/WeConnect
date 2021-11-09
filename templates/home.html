@@ -1,18 +1,58 @@
 {% extends "dash-block.html" %}
 {% block content %}
-<div id="Home">
+<div id="app">
     <div class="file-container">
         <div class="upload-button-container">
             <button><i class="fas fa-cloud-upload-alt"></i>Send File</button>
+            <button @click="toggle = !toggle" class="small-button"><i class="fas fa-list"></i></button>
         </div>
     </div>
-    <div class="file-info-container">
-        <div class="file">
-            <i class="far fa-file-pdf"></i>
-            <p>File Something.pdf</p>
-        </div>
-    </div>
+    <ul v-bind:class="{'file-info-container': toggle, 'file-info-container-list-toggle': !toggle}">
+        <li v-bind:class="{'file': toggle, 'file-list-toggle': !toggle}" v-for="item in items" :key="item.message">
+            <i class="far fa-file-pdf "></i>
+            <p>[[item.message]]</p>
+        </li>
+    </ul>
 
 </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
+    integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {
+            items: [
+                { message: 'Foo.pdf' },
+                { message: 'Foo.pdf' },
+                { message: 'Foo.pdf' },
+                { message: 'Foo.pdf' },
+                { message: 'Foo.pdf' },
+                { message: 'Bar.pdf' }
+            ],
+            toggle: false,
+            selected: false,
+        },
+        methods: {
+            testVue: function () {
+                this.$http.get('/test').then(response => {
+                    this.test = response.data.data.test
+                    console.log(response.data.data)
+                })
+            },
+        },
+        mounted() {
+            this.testVue()
+        },
+    }
+    )
+
+
+
+</script>
 
 {% endblock %}
