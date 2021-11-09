@@ -22,35 +22,51 @@
                 <ul>
                     <li>
                         <a {% if title=='HOME' %} class='active' {% endif %} href={{url_for('home')}}>
-                            <i class="fas fa-home"></i>Home</a>
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </a>
                     </li>
                     <li>
                         <a {% if title=='DASHBOARD' %} class='active' {% endif %} href={{url_for('dashboard')}}>
-                            <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
                     </li>
                     <li>
                         <a {% if title=='PINNED' %} class='active' {% endif %} href={{url_for('pinned')}}>
-                            <i class="fas fa-thumbtack"></i>Pinnned Files</a>
+                            <i class="fas fa-thumbtack"></i>
+                            <span>Pinned Files</span>
+                        </a>
                     </li>
                     <li>
                         <a {% if title=='SHARED' %} class='active' {% endif %} href={{url_for('shared')}}>
-                            <i class="fas fa-network-wired"></i>Shared Files</a>
+                            <i class="fas fa-network-wired"></i>
+                            <span>Shared Files</span>
+                        </a>
                     </li>
                     <li>
                         <a {% if title=='DELETED' %} class='active' {% endif %} href={{url_for('deleted')}}>
-                            <i class="fas fa-trash"></i>Deleted Files</a>
+                            <i class="fas fa-trash"></i>
+                            <span>Deleted Files</span>
+                        </a>
                     </li>
                     <li>
                         <a {% if title=='SETTINGS' %} class='active' {% endif %} href={{url_for('settings')}}>
-                            <i class="fas fa-cogs"></i>Settings</a>
+                            <i class="fas fa-cogs"></i>
+                            <span>Settings</span>
+                        </a>
                     </li>
                     <li>
                         <a {% if title=='ADMIN' %} class='active' {% endif %} href={{url_for('admin')}}>
-                            <i class="fas fa-user-lock"></i>Admin</a>
+                            <i class="fas fa-user-lock"></i>
+                            <span>Admin</span>
+                        </a>
                     </li>
                     <li>
                         <a href={{url_for('login')}}>
-                            <i class="fas fa-sign-out-alt"></i> Log out</a>
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Log out</span>
+                        </a>
                     </li>
                 </ul>
             </nav>

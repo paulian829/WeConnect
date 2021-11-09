@@ -1,6 +1,18 @@
 {% extends "dash-block.html" %}
 {% block content %}
-<div>
-    <h1>{{title}}</h1>
+<div id="Home">
+    <div class="file-container">
+        <div class="upload-button-container">
+            <button><i class="fas fa-cloud-upload-alt"></i>Send File</button>
+        </div>
+    </div>
+    <div class="file-info-container">
+        <div class="file">
+            <i class="far fa-file-pdf"></i>
+            <p>File Something.pdf</p>
+        </div>
+    </div>
+
 </div>
+
 {% endblock %}

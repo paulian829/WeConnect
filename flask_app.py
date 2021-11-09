@@ -83,7 +83,7 @@ def profile():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=True)
 
 
 ## https://www.youtube.com/watch?v=71EU8gnZqZQ
