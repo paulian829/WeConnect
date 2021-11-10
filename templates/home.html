@@ -4,18 +4,39 @@
     <div class="file-container">
         <div class="upload-button-container">
             <button><i class="fas fa-cloud-upload-alt"></i>Send File</button>
-            <button @click="toggle = !toggle" class="small-button"><i class="fas fa-list"></i></button>
         </div>
     </div>
-    <ul v-bind:class="{'file-info-container': toggle, 'file-info-container-list-toggle': !toggle}">
-        <li v-bind:class="{'file': toggle, 'file-list-toggle': !toggle}" v-for="item in items" :key="item.message">
-            <i class="far fa-file-pdf "></i>
-            <p>[[item.message]]</p>
-        </li>
-    </ul>
+    <table class="layout display responsive-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Last Modified</th>
+                <th>Owner</th>
+                <th>Modify File</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for dict_item in items %}
+            <tr>
+                <td class="organisationname">{{dict_item["message"]}}</td>
+                <td>Date</td>
+                <td>Owner</td>
+                <td class="actions">
+                    <a href="?" class="edit-item" title="Edit">Edit</a>
+                    <a href="?" class="remove-item" title="Remove">Remove</a>
+                </td>
+            </tr>
+            {% endfor %}
+
+
+
+        </tbody>
+    </table>
+
+
 
 </div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
@@ -27,32 +48,36 @@
         delimiters: ['[[', ']]'],
         data: {
             items: [
-                { message: 'Foo.pdf' },
-                { message: 'Foo.pdf' },
-                { message: 'Foo.pdf' },
-                { message: 'Foo.pdf' },
-                { message: 'Foo.pdf' },
-                { message: 'Bar.pdf' }
+                { message: 'Foo.pdf', key: 0 },
+                { message: 'Foo.pdf', key: 1 },
+                { message: 'Foo.pdf', key: 2 },
+                { message: 'Foo.pdf', key: 3 },
+                { message: 'Foo.pdf', key: 4 },
+                { message: 'Bar.pdf', key: 5 },
+                { message: 'Bar.pdf', key: 6 },
+                { message: 'Bar.pdf', key: 7 },
+                { message: 'Bar.pdf', key: 8 },
+                { message: 'Bar.pdf', key: 9 },
             ],
             toggle: false,
             selected: false,
         },
         methods: {
             testVue: function () {
-                this.$http.get('/test').then(response => {
+                this.$http.get('/admin').then(response => {
                     this.test = response.data.data.test
                     console.log(response.data.data)
                 })
             },
+            selectFile(key) {
+                console.log(key)
+            }
         },
         mounted() {
             this.testVue()
         },
     }
     )
-
-
-
 </script>
 
 {% endblock %}

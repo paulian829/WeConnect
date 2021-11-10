@@ -6,36 +6,47 @@
         <div class="profile-image-containr">
             <div class="image-upload">
                 <label for="file-input">
-                    <img :src=[[profileImgSrc]] />
+                    <img src="data:image/png;base64,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"
+                        alt="">
                 </label>
 
                 <input id="file-input" @change="previewFiles" type="file" accept="image/jpeg, image/png" />
             </div>
-            <h3>Enter Name Here</h3>
-            <p>INSERT POSITION HERE</p>
+            <h3>{{profile_details[0][4]}}</h3>
+            <p>{{position}}</p>
 
         </div>
         <div class="profile-details">
             <div class="profile-settings ">
                 <h3>Profile Settings</h3>
-                <button v-on:click="editProfile">Edit Profile</button>
+                <button v-on:click="editProfile"><i class="fas fa-user-edit"></i></button>
             </div>
             <div class="info-container">
                 <form>
-                    <label for="uname">Username</label>
-                    <input type="text" id="uname" name="Username" placeholder="Username" value="USERNAME"
-                        :disabled="disabled">
                     <label for="fname">Full Name</label>
-                    <input type="text" id="fname" name="Fullname" placeholder="Full Name" value="FULL NAME"
-                        :disabled="disabled">
+                    <input type="text" id="fname" name="Fullname" placeholder="Full Name"
+                        value="{{profile_details[0][4]}}" :disabled="disabled">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="Email" placeholder="Email" value="Email" :disabled="disabled">
+                    <input type="email" id="email" name="Email" placeholder="Email" value="{{profile_details[0][2]}}"
+                        :disabled="disabled">
                     <label for="phone">Phone Number</label>
-                    <input type="text" id="phone" name="Phone" placeholder="Phone Number" value="Phone Number"
-                        :disabled="disabled">
+                    <input type="text" id="phone" name="Phone" placeholder="Phone Number"
+                        value="{{profile_details[0][5]}}" :disabled="disabled">
                     <label for="position">Position</label>
-                    <input type="text" id="position" name="Position" placeholder="Position" value="Position"
-                        :disabled="disabled">
+                    <div class="position">
+                        <label for="">
+                            <select name="" id="" placeholder="Position" disabled>
+                                <option value="" disabled hidden>Position</option>
+                                {% for position in positions %}
+                                {% if position[0] == profile_details[0][6] %}
+                                <option value={{position[0]}} selected>{{position[1]}}</option>
+                                {% else %}
+                                <option value={{position[0]}}>{{position[1]}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </label>
+                    </div>
                     <input type="submit" value="SUBMIT" :disabled="disabled">
                 </form>
             </div>

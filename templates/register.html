@@ -15,8 +15,8 @@
         <div class="content">
             <header>Registration form</header>
             <form action="/register" method='POST'>
-                <div class="field" id="email">
-                    <input type="text" required placeholder="Email" name="Email">
+                <div class="field" id="username">
+                    <input type="text" required placeholder="Username" name="Username">
                 </div>
                 <br>
                 <div class="field" id="password">
@@ -27,6 +27,10 @@
                     <input type="password" required placeholder="Repeat Password" name="RepeatPass">
                 </div>
                 <br>
+                <div class="field" id="email">
+                    <input type="email" required placeholder="Email" name="Email">
+                </div>
+                <br>
                 <div class="field" id="name">
                     <input type="text" required placeholder="Name" name="Name">
                 </div>
@@ -35,10 +39,30 @@
                     <input type="text" required placeholder="Phone number" name="PhoneNumber">
                 </div>
                 <br>
-                <div class="field" id="position">
-                    <input type="text" required placeholder="Position" name='Position'>
+                <div class="position">
+                    <label for="">
+                        <select name="" id="" placeholder="Position">
+                            <option value="" disabled selected hidden>Position</option>
+                            {% for position in positions %}
+                            <option value={{position[0]}}>{{position[1]}}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
                 </div>
+
                 <br>
+                <div class=result>
+                    {% if "Password not The Same" in result %}
+                    <h3 class="Error">{{result}}, Pls Try Again</h3>
+                    {% elif "Duplicate error" in result %}
+                    <h3 class="Error">{{result}}, Username or Email is Already Existing</h3>
+                    {% elif "Success" in result %}
+                    <h3 class="Success">{{result}}, Proceed to login</h3>
+                    {% endif %}
+                </div>
+
+
+
                 <br>
                 <div class="field">
                     <input type="submit" value="REGISTER">
@@ -54,9 +78,16 @@
         </div>
     </div>
 </body>
+<style>
+    .Error {
+        color: rgb(216, 88, 88);
+        font-family: 'Montserrat', sans-serif;
+        font-size: 20px;
+    }
 
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-
-<script>
-
-</script>
+    .Success {
+        color: rgb(63, 209, 82);
+        font-family: 'Montserrat', sans-serif;
+        font-size: 24px;
+    }
+</style>
