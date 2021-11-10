@@ -75,7 +75,12 @@ def home():
     if session['logged_in'] is False:
         return redirect(url_for('login'))
 
-    return render_template("home.html",title=title, name=session['name'])
+    return render_template("home.html",title=title, name=session['name'],items=items)
+
+@app.route("/uploadProfileImg", methods=['GET','POST'])
+def uploadProfileImg():
+    if request.method == 'POST':
+        return "OK you got it"
 
 
 @app.route("/dashboard")

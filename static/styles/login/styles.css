@@ -242,10 +242,3 @@ select::-ms-expand {
 	display: none;
   }
 
-i.fas.fa-user-edit {
-    margin: 0 !important;
-}
-
-button.fas.fa-user-edit {
-  padding: 10px 10px;
-}
