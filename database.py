@@ -100,10 +100,11 @@ def newPosition(position):
 def hashtest(password, password2):
   hash_object = hashlib.sha256(password)
   hex_dig = hash_object.hexdigest()
-  print(hex_dig)
 
   a = hashlib.sha1(password2)
-  ahex = hash_object.hexdigest()
+  ahex = a.hexdigest()
   
   print (ahex == hex_dig)
+
+hashtest(b'pass1',b'pass1')
   

@@ -4,8 +4,10 @@ body{
 	font-family: sans-serif;
 }
 .container{
-	width: 100%;
+	width: 100% !important;
+	max-width: 100% !important;
 	display: flex;
+	padding: 0 !important;
 }
 .aside{
 	min-height: 100vh;
@@ -54,9 +56,6 @@ body{
 	font-size: 1rem;
 	display: block;
 	padding:20px 20px 20px 30px
-}
-.aside nav ul li a:hover, .active{
-	background-color: #0d4993;
 }
 a i{
 	margin-right: 10px;
@@ -320,10 +319,7 @@ table td{
 		font-size: 13px;
 	}
 }
-.data-container{
-	padding:30px
-}
-.row{
+.row1{
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -420,29 +416,7 @@ input[type=submit]:hover {
     align-items: center;
     justify-content: space-between;
 }
-button {
-	background-color: #4977db; /* Green */
-	border: none;
-	color: white;
-	padding: 10px 32px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	cursor: pointer;
-	box-shadow: 0 3px 5px rgb(0 0 0 / 50%);
-}
-button:hover {
-	background-color: #304f91; /* Green */
-	border: none;
-	color: white;
-	padding: 10px 32px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	cursor: pointer;
-}
+
 #file-input{
 	display: none;
 }
@@ -615,4 +589,40 @@ i.fas.fa-user-edit {
 
 .profile-settings button {
   padding: 10px 15px;
+}
+ul.nav.admin-nav {
+    background-color: white;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 20%);
+    padding: 15px;
+}
+.admin-nav a.nav-link {
+    color: black;
+    font-weight: 300;
+    font-size: 18px;
+}
+.admin-nav a.nav-link.active {
+    color: black;
+    font-weight: 600;
+    font-size: 18px;
+}
+.admin-container {
+    padding: 25px;
+}
+.userid {
+    max-width: 50px;
+}
+.title-container {
+    display: flex;
+    padding: 0 0 10px 0;
+
+}
+td {
+    line-height: 50px;
+}
+tbody tr th {
+    line-height: 50px;
+}
+button.btn.btn-success.add-user-btn {
+    margin-left: 50px;
+
 }

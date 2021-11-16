@@ -1,6 +1,90 @@
 {% extends "dash-block.html" %}
 {% block content %}
 <div>
-    <h1>{{title}}</h1>
+    <ul class="nav admin-nav">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Users</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Files</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Trash</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="#">Comments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="#">Password requests</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="#">Disabled</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="#">Disabled</a>
+        </li>
+      </ul>
+      <div id="admin">
+        <div class="admin-container">
+          <div class="title-container">
+          <h3>User list</h3>
+          <button type="button" class="btn btn-success add-user-btn">Add new Users</button>
+        </div>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col" class="userid">User ID#</th>
+                <th scope="col">Username</th>
+                <th scope="col">Fullname</th>
+                <th scope="col">Email Address</th>
+                <th scope="col">Position</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Date Created</th>
+                <th scope="col">Password</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>@mdo</td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td><button type="button" class="btn btn-primary">Edit</button></td>
+                <td><button type="button" class="btn btn-danger">Delete</button></td>
+              </tr>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>@mdo</td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td><button type="button" class="btn btn-primary">Edit</button></td>
+                <td><button type="button" class="btn btn-danger">Delete</button></td>
+              </tr>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>@mdo</td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td><button type="button" class="btn btn-primary">Edit</button></td>
+                <td><button type="button" class="btn btn-danger">Delete</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 </div>
 {% endblock %}
