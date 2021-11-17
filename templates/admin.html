@@ -57,15 +57,24 @@
           <td>{{user[4]}}</td>
           {% if user[6] == 1 %}
           <td>Admin</td>
+          {% elif user[6] == 2 %}
+          <td>District Supervisor</td>
+          {% elif user[6] == 3 %}
+          <td>Grade Chairman</td>
+          {% elif user[6] == 4 %}
+          <td>Teacher</td>
+          {% elif user[6] == 5 %}
+          <td>Principal</td>
           {% else %}
           <td>None</td>
           {% endif %}
-          <td>{{user[6]}}</td>
           <td>{{user[5]}}</td>
           <td>{{user[7]}}</td>
           <td><button type="button" class="btn btn-success">View</button></td>
           <td><button type="button" class="btn btn-primary">Edit</button></td>
-          <td><button type="button" class="btn btn-danger">Delete</button></td>
+          <form action="/delete/user" method='GET'>
+            <td><button type="submit" value="DELETE" type="button" class="btn btn-danger">Delete</button></td>  
+          </form>
         </tr>
         {% endfor %}
       </tbody>

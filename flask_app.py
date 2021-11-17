@@ -109,12 +109,16 @@ def settings():
     return render_template("settings.html",title=title)
 
 @app.route("/admin/users" , methods=['GET','POST'])
-def admin():
-    result = ""
+def admin(result = ''):
     title = 'ADMIN'
     users = getAllUsers()
     positions = getAll("position")
     print(users)
+    if request.method == 'DELETE':
+        print("DEELTE")
+        return render_template("admin.html",title=title, positions=positions, result = result, users= users)
+
+
     if request.method == 'POST':
         username = request.form.get("Username")
         email = request.form.get('Email')
@@ -129,6 +133,12 @@ def admin():
 
 
     return render_template("admin.html",title=title, positions=positions, result = result, users= users)
+
+@app.route("/delete/user"  , methods=['GET','POST'])
+def deleteUser():
+    print("DELETE")
+    return redirect(url_for('admin'))
+
 
 @app.route("/admin/files")
 def adminFiles():
