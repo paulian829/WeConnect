@@ -46,6 +46,13 @@ def registerNewUser(username,email,  password, repeatPass, name, phoneNumber, po
     if "Duplicate entry" in str(e):
       return ("Duplicate error")
 
+def deleteUserDB(id):
+  mycursor = mydb.cursor()
+  sql = "DELETE FROM users WHERE id = %s"
+  val = (id)
+  mycursor.execute(sql % (val))
+  mydb.commit()
+  return mycursor.rowcount 
 
 def loginDB(username, password):
   #check if Username Exists
