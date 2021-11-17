@@ -37,9 +37,10 @@ def register():
         name = request.form.get('Name')
         phoneNumber = request.form.get('PhoneNumber')
         position = request.form.get('Position')
+        print(username)
         result = registerNewUser(username, email, password, repeatPass, name, phoneNumber, position)
         print(result)
-        return render_template('register.html',result = result, positions = positions)
+        return redirect(url_for('admin'))
     else:
         return render_template('register.html',positions = positions)
 
@@ -107,10 +108,34 @@ def settings():
     title = 'SETTINGS'
     return render_template("settings.html",title=title)
 
-@app.route("/admin")
+@app.route("/admin/users" , methods=['GET','POST'])
 def admin():
+    result = ""
     title = 'ADMIN'
-    return render_template("admin.html",title=title)
+    users = getAllUsers()
+    positions = getAll("position")
+    print(users)
+    if request.method == 'POST':
+        username = request.form.get("Username")
+        email = request.form.get('Email')
+        password = request.form.get('Password')
+        repeatPass = request.form.get('RepeatPass')
+        name = request.form.get('Name')
+        phoneNumber = request.form.get('PhoneNumber')
+        position = request.form.get('Position')
+        result = registerNewUser(username, email, password, repeatPass, name, phoneNumber, position)
+        positions = getAll("position")
+        return render_template("admin.html",title=title, positions=positions, result = result, users= users)
+
+
+    return render_template("admin.html",title=title, positions=positions, result = result, users= users)
+
+@app.route("/admin/files")
+def adminFiles():
+    
+
+    title = 'ADMIN'
+    return render_template("adminFiles.html",title=title)
 
 @app.route("/profile/")
 def profile():

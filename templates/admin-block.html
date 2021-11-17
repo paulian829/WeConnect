@@ -1,0 +1,31 @@
+{% extends "dash-block.html" %}
+{% block content %}
+<div>
+    <ul class="nav admin-nav">
+        <li class="nav-item">
+            <a class="nav-link" href={{url_for('admin')}}>Users</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href={{url_for('adminFiles')}}>Files</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Trash</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="#">Comments</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="#">Password requests</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="#">Disabled</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="#">Disabled</a>
+        </li>
+    </ul>
+</div>
+{% block admincontent %}{% endblock %}
+
+
+{% endblock %}

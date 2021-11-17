@@ -1,107 +1,78 @@
-{% extends "dash-block.html" %}
-{% block content %}
-<div>
-  <ul class="nav admin-nav">
-    <li class="nav-item">
-      <a class="nav-link active" href="#">Users</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Files</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Trash</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link " href="#">Comments</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link " href="#">Password requests</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link " href="#">Disabled</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link " href="#">Disabled</a>
-    </li>
-  </ul>
-  <div id="admin">
-    <div class="admin-container">
-      <div class="title-container">
-        <h3>User list</h3>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-secondary btn-add-user" data-bs-toggle="modal"
-          data-bs-target="#exampleModal">
-          Add New User
-        </button>
-        
-      </div>
-      <div class="input-group mb-3 seach-bar">
-        <input type="text" class="form-control" placeholder="Usename , Email Address or Fullname" aria-label="Recipient's username" aria-describedby="basic-addon2">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button">Search</button>
-        </div>
-      </div>
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col" class="userid">User ID#</th>
-            <th scope="col">Username</th>
-            <th scope="col">Fullname</th>
-            <th scope="col">Email Address</th>
-            <th scope="col">Position</th>
-            <th scope="col">Phone Number</th>
-            <th scope="col">Date Created</th>
-            <th scope="col">Password</th>
-            <th scope="col">View</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td><button type="button" class="btn btn-success">View</button></td>
-            <td><button type="button" class="btn btn-primary">Edit</button></td>
-            <td><button type="button" class="btn btn-danger">Delete</button></td>
-          </tr>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td><button type="button" class="btn btn-success">View</button></td>
-            <td><button type="button" class="btn btn-primary">Edit</button></td>
-            <td><button type="button" class="btn btn-danger">Delete</button></td>
-          </tr>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td><button type="button" class="btn btn-success">View</button></td>
-            <td><button type="button" class="btn btn-primary">Edit</button></td>
-            <td><button type="button" class="btn btn-danger">Delete</button></td>
-          </tr>
-        </tbody>
-      </table>
+{% extends "admin-block.html" %}
+{% block admincontent %}
+<div id="admin">
+  <div class="admin-container">
+    <div class="title-container">
+      <h3>User list</h3>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-secondary btn-add-user" data-bs-toggle="modal"
+        data-bs-target="#exampleModal">
+        Add New User
+      </button>
+
     </div>
+    <div class="input-group mb-3 seach-bar">
+      <input type="text" class="form-control" placeholder="Usename , Email Address or Fullname"
+        aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button">Search</button>
+      </div>
+    </div>
+    <div class=result>
+      {% if "Password not The Same" in result %}
+      <div class="alert alert-danger" role="alert">
+        Password are not the same
+      </div>
+      {% elif "Duplicate error" in result %}
+      <div class="alert alert-danger" role="alert">
+        Duplicate Error, You had Added a duplicate of Username or Email Address
+      </div>
+      {% elif "Success" in result %}
+      <div class="alert alert-success" role="alert">
+        Successfully added a new user.
+      </div>
+      {% endif %}
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col" class="userid">User ID#</th>
+          <th scope="col">Username</th>
+          <th scope="col">Email Address</th>
+          <th scope="col">Fullname</th>
+          <th scope="col">Position</th>
+          <th scope="col">Phone Number</th>
+          <th scope="col">Date Created</th>
+          <th scope="col">View</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <th scope="row">{{user[0]}}</th>
+          <td>{{user[1]}}</td>
+          <td>{{user[2]}}</td>
+          <td>{{user[4]}}</td>
+          {% if user[6] == 1 %}
+          <td>Admin</td>
+          {% else %}
+          <td>None</td>
+          {% endif %}
+          <td>{{user[6]}}</td>
+          <td>{{user[5]}}</td>
+          <td>{{user[7]}}</td>
+          <td><button type="button" class="btn btn-success">View</button></td>
+          <td><button type="button" class="btn btn-primary">Edit</button></td>
+          <td><button type="button" class="btn btn-danger">Delete</button></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
+
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
   data-bs-backdrop="static" data-bs-keyboard="false">
@@ -112,48 +83,54 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form action="/admin/users" method='POST'>
           <div class="mb-3">
             <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" id="username" aria-describedby="usernameHelp">
-            <div id="usernameHelp" class="form-text">Must be unique</div>
+            <input type="text" required class="form-control" name="Username" id="username"
+              aria-describedby="usernameHelp">
+            <div id="usernameHelp" class="form-text">Must be unique username</div>
           </div>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <input type="email" required class="form-control" name="Email" id="exampleInputEmail1"
+              aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">Must be unique email address</div>
           </div>
           <div class="mb-3">
             <label for="Fullname" class="form-label">Fullname</label>
-            <input type="text" class="form-control" id="Fullname">
+            <input type="text" required class="form-control" name="Name" id="Fullname">
+          </div>
+          <div class="mb-3">
+            <label for="PhoneNumber" class="form-label">Phone Number</label>
+            <input type="text" required class="form-control" name="PhoneNumber" id="PhoneNumber">
           </div>
           <div class="mb-3">
             <label for="Password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="Password">
+            <input type="password" required class="form-control" id="Password" name="Password">
           </div>
           <div class="mb-3">
             <label for="rePassword" class="form-label">Repeat Password</label>
-            <input type="password" class="form-control" id="rePassword">
+            <input type="password" required class="form-control" id="rePassword" name="RepeatPass">
           </div>
           <div class="mb-3">
             <label for="Position" class="form-label">Position</label>
-            <select class="form-select" aria-label="Default select example" id="Position">
-              <option selected>Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <select name="Position" class="form-select" aria-label="Default select example" id="Position">
+              {% for position in positions %}
+              <option value={{position[0]}}>{{position[1]}}</option>
+              {% endfor %}
             </select>
           </div>
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Add new User</button>
+        <button type="submit" value="REGISTER" class="btn btn-primary">Add new User</button>
         </form>
 
       </div>
     </div>
   </div>
+</div>
 </div>
 
 {% endblock %}

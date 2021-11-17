@@ -31,7 +31,7 @@ def registerNewUser(username,email,  password, repeatPass, name, phoneNumber, po
     return("Password not The Same")
   #Hashing
   password = bytes(password, encoding= 'utf-8')
-  hash_object = hashlib.sha1(str(password).encode('utf-8'))
+  hash_object = hashlib.sha256(str(password).encode('utf-8'))
   hex_dig = hash_object.hexdigest()
   try:
     mycursor = mydb.cursor()
@@ -76,6 +76,14 @@ def getUserData(id):
   mycursor.execute(sql % (val))
   myresult = mycursor.fetchall()
   return myresult
+
+def getAllUsers():
+  mycursor = mydb.cursor()
+  sql = "SELECT * FROM users "
+  mycursor.execute(sql)
+  myresult = mycursor.fetchall()
+  return myresult
+
 
 def getPosition(positionID):
   mycursor = mydb.cursor()
