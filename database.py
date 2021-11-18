@@ -25,7 +25,7 @@ def getAll(table):
   return myresult
 
 
-def registerNewUser(username,email,  password, repeatPass, name, phoneNumber, position):
+def registerNewUser(email,  password, repeatPass, firstname, lastname, phoneNumber, position):
   #Check if Password are the same
   if(password != repeatPass):
     return("Password not The Same")
@@ -35,8 +35,8 @@ def registerNewUser(username,email,  password, repeatPass, name, phoneNumber, po
   hex_dig = hash_object.hexdigest()
   try:
     mycursor = mydb.cursor()
-    sql = "INSERT INTO users (Username,Email, Password, Name, PhoneNumber, Position) VALUES ('%s','%s','%s','%s','%s','%s')"
-    val = (username, email, hex_dig, name, phoneNumber, position)
+    sql = "INSERT INTO users (Email, Password, FirstName, LastName, PhoneNumber, Position) VALUES ('%s','%s','%s','%s','%s','%s')"
+    val = (email, hex_dig, firstname, lastname, phoneNumber, position)
     print(val)
     mycursor.execute(sql % (val))
     print(mycursor.rowcount, "Records Added")
@@ -46,33 +46,47 @@ def registerNewUser(username,email,  password, repeatPass, name, phoneNumber, po
     if "Duplicate entry" in str(e):
       return ("Duplicate error")
 
+def updateUserDB(id, email, firstName, lastName, phoneNumber, position):
+  mycursor = mydb.cursor()
+  sql = "UPDATE users SET Email = '%s', FirstName = '%s', LastName='%s', PhoneNumber='%s', Position = '%s' WHERE id = %s"
+  val = (email, firstName , lastName, phoneNumber, position, id )
+  mycursor.execute(sql % (val))
+  mydb.commit()
+  if mycursor.rowcount > 0:
+    return True
+  return False
+
 def deleteUserDB(id):
+  print(id)
   mycursor = mydb.cursor()
   sql = "DELETE FROM users WHERE id = %s"
   val = (id)
   mycursor.execute(sql % (val))
   mydb.commit()
-  return mycursor.rowcount 
+  return "Delete" 
 
-def loginDB(username, password):
+def loginDB(email, password):
   #check if Username Exists
   mycursor = mydb.cursor()
-  sql = "SELECT * FROM users WHERE username = '%s'"
-  val = (username)
+  sql = "SELECT * FROM users WHERE Email = '%s'"
+  val = (email)
   mycursor.execute(sql % (val))
   myresult = mycursor.fetchall()
+  print(len(myresult))
   if(len(myresult)== 0):
+    
     return "Error"
-  realPassword = myresult[0][3]
+  realPassword = myresult[0][2]
   #Compare Password
   typedpassword = bytes(password, encoding= 'utf-8')
-  hash_object = hashlib.sha1(str(typedpassword).encode('utf-8'))
+  hash_object = hashlib.sha256(str(typedpassword).encode('utf-8'))
   hex_dig = hash_object.hexdigest()
-
+  print(realPassword, hex_dig)
   if(realPassword == hex_dig):
     print(myresult)
     return myresult
   
+  print("Not Equal")
   return "Error"
 
 

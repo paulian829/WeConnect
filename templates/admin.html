@@ -31,19 +31,21 @@
       <div class="alert alert-success" role="alert">
         Successfully added a new user.
       </div>
+      {% elif "Delete" in result %}
+      <div class="alert alert-warning" role="alert">
+        Successfully Deleted a user.
+      </div>
       {% endif %}
     </div>
     <table class="table table-hover">
       <thead>
         <tr>
           <th scope="col" class="userid">User ID#</th>
-          <th scope="col">Username</th>
           <th scope="col">Email Address</th>
-          <th scope="col">Fullname</th>
+          <th scope="col">Full Name</th>
           <th scope="col">Position</th>
           <th scope="col">Phone Number</th>
           <th scope="col">Date Created</th>
-          <th scope="col">View</th>
           <th scope="col">Edit</th>
           <th scope="col">Delete</th>
         </tr>
@@ -53,8 +55,7 @@
         <tr>
           <th scope="row">{{user[0]}}</th>
           <td>{{user[1]}}</td>
-          <td>{{user[2]}}</td>
-          <td>{{user[4]}}</td>
+          <td>{{user[3]}} {{user[4]}}</td>
           {% if user[6] == 1 %}
           <td>Admin</td>
           {% elif user[6] == 2 %}
@@ -70,10 +71,13 @@
           {% endif %}
           <td>{{user[5]}}</td>
           <td>{{user[7]}}</td>
-          <td><button type="button" class="btn btn-success">View</button></td>
-          <td><button type="button" class="btn btn-primary">Edit</button></td>
-          <form action="/delete/user" method='POST'>
-            <td><button type="submit" value="{{user[0]}}" name="id" type="button" class="btn btn-danger">Delete</button></td>  
+
+          <form action="/admin/edit/{{user[0]}}" method='POST'>
+            <td><button type="submit" type="button" class="btn btn-primary">Edit</button></td>
+          </form>
+          <form action="/admin/users" method='POST'>
+            <td><button type="submit" value="{{user[0]}}" name="delete" type="button" onclick="return confirm('Are you sure you want to Delete?')"
+                class="btn btn-danger">Delete</button></td>
           </form>
         </tr>
         {% endfor %}
@@ -94,21 +98,22 @@
       <div class="modal-body">
         <form action="/admin/users" method='POST'>
           <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" required class="form-control" name="Username" id="username"
-              aria-describedby="usernameHelp">
-            <div id="usernameHelp" class="form-text">Must be unique username</div>
-          </div>
-          <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
             <input type="email" required class="form-control" name="Email" id="exampleInputEmail1"
               aria-describedby="emailHelp">
             <div id="emailHelp" class="form-text">Must be unique email address</div>
           </div>
-          <div class="mb-3">
-            <label for="Fullname" class="form-label">Fullname</label>
-            <input type="text" required class="form-control" name="Name" id="Fullname">
+          <div class="row">
+            <div class="col">
+              <label for="FirstName" class="form-label">First Name</label>
+              <input id="FirstName" type="text" class="form-control" name="FirstName" aria-label="First name">
+            </div>
+            <div class="col">
+              <label for="LastName" class="form-label">Last Name</label>
+              <input id="LastName" type="text" class="form-control" name="LastName" aria-label="Last name">
+            </div>
           </div>
+          <br>
           <div class="mb-3">
             <label for="PhoneNumber" class="form-label">Phone Number</label>
             <input type="text" required class="form-control" name="PhoneNumber" id="PhoneNumber">
