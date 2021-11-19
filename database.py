@@ -59,6 +59,7 @@ def updateUserDB(id, email, firstName, lastName, phoneNumber, position):
 def deleteUserDB(id):
   print(id)
   mycursor = mydb.cursor()
+  mycursor.callproc("")
   sql = "DELETE FROM users WHERE id = %s"
   val = (id)
   mycursor.execute(sql % (val))
@@ -137,3 +138,13 @@ def hashtest(password, password2):
 
 hashtest(b'pass1',b'pass1')
   
+
+def getusers():
+  mycursor = mydb.cursor()
+  mycursor.callproc("SelectAllUsers")
+  for result in mycursor.stored_results():
+    print(result.fetchall())
+
+
+
+getusers()

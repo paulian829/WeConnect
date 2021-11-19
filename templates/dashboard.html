@@ -1,183 +1,188 @@
 {% extends "dash-block.html" %}
 {% block content %}
 <div id="app">
-    <div class="row gx-5 ">
-        
+  <div class="cards-container">
+    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+      <div class="card-header">Header</div>
+      <div class="card-body">
+        <h5 class="card-title">Secondary card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+          card's content.</p>
+        <button type="button" class="btn btn-primary">Primary</button>
+      </div>
     </div>
-    <div class="cards-container">
-        <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-                <h5 class="card-title">Secondary card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
-                <button type="button" class="btn btn-primary">Primary</button>
-            </div>
-        </div>
-        <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-                <h5 class="card-title">Success card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
-                <button type="button" class="btn btn-primary">Primary</button>
-            </div>
-        </div>
-        <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-                <h5 class="card-title">Danger card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
-                <button type="button" class="btn btn-primary">Primary</button>
-            </div>
-        </div>
-        <div class="card text-dark bg-warning mb-3 " style="max-width: 18rem;">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-                <h5 class="card-title">Warning card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
-                <button type="button" class="btn btn-primary">Primary</button>
-            </div>
-        </div>
+    <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+      <div class="card-header">Header</div>
+      <div class="card-body">
+        <h5 class="card-title">Success card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+          card's content.</p>
+        <button type="button" class="btn btn-primary">Primary</button>
+      </div>
     </div>
-    <div>
-        <div class="container px-4 info-container">
-            <div class="row gx-5 info">
-              <div class="col ">
-               <div class="p-4 border bg-light">
-                <h3>h3. Bootstrap heading</h3>
-                <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
-                      </tr>
-                    </tbody>
-                  </table>
-               </div>
-              </div>
-              <div class="col ">
-                <div class="p-4 border bg-light">
-                    <h3>h3. Bootstrap heading</h3>
-                    <table class="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                </div>
-              </div>
-            </div>
+    <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+      <div class="card-header">Header</div>
+      <div class="card-body">
+        <h5 class="card-title">Danger card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+          card's content.</p>
+        <button type="button" class="btn btn-primary">Primary</button>
+      </div>
+    </div>
+    <div class="card text-dark bg-warning mb-3 " style="max-width: 18rem;">
+      <div class="card-header">Header</div>
+      <div class="card-body">
+        <h5 class="card-title">Warning card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+          card's content.</p>
+        <button type="button" class="btn btn-primary">Primary</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="container px-4 info-container">
+      <div class="row gx-5 info">
+        <div class="col ">
+          <div class="p-4 border bg-light">
+            <h3>h3. Bootstrap heading</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">First</th>
+                  <th scope="col">Last</th>
+                  <th scope="col">Handle</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td colspan="2">Larry the Bird</td>
+                  <td>@twitter</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td colspan="2">Larry the Bird</td>
+                  <td>@twitter</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td colspan="2">Larry the Bird</td>
+                  <td>@twitter</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+        </div>
+        <div class="col ">
+          <div class="p-4 border bg-light">
+            <h3>h3. Bootstrap heading</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">First</th>
+                  <th scope="col">Last</th>
+                  <th scope="col">Handle</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td colspan="2">Larry the Bird</td>
+                  <td>@twitter</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td colspan="2">Larry the Bird</td>
+                  <td>@twitter</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td colspan="2">Larry the Bird</td>
+                  <td>@twitter</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
+
+<style>
+  .cards-container {
+    display: flex;
+    padding: 50px 50px 0 50px;
+    justify-content: space-between;
+  }
+</style>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
-    integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    var app = new Vue({
-        el: '#app',
-        delimiters: ['[[', ']]'],
-        data: {
-            items: [
-                { message: 'Foo.pdf', key: 0 },
-                { message: 'Foo.pdf', key: 1 },
-                { message: 'Foo.pdf', key: 2 },
-                { message: 'Foo.pdf', key: 3 },
-                { message: 'Foo.pdf', key: 4 },
-                { message: 'Bar.pdf', key: 5 },
-                { message: 'Bar.pdf', key: 6 },
-                { message: 'Bar.pdf', key: 7 },
-                { message: 'Bar.pdf', key: 8 },
-                { message: 'Bar.pdf', key: 9 },
-            ],
-            toggle: false,
-            selected: false,
-        },
-        methods: {
-            testVue: function () {
-                this.$http.get('/admin').then(response => {
-                    this.test = response.data.data.test
-                    console.log(response.data.data)
-                })
-            },
-            selectFile(key) {
-                console.log(key)
-            }
-        },
-        mounted() {
-            this.testVue()
-        },
-    }
-    )
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    data: {
+      items: [
+        { message: 'Foo.pdf', key: 0 },
+        { message: 'Foo.pdf', key: 1 },
+        { message: 'Foo.pdf', key: 2 },
+        { message: 'Foo.pdf', key: 3 },
+        { message: 'Foo.pdf', key: 4 },
+        { message: 'Bar.pdf', key: 5 },
+        { message: 'Bar.pdf', key: 6 },
+        { message: 'Bar.pdf', key: 7 },
+        { message: 'Bar.pdf', key: 8 },
+        { message: 'Bar.pdf', key: 9 },
+      ],
+      toggle: false,
+      selected: false,
+    },
+    methods: {
+      testVue: function () {
+        this.$http.get('/admin').then(response => {
+          this.test = response.data.data.test
+          console.log(response.data.data)
+        })
+      },
+      selectFile(key) {
+        console.log(key)
+      }
+    },
+    mounted() {
+      this.testVue()
+    },
+  }
+  )
 </script>
 
 {% endblock %}
