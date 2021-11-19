@@ -633,3 +633,14 @@ button.btn.btn-success.add-user-btn {
     max-width: 500px;
 
 }
+
+
+
+.container.px-4.info-container {
+    margin-top: 30px;
+    justify-content: space-around;
+	padding: 0 50px;
+}
+.row.gx-5.info {
+    width: 100%;
+}

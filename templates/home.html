@@ -1,41 +1,35 @@
 {% extends "dash-block.html" %}
 {% block content %}
 <div id="app">
-    <div class="file-container">
-        <div class="upload-button-container">
-            <button><i class="fas fa-cloud-upload-alt"></i>Send File</button>
-        </div>
+    <div class="cards-container">
+        <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+            <div class="card-header">Header</div>
+            <div class="card-body">
+              <h5 class="card-title">Secondary card title</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+          <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+            <div class="card-header">Header</div>
+            <div class="card-body">
+              <h5 class="card-title">Success card title</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+          <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+            <div class="card-header">Header</div>
+            <div class="card-body">
+              <h5 class="card-title">Danger card title</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+          <div class="card text-dark bg-warning mb-3" style="max-width: 18rem;">
+            <div class="card-header">Header</div>
+            <div class="card-body">
+              <h5 class="card-title">Warning card title</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
     </div>
-    <table class="layout display responsive-table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Last Modified</th>
-                <th>Owner</th>
-                <th>Modify File</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            {% for dict_item in items %}
-            <tr>
-                <td class="organisationname">{{dict_item["message"]}}</td>
-                <td>Date</td>
-                <td>Owner</td>
-                <td class="actions">
-                    <a href="?" class="edit-item" title="Edit">Edit</a>
-                    <a href="?" class="remove-item" title="Remove">Remove</a>
-                </td>
-            </tr>
-            {% endfor %}
-
-
-
-        </tbody>
-    </table>
-
-
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>

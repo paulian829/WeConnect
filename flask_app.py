@@ -22,7 +22,7 @@ def login():
         session['logged_in'] = True
         session['userID'] = result[0][0]
         session['name'] = result[0][3] + " " + result[0][4]
-        return redirect(url_for('home'))
+        return redirect(url_for('dashboard'))
     return render_template('login.html')
 
 

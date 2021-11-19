@@ -24,12 +24,7 @@
             </div>
             <nav>
                 <ul>
-                    <li>
-                        <a {% if title=='HOME' %} class='active' {% endif %} href={{url_for('home')}}>
-                            <i class="fas fa-home"></i>
-                            <span>Home</span>
-                        </a>
-                    </li>
+
                     <li>
                         <a {% if title=='DASHBOARD' %} class='active' {% endif %} href={{url_for('dashboard')}}>
                             <i class="fas fa-tachometer-alt"></i>
