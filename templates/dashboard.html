@@ -2,40 +2,32 @@
 {% block content %}
 <div id="app">
   <div class="cards-container">
-    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-      <div class="card-header">Header</div>
+    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem; width: 100%;">
+      <div class="card-header">Info</div>
       <div class="card-body">
-        <h5 class="card-title">Secondary card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-          card's content.</p>
-        <button type="button" class="btn btn-primary">Primary</button>
+        <h5 class="card-title">Files Uploaded</h5>
+        <p class="card-text big-number-text">0</p>
       </div>
     </div>
-    <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
-      <div class="card-header">Header</div>
+    <div class="card text-white bg-success mb-3" style="max-width: 18rem; width: 100%;">
+      <div class="card-header">Success</div>
       <div class="card-body">
-        <h5 class="card-title">Success card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-          card's content.</p>
-        <button type="button" class="btn btn-primary">Primary</button>
+        <h5 class="card-title">Files Passed</h5>
+        <p class="card-text big-number-text">0</p>
       </div>
     </div>
-    <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-      <div class="card-header">Header</div>
+    <div class="card text-white bg-danger mb-3" style="max-width: 18rem; width: 100%;">
+      <div class="card-header">Failed</div>
       <div class="card-body">
-        <h5 class="card-title">Danger card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-          card's content.</p>
-        <button type="button" class="btn btn-primary">Primary</button>
+        <h5 class="card-title">Failed Deadline</h5>
+        <p class="card-text big-number-text">0</p>
       </div>
     </div>
-    <div class="card text-dark bg-warning mb-3 " style="max-width: 18rem;">
-      <div class="card-header">Header</div>
+    <div class="card text-dark bg-warning mb-3 " style="max-width: 18rem; width: 100%;">
+      <div class="card-header">Warning</div>
       <div class="card-body">
-        <h5 class="card-title">Warning card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-          card's content.</p>
-        <button type="button" class="btn btn-primary">Primary</button>
+        <h5 class="card-title">Nearing Deadline</h5>
+        <p class="card-text big-number-text">0</p>
       </div>
     </div>
   </div>
@@ -44,43 +36,40 @@
       <div class="row gx-5 info">
         <div class="col ">
           <div class="p-4 border bg-light">
-            <h3>h3. Bootstrap heading</h3>
+            <h3>Recently Uploaded Files</h3>
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">First</th>
-                  <th scope="col">Last</th>
-                  <th scope="col">Handle</th>
+                  <th scope="col">File Name</th>
+                  <th scope="col">Uploaded By</th>
+                  <th scope="col">Deadline</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
+                  <td>Filename.ppt</td>
+                  <td>John Doe, Teacher</td>
+                  <td>10-20-21</td>
                 </tr>
                 <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
+                  <td>Filename.ppt</td>
+                  <td>John Doe, Teacher</td>
+                  <td>10-20-21</td>
                 </tr>
                 <tr>
-                  <th scope="row">3</th>
-                  <td colspan="2">Larry the Bird</td>
-                  <td>@twitter</td>
+                  <td>Filename.ppt</td>
+                  <td>John Doe, Teacher</td>
+                  <td>10-20-21</td>
                 </tr>
                 <tr>
-                  <th scope="row">3</th>
-                  <td colspan="2">Larry the Bird</td>
-                  <td>@twitter</td>
+                  <td>Filename.ppt</td>
+                  <td>John Doe, Teacher</td>
+                  <td>10-20-21</td>
                 </tr>
                 <tr>
-                  <th scope="row">3</th>
-                  <td colspan="2">Larry the Bird</td>
-                  <td>@twitter</td>
+                  <td>Filename.ppt</td>
+                  <td>John Doe, Teacher</td>
+                  <td>10-20-21</td>
                 </tr>
               </tbody>
             </table>
@@ -88,43 +77,40 @@
         </div>
         <div class="col ">
           <div class="p-4 border bg-light">
-            <h3>h3. Bootstrap heading</h3>
+            <h3>Files Nearing Deadlines</h3>
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">First</th>
-                  <th scope="col">Last</th>
-                  <th scope="col">Handle</th>
+                  <th scope="col">File Name</th>
+                  <th scope="col">Uploaded By</th>
+                  <th scope="col">Deadline</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
+                  <td>Filename.ppt</td>
+                  <td>John Doe, Teacher</td>
+                  <td>10-20-21</td>
                 </tr>
                 <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
+                  <td>Filename.ppt</td>
+                  <td>John Doe, Teacher</td>
+                  <td>10-20-21</td>
                 </tr>
                 <tr>
-                  <th scope="row">3</th>
-                  <td colspan="2">Larry the Bird</td>
-                  <td>@twitter</td>
+                  <td>Filename.ppt</td>
+                  <td>John Doe, Teacher</td>
+                  <td>10-20-21</td>
                 </tr>
                 <tr>
-                  <th scope="row">3</th>
-                  <td colspan="2">Larry the Bird</td>
-                  <td>@twitter</td>
+                  <td>Filename.ppt</td>
+                  <td>John Doe, Teacher</td>
+                  <td>10-20-21</td>
                 </tr>
                 <tr>
-                  <th scope="row">3</th>
-                  <td colspan="2">Larry the Bird</td>
-                  <td>@twitter</td>
+                  <td>Filename.ppt</td>
+                  <td>John Doe, Teacher</td>
+                  <td>10-20-21</td>
                 </tr>
               </tbody>
             </table>
@@ -140,6 +126,23 @@
     display: flex;
     padding: 50px 50px 0 50px;
     justify-content: space-between;
+  }
+
+  .card.text-white.bg-secondary.mb-3 {
+    margin-right: 10px;
+
+  }
+
+  .card.text-white.bg-success.mb-3 {
+    margin: 0 15px;
+  }
+
+  .card.text-white.bg-danger.mb-3 {
+    margin: 0 15px;
+  }
+
+  .card.text-dark.bg-warning.mb-3 {
+    margin-left: 15px;
   }
 </style>
 

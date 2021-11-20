@@ -90,6 +90,27 @@ def uploadProfileImg():
         return "OK you got it"
 
 
+@app.route("/admin/thrash")
+def adminThrash():
+    title = 'THRASH'
+    return render_template("admin-trash.html",title=title)
+    
+@app.route("/myfiles")
+def myFiles():
+    title = 'MY FILES'
+    return render_template("myFiles.html",title=title)
+
+@app.route("/admin/comments")
+def adminComments():
+    title = 'COMMENTS'
+    return render_template("admin-comments.html",title=title)
+
+
+@app.route("/admin/password")
+def adminPassword():
+    title = 'Password'
+    return render_template("admin-password.html",title=title)
+
 @app.route("/dashboard")
 def dashboard():
     title = 'DASHBOARD'

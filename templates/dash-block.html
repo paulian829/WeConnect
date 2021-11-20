@@ -24,11 +24,20 @@
             </div>
             <nav>
                 <ul>
+                    <li class="add-btn-nav">
+                        <button type="button" class="btn btn-success">ADD NEW FILE</button>
+                    </li>
 
                     <li>
                         <a {% if title=='DASHBOARD' %} class='active' {% endif %} href={{url_for('dashboard')}}>
                             <i class="fas fa-tachometer-alt"></i>
                             <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a {% if title=='DASHBOARD' %} class='active' {% endif %} href={{url_for('myFiles')}}>
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>My Files</span>
                         </a>
                     </li>
                     <li>
@@ -40,13 +49,13 @@
                     <li>
                         <a {% if title=='SHARED' %} class='active' {% endif %} href={{url_for('shared')}}>
                             <i class="fas fa-network-wired"></i>
-                            <span>Shared Files</span>
+                            <span>Shared with me</span>
                         </a>
                     </li>
                     <li>
                         <a {% if title=='DELETED' %} class='active' {% endif %} href={{url_for('deleted')}}>
                             <i class="fas fa-trash"></i>
-                            <span>Deleted Files</span>
+                            <span>Trash Files</span>
                         </a>
                     </li>
                     <li>
@@ -103,3 +112,10 @@
     crossorigin="anonymous"></script>
 
 </html>
+
+<style>
+    li.add-btn-nav {
+    display: flex;
+    justify-content: center;
+}
+</style>
