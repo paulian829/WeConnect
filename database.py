@@ -2,14 +2,6 @@ import mysql.connector
 import hashlib
 
 
-# mydb = mysql.connector.connect(
-#   host="paulian829.mysql.pythonanywhere-services.com",
-#   user="paulian829",
-#   password="Shokugeki2021!",
-#   database='paulian829$weconnect'
-# )
-
-
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
