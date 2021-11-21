@@ -1,33 +1,41 @@
+from typing import final
 import mysql.connector
 import hashlib
 
+def connectDb():
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database='weconnect'
+    )
+    # mydb = mysql.connector.connect(
+    #     host="WeConnect.mysql.pythonanywhere-services.com",
+    #     user="WeConnect",
+    #     password="Shokugeki2021!",
+    #     database='WeConnect$weconnect'
+    # )
+    print("Connect")
+    return mydb
 
-mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database='weconnect'
-)
-
-mydb = mysql.connector.connect(
-    host="WeConnect.mysql.pythonanywhere-services.com",
-    user="WeConnect",
-    password="Shokugeki2021!",
-    database='WeConnect$weconnect'
-)
 
 
 def getAll(table):
-    mycursor = mydb.cursor()
-    mycursor.callproc("SelectAllPostions")
-    results = list
-    for result in mycursor.stored_results():
-        results = result.fetchall()
-    mycursor.close()
-    return results
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        mycursor.callproc("SelectAllPostions")
+        results = list
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+        return results
+    finally:
+        mydb.close()
+        print('test')
 
 
 def registerNewUser(email,  password, repeatPass, firstname, lastname, phoneNumber, position):
+    mydb = connectDb()
     # Check if Password are the same
     if(password != repeatPass):
         return("Password not The Same")
@@ -48,6 +56,7 @@ def registerNewUser(email,  password, repeatPass, firstname, lastname, phoneNumb
 
 
 def updateUserDB(id, email, firstName, lastName, phoneNumber, position):
+    mydb = connectDb()
     mycursor = mydb.cursor()
     val = (email, firstName, lastName, phoneNumber, position, id, )
     mycursor.callproc("updateUser", val)
@@ -61,6 +70,7 @@ def updateUserDB(id, email, firstName, lastName, phoneNumber, position):
 
 
 def deleteUserDB(id):
+    mydb = connectDb()
     print(id)
     mycursor = mydb.cursor()
     mycursor.callproc("deleteUser", (id, ))
@@ -70,6 +80,7 @@ def deleteUserDB(id):
 
 
 def loginDB(email, password):
+    mydb = connectDb()
     # check if Username Exists
     mycursor = mydb.cursor()
     val = (email,)
@@ -96,6 +107,7 @@ def loginDB(email, password):
 
 
 def getUserData(id):
+    mydb = connectDb()
     mycursor = mydb.cursor()
     val = (id,)
     mycursor.callproc("selectUserID", val)
@@ -104,20 +116,24 @@ def getUserData(id):
         results = result.fetchall()
     mycursor.close()
     return results
-        
 
 
 def getAllUsers():
-    results = list
-    mycursor = mydb.cursor()
-    mycursor.callproc("SelectAllUsers")
-    for result in mycursor.stored_results():
-        results = result.fetchall()
-    
-    mycursor.close()
-    return results
+    try:
+        mydb = connectDb()
+        results = list
+        mycursor = mydb.cursor()
+        mycursor.callproc("SelectAllUsers")
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+        return results
+    finally:
+        mydb.close()
+        print('test')
+
 
 def getPosition(positionID):
+    mydb = connectDb()
     mycursor = mydb.cursor()
     val = (positionID,)
     results = list
@@ -127,20 +143,20 @@ def getPosition(positionID):
     mycursor.close()
     return results
 
+
 def newPosition(position):
     try:
-      mycursor = mydb.cursor()
-      val = (position,)
-      mycursor.callproc('addPosition', val)
-      mydb.commit()
-      mycursor.close()
-      return True
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (position,)
+        mycursor.callproc('addPosition', val)
+        mydb.commit()
+        mycursor.close()
+        return True
     except:
-      return False
+        mycursor.close()
+        return False
 
-    
-
-    
 
 # ==========================================
 # TESTING FUNCTIONS
@@ -160,6 +176,7 @@ hashtest(b'pass1', b'pass1')
 
 
 def getusers():
+    mydb = connectDb()
     mycursor = mydb.cursor()
     mycursor.callproc("selectUser", ['admin@gmail.com', ])
     for result in mycursor.stored_results():

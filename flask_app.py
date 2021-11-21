@@ -3,6 +3,8 @@ from flask import Flask, render_template,request,json,redirect,url_for,session
 from database import *
 
 app = Flask(__name__)
+app.secret_key = 'super secret key'
+
 
 
 @app.route("/",methods=['GET','POST'])
@@ -203,7 +205,6 @@ def not_found(e):
 
 
 if __name__ == "__main__":
-    app.secret_key = 'super secret key'
     app.run(debug=True, use_reloader=True)
 
 
