@@ -9,12 +9,22 @@ mydb = mysql.connector.connect(
     database='weconnect'
 )
 
+mydb = mysql.connector.connect(
+    host="WeConnect.mysql.pythonanywhere-services.com",
+    user="WeConnect",
+    password="Shokugeki2021!",
+    database='WeConnect$weconnect'
+)
+
 
 def getAll(table):
     mycursor = mydb.cursor()
     mycursor.callproc("SelectAllPostions")
+    results = list
     for result in mycursor.stored_results():
-        return (result.fetchall())
+        results = result.fetchall()
+    mycursor.close()
+    return results
 
 
 def registerNewUser(email,  password, repeatPass, firstname, lastname, phoneNumber, position):
@@ -30,6 +40,7 @@ def registerNewUser(email,  password, repeatPass, firstname, lastname, phoneNumb
         args = (email, hex_dig, firstname, lastname, phoneNumber, position, )
         mycursor.callproc('addUser', args)
         mydb.commit()
+        mycursor.close()
         return "Success"
     except Exception as e:
         if "Duplicate entry" in str(e):
@@ -42,7 +53,10 @@ def updateUserDB(id, email, firstName, lastName, phoneNumber, position):
     mycursor.callproc("updateUser", val)
     mydb.commit()
     if mycursor.rowcount > 0:
+        mycursor.close()
         return True
+
+    mycursor.close()
     return False
 
 
@@ -51,6 +65,7 @@ def deleteUserDB(id):
     mycursor = mydb.cursor()
     mycursor.callproc("deleteUser", (id, ))
     mydb.commit()
+    mycursor.close()
     return "Delete"
 
 
@@ -62,7 +77,7 @@ def loginDB(email, password):
     for result in mycursor.stored_results():
         myresult = (result.fetchall())
     if(len(myresult) == 0):
-
+        mycursor.close()
         return "Error"
     realPassword = myresult[0][2]
     # Compare Password
@@ -72,9 +87,11 @@ def loginDB(email, password):
     print(realPassword, hex_dig)
     if(realPassword == hex_dig):
         print(myresult)
+        mycursor.close()
         return myresult
 
     print("Not Equal")
+    mycursor.close()
     return "Error"
 
 
@@ -82,24 +99,33 @@ def getUserData(id):
     mycursor = mydb.cursor()
     val = (id,)
     mycursor.callproc("selectUserID", val)
+    results = list
     for result in mycursor.stored_results():
-        return (result.fetchall())
+        results = result.fetchall()
+    mycursor.close()
+    return results
+        
 
 
 def getAllUsers():
+    results = list
     mycursor = mydb.cursor()
     mycursor.callproc("SelectAllUsers")
     for result in mycursor.stored_results():
-        return (result.fetchall())
-
+        results = result.fetchall()
+    
+    mycursor.close()
+    return results
 
 def getPosition(positionID):
     mycursor = mydb.cursor()
     val = (positionID,)
+    results = list
     mycursor.callproc("selectPositionID", val)
     for result in mycursor.stored_results():
-        return (result.fetchall())
-
+        results = result.fetchall()
+    mycursor.close()
+    return results
 
 def newPosition(position):
     try:
@@ -107,6 +133,7 @@ def newPosition(position):
       val = (position,)
       mycursor.callproc('addPosition', val)
       mydb.commit()
+      mycursor.close()
       return True
     except:
       return False
@@ -117,6 +144,8 @@ def newPosition(position):
 
 # ==========================================
 # TESTING FUNCTIONS
+
+
 def hashtest(password, password2):
     hash_object = hashlib.sha256(password)
     hex_dig = hash_object.hexdigest()

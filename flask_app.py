@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route("/",methods=['GET','POST'])
 def login():
-
+    result = ''
     session['logged_in'] = False
     if request.method == 'POST':
         email = request.form.get('Email')
@@ -23,7 +23,7 @@ def login():
         session['userID'] = result[0][0]
         session['name'] = result[0][3] + " " + result[0][4]
         return redirect(url_for('dashboard'))
-    return render_template('login.html')
+    return render_template('login.html',result = result)
 
 
 @app.route("/register", methods=['GET','POST'])
