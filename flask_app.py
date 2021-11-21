@@ -1,9 +1,14 @@
 from enum import unique
-from flask import Flask, render_template,request,json,redirect,url_for,session
+from flask import Flask, render_template,request,json,redirect,url_for,session,send_from_directory,current_app
 from database import *
+import os
+
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+UPLOAD_FOLDER = 'uploads'
 
 app = Flask(__name__)
 app.secret_key = 'super secret key'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 
@@ -192,6 +197,38 @@ def profile():
     positions = getAll("position")
     return render_template("profile.html",title=title, profile_details = result, position=position, positions = positions)
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route("/uploadfile", methods=['GET','POST'])
+def uploadFile():
+    title = "FILE UPLOAD"
+    if request.method == 'POST':
+    # check if the post request has the file part
+        if 'file' not in request.files:
+            print('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # If the user does not select a file, the browser submits an
+        # empty file without a filename.
+        if file.filename == '':
+            print('No selected file')
+            return redirect(request.url)
+
+        filename = "FILENAME.png"
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return render_template("fileupload.html", title=title)
+
+    return render_template("fileupload.html", title=title)
+
+@app.route('/uploads', methods=['GET', 'POST'])
+def download(filename = "FILENAME.png"):
+    uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
+    print(uploads)
+    
+    return send_from_directory(path=uploads, directory=uploads, filename=filename)
     
 
 @app.route("/logout")

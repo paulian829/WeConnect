@@ -1,0 +1,80 @@
+{% extends "dash-block.html" %}
+{% block content %}
+<div id="app">
+    <div class="form-container">
+        <a href="../uploads/FILENAME.png" download>test</a>
+    </div>
+
+</div>
+
+<style>
+  .cards-container {
+    display: flex;
+    padding: 50px 50px 0 50px;
+    justify-content: space-between;
+  }
+
+  .card.text-white.bg-secondary.mb-3 {
+    margin-right: 10px;
+
+  }
+
+  .card.text-white.bg-success.mb-3 {
+    margin: 0 15px;
+  }
+
+  .card.text-white.bg-danger.mb-3 {
+    margin: 0 15px;
+  }
+
+  .card.text-dark.bg-warning.mb-3 {
+    margin-left: 15px;
+  }
+  .table{
+    margin-top: 10px;
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
+  integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    data: {
+      items: [
+        { message: 'Foo.pdf', key: 0 },
+        { message: 'Foo.pdf', key: 1 },
+        { message: 'Foo.pdf', key: 2 },
+        { message: 'Foo.pdf', key: 3 },
+        { message: 'Foo.pdf', key: 4 },
+        { message: 'Bar.pdf', key: 5 },
+        { message: 'Bar.pdf', key: 6 },
+        { message: 'Bar.pdf', key: 7 },
+        { message: 'Bar.pdf', key: 8 },
+        { message: 'Bar.pdf', key: 9 },
+      ],
+      toggle: false,
+      selected: false,
+    },
+    methods: {
+      testVue: function () {
+        this.$http.get('/admin').then(response => {
+          this.test = response.data.data.test
+          console.log(response.data.data)
+        })
+      },
+      selectFile(key) {
+        console.log(key)
+      }
+    },
+    mounted() {
+      this.testVue()
+    },
+  }
+  )
+</script>
+
+{% endblock %}

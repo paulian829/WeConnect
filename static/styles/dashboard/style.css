@@ -645,3 +645,18 @@ button.btn.btn-success.add-user-btn {
 p.card-text.big-number-text {
     font-size: 50px;
 }
+
+h3.wbtn {
+    display: inline-block;
+}
+.float-right{
+	float: right;
+}
+.float-right a{
+	color: white;
+	text-decoration: none;
+}
+.float-right a:hover{
+	color: white;
+}
+	
