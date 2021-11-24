@@ -5,6 +5,7 @@ import os
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 UPLOAD_FOLDER = 'uploads'
+# UPLOAD_FOLDER = './uploads/'
 
 app = Flask(__name__)
 app.secret_key = 'super secret key'
@@ -218,14 +219,14 @@ def uploadFile():
             return redirect(request.url)
 
         filename = "FILENAME.png"
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file.save(os.path.join(app.root_path,app.config['UPLOAD_FOLDER'], filename))
         return render_template("fileupload.html", title=title)
 
     return render_template("fileupload.html", title=title)
 
 @app.route('/uploads', methods=['GET', 'POST'])
 def download(filename = "FILENAME.png"):
-    uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
+    uploads = os.path.join(app.root_path,app.config['UPLOAD_FOLDER'])
     print(uploads)
     
     return send_from_directory(uploads, filename)
