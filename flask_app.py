@@ -225,10 +225,10 @@ def uploadFile():
 
 @app.route('/uploads', methods=['GET', 'POST'])
 def download(filename = "FILENAME.png"):
-    uploads = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'])
+    uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
     print(uploads)
     
-    return send_from_directory(path=uploads, directory=uploads, filename=filename)
+    return send_from_directory(uploads, filename)
     
 
 @app.route("/logout")
