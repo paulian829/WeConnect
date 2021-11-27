@@ -2,6 +2,7 @@ body{
 	padding: 0;
 	margin: 0;
 	font-family: sans-serif;
+	height: 100%;
 }
 .container{
 	width: 100% !important;
@@ -65,6 +66,7 @@ a i{
 	background: rgba(0,0,0,0.04);
 }
 .header{
+	z-index: 99;
 	width: 100%;
 	display: flex;
 	justify-content: center;
@@ -659,4 +661,78 @@ h3.wbtn {
 .float-right a:hover{
 	color: white;
 }
+
+.file-container {
+	display: flex;
+	/* display: block; */
+	min-height: 100vh;
+	flex-direction: row;
+	justify-content: flex-start;
+	height: max-content;
+}
 	
+.file-image{
+	display: block;
+	margin: auto;
+	-webkit-box-shadow: 0 10px 6px -6px #777;
+	-moz-box-shadow: 0 10px 6px -6px #777;
+	box-shadow: 0 10px 6px -6px #777;
+	object-fit: contain;
+	max-width: 100%;
+}
+
+.file-side{
+	display: flex;
+	padding: 50px 50px;
+	flex-grow: 1;
+	background-color: rgb(236, 236, 236);
+	flex-direction: column;
+	align-content: center;
+	flex-wrap: wrap;
+	max-width: 60vw;
+	min-width: 70%;
+	justify-content: center;
+}
+body > div > div.page-content > div.data-container > div > div.file-side{
+	overflow: auto;
+	height: auto;
+	position: relative;
+}
+
+.file-info-side {
+	padding:30px;
+	max-width: 700px;
+	width: 100%;
+}
+.file-side-container h3{
+	padding:20px 0 0 0;
+	text-align: center;
+}
+.file-info-side td {
+    line-height: unset;
+}
+.file-info-side table {
+    margin-top: 20px;
+}
+.file-info-side h3{
+	display: inline-block;
+}
+.file-info-side button{
+	float: right;
+}
+
+#editor .file-side {
+    justify-content: start;
+    background-color: #ebebeb;
+    z-index: 0;
+}
+#pinned-content > div > div.heading-container > h5{
+	display: inline-block;
+}
+.heading-container {
+    padding: 20px 0;
+    margin-bottom: 20px;
+}
+button.btn.btn-primary.btn-add.float-right {
+    margin-right: 30px;
+}

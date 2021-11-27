@@ -179,6 +179,53 @@ def newPosition(position):
         mydb.close()
 
 
+def saveFiletoDb(filename,filetype, filesize, file_content_type,uploaded_by, share_to_user, share_to_group,deadline, revision):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (filename,filetype, filesize, file_content_type,uploaded_by, share_to_user, share_to_group,deadline, revision,)
+        mycursor.callproc('saveFile', val)
+        mycursor.lastrowid
+        mydb.commit()
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+            return (results)
+    except Exception as e:
+        mycursor.close()
+        print(e)
+        return False
+    finally:
+        mydb.close()
+
+def getFileDb(positionID):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (positionID,)
+        results = list
+        mycursor.callproc("getFile", val)
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+        return results
+    finally:
+        mydb.close()
+
+
+def updateDocDB(id,data):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (data, id)
+        mycursor.callproc("updateDOC", val)
+        mydb.commit()
+        if mycursor.rowcount > 0:
+            return True
+
+        return False
+    finally:
+        mydb.close()
+
+
 # ==========================================
 # TESTING FUNCTIONS
 

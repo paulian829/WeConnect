@@ -1,0 +1,414 @@
+{% extends "dash-block.html" %}
+{% block content %}
+<div class="file-container" id="editor">
+    <div class="file-side">
+        <div class="ce-example">
+            <div class="ce-example__content _ce-example__content--small">
+                <div id="editorjs"></div>
+            </div>
+
+        </div>
+    </div>
+    <div class="file-info-side">
+        <div>
+
+        </div>
+        <h3>File Details</h3>
+        <table class="table ">
+            <tbody>
+                <tr>
+                    <td><strong>Filename:</strong></td>
+                    <td>{{result[1]}}</td>
+                </tr>
+                <tr>
+                    <td><strong>File Type:</strong></td>
+                    <td>{{result[2]}}</td>
+                </tr>
+                <tr>
+                    <td><strong>File Content Type:</strong></td>
+                    <td>{{result[4]}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Uploaded By Id:</strong></td>
+                    <td>{{result[5]}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Share to User:</strong></td>
+                    <td>{{result[6]}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Share to Group:</strong> </td>
+                    <td>{{result[7]}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Deadline:</strong> </td>
+                    <td>{{result[8]}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Revision:</strong> </td>
+                    <td>{{result[9]}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Date Upload:</strong> </td>
+                    <td>{{result[10]}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="ce-example__button" id="saveButton">
+            editor.save()   
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script><!-- Header -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/simple-image@latest"></script><!-- Image -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest"></script><!-- Delimiter -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script><!-- List -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script><!-- Checklist -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script><!-- Quote -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script><!-- Code -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script><!-- Embed -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script><!-- Table -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/link@latest"></script><!-- Link -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/warning@latest"></script><!-- Warning -->
+
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@latest"></script><!-- Marker -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@latest"></script><!-- Inline Code -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+
+<script>
+    var fileID = {{ result[11]| tojson  }}
+    var ID = {{ result[0]| tojson }}
+    console.log(ID)
+    console.log(JSON.parse(fileID))
+
+    // let testvar = [{
+    //     type: "header",
+    //     data: { 
+    //         text:  'aadasdasd',
+    //         level: 1
+    //     }
+    // }]
+    let testvar = JSON.parse(fileID)
+    var editor = new EditorJS({
+        readOnly: false,
+        holder: 'editorjs',
+        tools: {
+            header: {
+                class: Header,
+                inlineToolbar: ['marker', 'link'],
+                config: {
+                    placeholder: 'Header'
+                },
+                shortcut: 'CMD+SHIFT+H'
+            },
+
+            image: SimpleImage,
+
+            list: {
+                class: List,
+                inlineToolbar: true,
+                shortcut: 'CMD+SHIFT+L'
+            },
+
+            checklist: {
+                class: Checklist,
+                inlineToolbar: true,
+            },
+
+            quote: {
+                class: Quote,
+                inlineToolbar: true,
+                config: {
+                    quotePlaceholder: 'Enter a quote',
+                    captionPlaceholder: 'Quote\'s author',
+                },
+                shortcut: 'CMD+SHIFT+O'
+            },
+
+            warning: Warning,
+
+            marker: {
+                class: Marker,
+                shortcut: 'CMD+SHIFT+M'
+            },
+
+            code: {
+                class: CodeTool,
+                shortcut: 'CMD+SHIFT+C'
+            },
+
+            delimiter: Delimiter,
+
+            inlineCode: {
+                class: InlineCode,
+                shortcut: 'CMD+SHIFT+C'
+            },
+
+            linkTool: LinkTool,
+
+            embed: Embed,
+
+            table: {
+                class: Table,
+                inlineToolbar: true,
+                shortcut: 'CMD+ALT+T'
+            },
+
+        },
+
+        data: {
+            blocks: testvar
+        },
+        onReady: function () {
+            saveButton.click();
+        },
+        onChange: function (api, event) {
+            console.log('something changed', event);
+        }
+    });
+
+
+    const saveButton = document.getElementById('saveButton');
+
+    const toggleReadOnlyButton = document.getElementById('toggleReadOnlyButton');
+    const readOnlyIndicator = document.getElementById('readonly-state');
+    saveButton.addEventListener('click', function () {
+        editor.save()
+            .then((savedData) => {
+                // cPreview.show(savedData, document.getElementById("output"));
+                // console.log("data",typeof savedData['blocks'])
+                data = JSON.stringify(savedData['blocks'])
+                // console.log("data", typeof (data))
+                // console.log("data", JSON.parse(data))
+                // console.log(savedData['blocks'][0])
+                $.get("/test123", { data: data, id:ID });
+            })
+            .catch((error) => {
+                console.error('Saving error', error); s
+            });
+    });
+
+
+    toggleReadOnlyButton.addEventListener('click', async () => {
+        const readOnlyState = await editor.readOnly.toggle();
+
+        readOnlyIndicator.textContent = readOnlyState ? 'On' : 'Off';
+    });
+</script>
+<style>
+    .ce-example {
+        font-size: 16.2px;
+        width: 100%;
+        background-color: white;
+    }
+
+    .ce-example__header {
+        border-bottom: 1px solid var(--color-border-light);
+        height: 50px;
+        line-height: 50px;
+        display: flex;
+        padding: 0 30px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+
+    .ce-example__header a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .ce-example__header-logo {
+        font-weight: bold;
+    }
+
+    .ce-example__header-menu {
+        margin-left: auto;
+    }
+
+    @media all and (max-width: 730px) {
+        .ce-example__header-menu {
+            margin-left: 0;
+            margin-top: 10px;
+            flex-basis: 100%;
+            font-size: 14px;
+        }
+    }
+
+    .ce-example__header-menu a {
+        margin-left: 20px;
+    }
+
+    @media all and (max-width: 730px) {
+        .ce-example__header-menu a {
+            margin-left: 0;
+            margin-right: 15px;
+        }
+    }
+
+    .ce-example__content {
+        max-width: 1100px;
+        margin: 0 auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .thin-mode .ce-example__content {
+        max-width: 500px;
+        border-left: 1px solid #eee;
+        border-right: 1px solid #eee;
+        padding: 0 15px;
+    }
+
+    .ce-example__output {
+        background: #1B202B;
+        overflow-x: auto;
+        padding: 0 30px 80px;
+    }
+
+    .ce-example__output-content {
+        max-width: 650px;
+        margin: 30px auto;
+        color: #ABADC3;
+        font-family: 'PT Mono', Menlo, Monaco, Consolas, Courier New, monospace;
+        font-size: 13.3px;
+    }
+
+    .ce-example__output-content:empty {
+        display: none;
+    }
+
+    .ce-example__button {
+        display: block;
+        margin: 50px auto;
+        max-width: 180px;
+        background: #4A9DF8;
+        padding: 17px 30px;
+        box-shadow: 0 22px 18px -4px rgba(137, 207, 255, 0.77);
+        transition: all 150ms ease;
+        cursor: pointer;
+        border-radius: 31px;
+        color: #fff;
+        font-family: 'PT Mono', Menlo, Monaco, Consolas, Courier New, monospace;
+        text-align: center;
+    }
+
+    .ce-example__button:hover {
+        background: #3D8DE5;
+        transform: translateY(2px);
+        box-shadow: 0 20px 15px -4px rgba(137, 207, 255, 0.77);
+    }
+
+    .ce-example__output-footer {
+        padding: 30px 0;
+        font-size: 14.2px;
+        letter-spacing: 0.3px;
+        text-align: center;
+    }
+
+    .ce-example__output-footer a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .ce-example__statusbar {
+        display: flex;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        background: var(--color-bg-main);
+        border-radius: 8px 8px 0 0;
+        border-top: 1px solid var(--color-border-light);
+        box-shadow: 0 2px 6px var(--color-border-light);
+        font-size: 13px;
+        padding: 8px 15px;
+        z-index: 1;
+        user-select: none;
+    }
+
+    @media (max-width: 768px) {
+        .ce-example__statusbar {
+            display: none;
+        }
+    }
+
+    .ce-example__statusbar-item:not(:last-of-type)::after {
+        content: '|';
+        color: #ddd;
+        margin: 0 15px 0 12px;
+    }
+
+    .ce-example__statusbar-item--right {
+        margin-left: auto;
+    }
+
+    .ce-example__statusbar-button {
+        display: inline-block;
+        padding: 3px 12px;
+        transition: all 150ms ease;
+        cursor: pointer;
+        border-radius: 31px;
+        background: #eff1f4;
+        text-align: center;
+        user-select: none;
+    }
+
+    .ce-example__statusbar-button:hover {
+        background: #e0e4eb;
+    }
+
+    .ce-example__statusbar-button-primary {
+        background: #4A9DF8;
+        color: #fff;
+        box-shadow: 0 7px 8px -4px rgba(137, 207, 255, 0.77);
+        font-family: 'PT Mono', Menlo, Monaco, Consolas, Courier New, monospace;
+    }
+
+    .ce-example__statusbar {
+        --toggler-size: 20px;
+    }
+
+    .ce-example__statusbar-toggler {
+        position: relative;
+        background: #7b8799;
+        border-radius: 20px;
+        padding: 2px;
+        width: calc(var(--toggler-size) * 2.2);
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .ce-example__statusbar-toggler::before {
+        display: block;
+        content: '';
+        width: var(--toggler-size);
+        height: var(--toggler-size);
+        background: #fff;
+        border-radius: 50%;
+        transition: transform 100ms ease-in;
+    }
+
+    .ce-example__statusbar-toggler::after {
+        --moon-size: calc(var(--toggler-size) * 0.5);
+        content: '';
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        height: var(--moon-size);
+        width: var(--moon-size);
+        box-shadow: calc(var(--moon-size) * 0.25 * -1) calc(var(--moon-size) * 0.18) 0 calc(var(--moon-size) * 0.05) white;
+        border-radius: 50%;
+    }
+
+    @media all and (max-width: 730px) {
+
+        .ce-example__header,
+        .ce-example__content {
+            padding: 0 20px;
+        }
+    }
+</style>
+{% endblock %}

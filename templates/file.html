@@ -1,0 +1,59 @@
+{% extends "dash-block.html" %}
+{% block content %}
+<div class='file-container'>
+    <div class="file-side">
+        <div class="file-side-container">
+            <img class="file-image" src="{{url_for('static', filename='uploads/'+result[1])}}" />
+            <h3>{{result[1]}}</h3>
+        </div>
+    </div>
+    <div class="file-info-side">
+        <div>
+
+        </div>
+        <h3>File Details</h3>
+        <button type="button" class="btn btn-primary">DOWNLOAD</button>
+
+        <table class="table ">
+            <tbody>
+                <tr>
+                    <td>Filename:</td>
+                    <td>{{result[1]}}</td>
+                </tr>
+                <tr>
+                    <td>File Type:</td>
+                    <td>{{result[2]}}</td>
+                </tr>
+                <tr>
+                    <td>File Content Type:</td>
+                    <td>{{result[4]}}</td>
+                </tr>
+                <tr>
+                    <td>Uploaded By Id:</td>
+                    <td>{{result[5]}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Share to User:</strong></td>
+                    <td>{{result[6]}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Share to Group:</strong> </td>
+                    <td>{{result[7]}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Deadline:</strong> </td>
+                    <td>{{result[8]}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Revision:</strong> </td>
+                    <td>{{result[9]}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Date Upload:</strong> </td>
+                    <td>{{result[10]}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

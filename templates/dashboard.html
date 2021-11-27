@@ -130,7 +130,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New User Form</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Upload New File</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form action="/uploadfile" method='POST' enctype="multipart/form-data">
@@ -138,30 +138,30 @@
 
           <div class="mb-3">
             <label for="file" class="form-label">File</label>
-            <input type="file" class="form-control" name="file" id="file" aria-describedby="file">
+            <input type="file" class="form-control" name="file" id="file" aria-describedby="file" required>
           </div>
           <div class="mb-3">
-            <label for="FileName" class="form-label">File Name</label>
-            <input type="text" class="form-control" name="FileName" id="FileName">
+            <label for="Position" class="form-label">Share to Group</label>
+            <select name="Position" class="form-select" aria-label="Default select example" id="Position">
+              {% for position in positions %}
+              <option value={{position[0]}}>{{position[1]}}</option>
+              {% endfor %}
+            </select>
           </div>
           <div class="mb-3">
             <label for="targetUser" class="form-label">Share to</label>
-            <input type="text" class="form-control" id="targetUser" name="targetUser">
+            <input type="text" class="form-control" id="targetUser" name="targetUser" required>
+            <small id="emailHelp" class="form-text text-muted">Use email Address to tag the user seperate with comma(,)</small>
           </div>
-          <div class="mb-3">
-            <label for="targetGroup" class="form-label">Share to Group</label>
-            <input type="text" class="form-control" id="targetGroup" name="targetGroup">
-          </div>
-
           <div class="mb-3">
             <label for="Deadline" class="form-label">Deadline</label>
-            <input type="date" class="form-control" name="Deadline" id="Deadline">
+            <input type="date" class="form-control" name="Deadline" id="Deadline" required>
           </div>
         </div>
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" value="submit" class="btn btn-primary">Add new User</button>
+          <button type="submit" value="submit" class="btn btn-primary">Upload</button>
 
         </div>
         </form>

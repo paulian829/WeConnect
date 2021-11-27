@@ -3,7 +3,19 @@
 <div id="pinned-content">
     <div>
         <div class="heading-container">
-            <h5>Suggestions</h5>
+            <h5 style='margin-right: 20px;'>Suggestions</h5>
+            <button type="button" class="btn btn-primary btn-add float-right" data-bs-toggle="modal"
+                data-bs-target="#exampleModal1">
+                Upload New File
+            </button>
+            <button type="button" class="btn btn-primary btn-add float-right" data-bs-toggle="modal"
+                data-bs-target="#exampleModal2">
+                Create a Block Text File
+            </button>
+            <button type="button" class="btn btn-primary btn-add float-right" data-bs-toggle="modal"
+                data-bs-target="#exampleModal3">
+                Create a CSV document
+            </button>
         </div>
         <div class='suggestion-cards-container row row-cols-1 row-cols-md-6 g-4'>
             <div class="col">
@@ -95,15 +107,206 @@
                         <td colspan="2">Larry the Bird</td>
                         <td>@twitter</td>
                     </tr>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td colspan="2">Larry the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td colspan="2">Larry the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td colspan="2">Larry the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
                 </tbody>
             </table>
 
         </div>
     </div>
+    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">1</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/uploadfile" method='POST' enctype="multipart/form-data">
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label for="file" class="form-label">File</label>
+                            <input type="file" class="form-control" name="file" id="file" aria-describedby="file"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Position" class="form-label">Share to Group</label>
+                            <select name="Position" class="form-select" aria-label="Default select example"
+                                id="Position">
+                                {% for position in positions %}
+                                <option value={{position[0]}}>{{position[1]}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="targetUser" class="form-label">Share to</label>
+                            <input type="text" class="form-control" id="targetUser" name="targetUser" required>
+                            <small id="emailHelp" class="form-text text-muted">Use email Address to tag the user
+                                seperate with comma(,)</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Deadline" class="form-label">Deadline</label>
+                            <input type="date" class="form-control" name="Deadline" id="Deadline" required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" value="submit" class="btn btn-primary">Add new User</button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create a Block Text File</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/uploadfile" method='POST' enctype="multipart/form-data">
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label for="file" class="form-label">File Name</label>
+                            <input type="text" class="form-control" name="filename" id="    " aria-describedby="file"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Position" class="form-label">Share to Group</label>
+                            <select name="Position" class="form-select" aria-label="Default select example"
+                                id="Position">
+                                {% for position in positions %}
+                                <option value={{position[0]}}>{{position[1]}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="targetUser" class="form-label">Share to</label>
+                            <input type="text" class="form-control" id="targetUser" name="targetUser" required>
+                            <small id="emailHelp" class="form-text text-muted">Use email Address to tag the user
+                                seperate with comma(,)</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Deadline" class="form-label">Deadline</label>
+                            <input type="date" class="form-control" name="Deadline" id="Deadline" required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" value="submit" class="btn btn-primary">Add new User</button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">3</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/uploadfile" method='POST' enctype="multipart/form-data">
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label for="file" class="form-label">File</label>
+                            <input type="file" class="form-control" name="file" id="file" aria-describedby="file"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Position" class="form-label">Share to Group</label>
+                            <select name="Position" class="form-select" aria-label="Default select example"
+                                id="Position">
+                                {% for position in positions %}
+                                <option value={{position[0]}}>{{position[1]}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="targetUser" class="form-label">Share to</label>
+                            <input type="text" class="form-control" id="targetUser" name="targetUser" required>
+                            <small id="emailHelp" class="form-text text-muted">Use email Address to tag the user
+                                seperate with comma(,)</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Deadline" class="form-label">Deadline</label>
+                            <input type="date" class="form-control" name="Deadline" id="Deadline" required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" value="submit" class="btn btn-primary">Add new User</button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
 
 
 
-</div>
 </div>
 <style>
     .card {

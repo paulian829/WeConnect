@@ -4,7 +4,7 @@ from database import *
 import os
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = 'static/uploads'
 # UPLOAD_FOLDER = './uploads/'
 
 app = Flask(__name__)
@@ -105,8 +105,9 @@ def adminThrash():
     
 @app.route("/myfiles")
 def myFiles():
+    positions = getAll("position")
     title = 'MY FILES'
-    return render_template("myFiles.html",title=title)
+    return render_template("myFiles.html",title=title, positions = positions)
 
 @app.route("/admin/comments")
 def adminComments():
@@ -120,9 +121,12 @@ def adminPassword():
     return render_template("admin-password.html",title=title)
 
 @app.route("/dashboard")
+#ALSO SAVE AN EVENT IN CASE FOR NOTIFICATIONS
+
 def dashboard():
+    positions = getAll("position")
     title = 'DASHBOARD'
-    return render_template("dashboard.html",title=title)
+    return render_template("dashboard.html",title=title, positions = positions)
 
 @app.route("/pinned")
 def pinned():
@@ -207,10 +211,26 @@ def allowed_file(filename):
 def uploadFile():
     title = "FILE UPLOAD"
     if request.method == 'POST':
-    # check if the post request has the file part
+    
         if 'file' not in request.files:
             print('No file part')
-            return redirect(request.url)
+            filename = request.form.get("filename")
+            print(filename)
+            # filesize = len(file.read())
+            filesize = 1
+            filetype = 'block doc'
+            file_content_type = 'test'
+            share_to_group = request.form.get("Position")
+            share_to_user = request.form.get("targetUser")
+            deadline = request.form.get('Deadline')
+            revision = 1
+            uploaded_by = session['userID']
+            
+            lastID = saveFiletoDb(filename,filetype, filesize, file_content_type,uploaded_by, share_to_user, share_to_group,deadline, revision)
+            # result = getFileDb(lastID[0][0])
+            # data = '[{"id":"xPmqz3gBHy","type":"header","data":{"text":"PAUL IAN MASENDO","level":1}}]'
+            print(lastID[0][0])
+            return redirect(url_for('editor', id=lastID[0][0], ))
         file = request.files['file']
         # If the user does not select a file, the browser submits an
         # empty file without a filename.
@@ -218,9 +238,24 @@ def uploadFile():
             print('No selected file')
             return redirect(request.url)
 
-        filename = "FILENAME.png"
+        print(file.filename)
+        # filesize
+        filename = str(session['userID']) + file.filename 
+        # filesize = len(file.read())
+        filesize = 1
+        filetype = 'raw file'
+        file_content_type = file.content_type
+        share_to_group = request.form.get("Position")
+        share_to_user = request.form.get("targetUser")
+        deadline = request.form.get('Deadline')
+        revision = 1
+        uploaded_by = session['userID']
+        lastID = saveFiletoDb(filename,filetype, filesize, file_content_type,uploaded_by, share_to_user, share_to_group,deadline, revision)
+
         file.save(os.path.join(app.root_path,app.config['UPLOAD_FOLDER'], filename))
-        return render_template("fileupload.html", title=title)
+        print(lastID[0][0])
+        return redirect(url_for('file', id=lastID[0][0]))
+
 
     return render_template("fileupload.html", title=title)
 
@@ -228,14 +263,44 @@ def uploadFile():
 def download(filename = "FILENAME.png"):
     uploads = os.path.join(app.root_path,app.config['UPLOAD_FOLDER'])
     print(uploads)
-    
     return send_from_directory(uploads, filename)
-    
+
+
+@app.route('/file/<id>')
+def file(id):
+    result = getFileDb(id)
+    result = result[0]
+    title = "File"
+    if result[5] != session['userID']:
+        return redirect(url_for("forbidden"))
+    return render_template("file.html", title = title, result = result)
 
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect(url_for('login'))
+
+@app.route("/test123", methods=['GET', 'POST'])
+def getEditorData():
+    data = request.args.get('data')
+    id = int(request.args.get('id'))
+    print("DATA",data)
+    print("ID", type(id))
+    updateDocDB(id, data)
+    
+    return 'test'
+
+@app.route("/forbidden")
+def forbidden():
+    return render_template("forbidden.html")
+
+@app.route("/editor/<id>")
+def editor(id):
+    title = "FILE EDITOR"
+    result = getFileDb(id)
+    result = result[0]
+    print(result)
+    return render_template("editor.html", title = title, result= result)
 
 @app.errorhandler(404)
 def not_found(e):
