@@ -1,5 +1,5 @@
 from enum import unique
-from flask import Flask, render_template,request,json,redirect,url_for,session,send_from_directory,current_app
+from flask import Flask, render_template,request,json,redirect,url_for,session,send_from_directory,current_app,jsonify
 from database import *
 import os
 
@@ -65,8 +65,35 @@ def forgotpassword():
 
 @app.route("/test")
 def test():
-    dict={"data":{"test":"Bayside"}}
+    id = session['userID']
+    number_of_files_uploaded = getNumberOfFilesUploaded(id)
+    number_of_files_passed = getNumberOfFilesPassed(id)
+    number_of_files_deadline = getNumberOfFilesDeadline(id)
+    number_of_files_nearing_Deadline = getNumberOfFilesNearDeadline(id)
+    five_files = getNFiles(id,5)
+
+    dict={"number_of_files":number_of_files_uploaded,
+        "number_of_files_passed":number_of_files_passed,
+        "number_of_files_deadline":number_of_files_deadline,
+        "number_of_files_nearing_Deadline":number_of_files_nearing_Deadline,
+        "five_files":five_files}
+
     return json.dumps(dict)
+
+@app.route("/getmyfiles")
+def getmyfiles():
+    id = session['userID']
+    getSixFiles = getNFiles(id, 6)
+    getAll = getAllFilesUser(id)
+
+    dict = {"six_files": getSixFiles,
+            "getall":getAll
+    }
+    print(dict)
+
+    return json.dumps(dict)
+
+
 
 
 @app.route("/home")
@@ -271,6 +298,10 @@ def file(id):
     result = getFileDb(id)
     result = result[0]
     title = "File"
+    if result[2] == 'block doc':
+        return render_template("editor.html", title = title, result = result)
+    
+
     if result[5] != session['userID']:
         return redirect(url_for("forbidden"))
     return render_template("file.html", title = title, result = result)
@@ -301,6 +332,7 @@ def editor(id):
     result = result[0]
     print(result)
     return render_template("editor.html", title = title, result= result)
+
 
 @app.errorhandler(404)
 def not_found(e):

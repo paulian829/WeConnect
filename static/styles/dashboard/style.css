@@ -731,8 +731,27 @@ body > div > div.page-content > div.data-container > div > div.file-side{
 }
 .heading-container {
     padding: 20px 0;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 button.btn.btn-primary.btn-add.float-right {
     margin-right: 30px;
+}
+
+#app > div:nth-child(2) > div > div > div:nth-child(1) > div{
+	min-height: 500px;
+}
+#app > div:nth-child(2) > div > div > div:nth-child(2) > div{
+	min-height: 500px;
+}
+a {
+    text-decoration: none !important;
+}
+.card.h-100:hover {
+    box-shadow: 10px 10px 10px #a39e9e;
+}
+img.card-img-top {
+    max-width: 240px;
+    max-height: 240px;
+    height: 100%;
+    width: 100%;
 }

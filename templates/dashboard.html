@@ -6,28 +6,28 @@
       <div class="card-header">Info</div>
       <div class="card-body">
         <h5 class="card-title">Files Uploaded</h5>
-        <p class="card-text big-number-text">0</p>
+        <p class="card-text big-number-text">[[number_of_files]]</p>
       </div>
     </div>
     <div class="card text-white bg-success mb-3" style="max-width: 18rem; width: 100%;">
       <div class="card-header">Success</div>
       <div class="card-body">
         <h5 class="card-title">Files Passed</h5>
-        <p class="card-text big-number-text">0</p>
+        <p class="card-text big-number-text">[[number_of_files_uploaded]]</p>
       </div>
     </div>
     <div class="card text-white bg-danger mb-3" style="max-width: 18rem; width: 100%;">
       <div class="card-header">Failed</div>
       <div class="card-body">
         <h5 class="card-title">Failed Deadline</h5>
-        <p class="card-text big-number-text">0</p>
+        <p class="card-text big-number-text">[[number_of_files_deadline]]</p>
       </div>
     </div>
     <div class="card text-dark bg-warning mb-3 " style="max-width: 18rem; width: 100%;">
       <div class="card-header">Warning</div>
       <div class="card-body">
         <h5 class="card-title">Nearing Deadline</h5>
-        <p class="card-text big-number-text">0</p>
+        <p class="card-text big-number-text">[[number_of_files_nearing_Deadline]]</p>
       </div>
     </div>
   </div>
@@ -45,35 +45,15 @@
               <thead>
                 <tr>
                   <th scope="col">File Name</th>
-                  <th scope="col">Uploaded By</th>
+                  <th scope="col">Date Uploaded</th>
                   <th scope="col">Deadline</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Filename.ppt</td>
-                  <td>John Doe, Teacher</td>
-                  <td>10-20-21</td>
-                </tr>
-                <tr>
-                  <td>Filename.ppt</td>
-                  <td>John Doe, Teacher</td>
-                  <td>10-20-21</td>
-                </tr>
-                <tr>
-                  <td>Filename.ppt</td>
-                  <td>John Doe, Teacher</td>
-                  <td>10-20-21</td>
-                </tr>
-                <tr>
-                  <td>Filename.ppt</td>
-                  <td>John Doe, Teacher</td>
-                  <td>10-20-21</td>
-                </tr>
-                <tr>
-                  <td>Filename.ppt</td>
-                  <td>John Doe, Teacher</td>
-                  <td>10-20-21</td>
+                <tr v-for='files in five_files'>
+                  <td>[[ files[1] ]]</td>
+                  <td>[[ files[10] ]]</td>
+                  <td>[[ files[8] ]]</td>
                 </tr>
               </tbody>
             </table>
@@ -87,35 +67,15 @@
               <thead>
                 <tr>
                   <th scope="col">File Name</th>
-                  <th scope="col">Uploaded By</th>
+                  <th scope="col">Date Uploaded</th>
                   <th scope="col">Deadline</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Filename.ppt</td>
-                  <td>John Doe, Teacher</td>
-                  <td>10-20-21</td>
-                </tr>
-                <tr>
-                  <td>Filename.ppt</td>
-                  <td>John Doe, Teacher</td>
-                  <td>10-20-21</td>
-                </tr>
-                <tr>
-                  <td>Filename.ppt</td>
-                  <td>John Doe, Teacher</td>
-                  <td>10-20-21</td>
-                </tr>
-                <tr>
-                  <td>Filename.ppt</td>
-                  <td>John Doe, Teacher</td>
-                  <td>10-20-21</td>
-                </tr>
-                <tr>
-                  <td>Filename.ppt</td>
-                  <td>John Doe, Teacher</td>
-                  <td>10-20-21</td>
+                <tr v-for='files in five_files'>
+                  <td>[[ files[1] ]]</td>
+                  <td>[[ files[10] ]]</td>
+                  <td>[[ files[8] ]]</td>
                 </tr>
               </tbody>
             </table>
@@ -124,7 +84,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
     data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
@@ -134,38 +94,38 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form action="/uploadfile" method='POST' enctype="multipart/form-data">
-        <div class="modal-body">
+          <div class="modal-body">
 
-          <div class="mb-3">
-            <label for="file" class="form-label">File</label>
-            <input type="file" class="form-control" name="file" id="file" aria-describedby="file" required>
+            <div class="mb-3">
+              <label for="file" class="form-label">File</label>
+              <input type="file" class="form-control" name="file" id="file" aria-describedby="file" required>
+            </div>
+            <div class="mb-3">
+              <label for="Position" class="form-label">Share to Group</label>
+              <select name="Position" class="form-select" aria-label="Default select example" id="Position">
+                {% for position in positions %}
+                <option value={{position[0]}}>{{position[1]}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="targetUser" class="form-label">Share to</label>
+              <input type="text" class="form-control" id="targetUser" name="targetUser" required>
+              <small id="emailHelp" class="form-text text-muted">Use email Address to tag the user seperate with
+                comma(,)</small>
+            </div>
+            <div class="mb-3">
+              <label for="Deadline" class="form-label">Deadline</label>
+              <input type="date" class="form-control" name="Deadline" id="Deadline" required>
+            </div>
           </div>
-          <div class="mb-3">
-            <label for="Position" class="form-label">Share to Group</label>
-            <select name="Position" class="form-select" aria-label="Default select example" id="Position">
-              {% for position in positions %}
-              <option value={{position[0]}}>{{position[1]}}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="targetUser" class="form-label">Share to</label>
-            <input type="text" class="form-control" id="targetUser" name="targetUser" required>
-            <small id="emailHelp" class="form-text text-muted">Use email Address to tag the user seperate with comma(,)</small>
-          </div>
-          <div class="mb-3">
-            <label for="Deadline" class="form-label">Deadline</label>
-            <input type="date" class="form-control" name="Deadline" id="Deadline" required>
-          </div>
-        </div>
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" value="submit" class="btn btn-primary">Upload</button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" value="submit" class="btn btn-primary">Upload</button>
 
-        </div>
+          </div>
         </form>
-
       </div>
     </div>
   </div>
@@ -222,26 +182,22 @@
     el: '#app',
     delimiters: ['[[', ']]'],
     data: {
-      items: [
-        { message: 'Foo.pdf', key: 0 },
-        { message: 'Foo.pdf', key: 1 },
-        { message: 'Foo.pdf', key: 2 },
-        { message: 'Foo.pdf', key: 3 },
-        { message: 'Foo.pdf', key: 4 },
-        { message: 'Bar.pdf', key: 5 },
-        { message: 'Bar.pdf', key: 6 },
-        { message: 'Bar.pdf', key: 7 },
-        { message: 'Bar.pdf', key: 8 },
-        { message: 'Bar.pdf', key: 9 },
-      ],
-      toggle: false,
-      selected: false,
+      number_of_files: 0,
+      number_of_files_uploaded: 0,
+      number_of_files_deadline: 0,
+      number_of_files_nearing_Deadline: 0,
+      five_files: []
     },
     methods: {
       testVue: function () {
-        this.$http.get('/admin').then(response => {
-          this.test = response.data.data.test
-          console.log(response.data.data)
+        this.$http.get('/test').then(response => {
+          console.log(response)
+          this.number_of_files = response.body['number_of_files'].length
+          this.number_of_files_uploaded = response.body['number_of_files_passed'].length
+          this.number_of_files_deadline = response.body['number_of_files_deadline'].length
+          this.number_of_files_nearing_Deadline = response.body['number_of_files_nearing_Deadline'].length
+          this.five_files = response.body['five_files']
+          console.log(typeof this.five_files)
         })
       },
       selectFile(key) {

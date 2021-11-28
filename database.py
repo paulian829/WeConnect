@@ -225,6 +225,111 @@ def updateDocDB(id,data):
     finally:
         mydb.close()
 
+def getNumberOfFilesUploaded(id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (id,)
+        results = list
+        mycursor.callproc("getNumberOfFilesUploaded", val)
+        resultsArray = []
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+            # print(results)
+            # resultsArray.append(results)
+        
+        # print(len(results))
+        return results
+    finally:
+        mydb.close()
+
+def getNumberOfFilesPassed(id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (id,)
+        results = list
+        mycursor.callproc("getNumberOfFilesPassed", val)
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+            # print(results)
+            # resultsArray.append(results)
+        
+        # print(len(results))
+        return results
+    finally:
+        mydb.close()
+
+def getNumberOfFilesDeadline(id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (id,)
+        results = list
+        mycursor.callproc("number_of_files_deadline", val)
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+            # print(results)
+            # resultsArray.append(results)
+        
+        # print(len(results))
+        return results
+    finally:
+        mydb.close()
+
+def getNumberOfFilesNearDeadline(id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (id,)
+        results = list
+        mycursor.callproc("number_of_files_nearing_Deadline", val)
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+            # print(results)
+            # resultsArray.append(results)
+        
+        # print(len(results))
+        return results
+    finally:
+        mydb.close()
+
+
+def getNFiles(id,number):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (id,number,)
+        results = list
+        mycursor.callproc("getNFiles", val)
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+            # print(results)
+            # resultsArray.append(results)
+        
+        # print(len(results))
+        return results
+    finally:
+        mydb.close()
+
+
+def getAllFilesUser(id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (id,)
+        results = list
+        mycursor.callproc("getAllFiles", val)
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+            # print(results)
+            # resultsArray.append(results)
+        
+        # print(len(results))
+        return results
+    finally:
+        mydb.close()
+
 
 # ==========================================
 # TESTING FUNCTIONS
