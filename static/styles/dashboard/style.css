@@ -619,7 +619,8 @@ ul.nav.admin-nav {
 
 }
 td {
-    line-height: 50px;
+    line-height: 20px;
+    padding: 25px  0px;
 }
 tbody tr th {
     line-height: 50px;
@@ -738,10 +739,10 @@ button.btn.btn-primary.btn-add.float-right {
 }
 
 #app > div:nth-child(2) > div > div > div:nth-child(1) > div{
-	min-height: 500px;
+	/* min-height: 500px; */
 }
 #app > div:nth-child(2) > div > div > div:nth-child(2) > div{
-	min-height: 500px;
+	/* min-height: 360px; */
 }
 a {
     text-decoration: none !important;
@@ -750,8 +751,31 @@ a {
     box-shadow: 10px 10px 10px #a39e9e;
 }
 img.card-img-top {
-    max-width: 240px;
-    max-height: 240px;
+    /* max-width: 240px; */
+    /* max-height: 180px; */
     height: 100%;
     width: 100%;
+}
+#editor .file-side {
+    background-color: white;
+}
+
+#editor td{
+	/* padding:0; */
+	line-height: 20px !important;
+}
+.files-table {
+    padding-top: 30px;
+}
+
+#pinned-content td{
+	line-height: 50px;
+}
+
+#app > div:nth-child(2) > div td {
+    line-height: 30px !important;
+}
+
+#admin td{
+	line-height: 50px;
 }

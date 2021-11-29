@@ -36,7 +36,7 @@
       <div class="row gx-5 info">
         <div class="col ">
           <div class="p-4 border bg-light">
-            <h3 class="wbtn">Recently Uploaded Files</h3>
+            <h3 class="wbtn">Recent Files</h3>
             <button type="button" class="btn btn-primary btn-add float-right" data-bs-toggle="modal"
               data-bs-target="#exampleModal">
               Upload New File
@@ -52,8 +52,8 @@
               <tbody>
                 <tr v-for='files in five_files'>
                   <td>[[ files[1] ]]</td>
-                  <td>[[ files[10] ]]</td>
-                  <td>[[ files[8] ]]</td>
+                  <td>[[ changeDate(files[10]) ]]</td>
+                  <td>[[ changeDate(files[8]) ]]</td>
                 </tr>
               </tbody>
             </table>
@@ -61,7 +61,7 @@
         </div>
         <div class="col ">
           <div class="p-4 border bg-light">
-            <h3 class="wbtn">Files Nearing Deadlines</h3>
+            <h3 class="wbtn">Files Near Deadlines</h3>
             <button type="button " class="btn btn-primary float-right">VIEW FILES</button>
             <table class="table">
               <thead>
@@ -74,8 +74,8 @@
               <tbody>
                 <tr v-for='files in five_files'>
                   <td>[[ files[1] ]]</td>
-                  <td>[[ files[10] ]]</td>
-                  <td>[[ files[8] ]]</td>
+                  <td>[[ changeDate(files[10]) ]]</td>
+                  <td>[[ changeDate(files[8]) ]]</td>
                 </tr>
               </tbody>
             </table>
@@ -197,11 +197,19 @@
           this.number_of_files_deadline = response.body['number_of_files_deadline'].length
           this.number_of_files_nearing_Deadline = response.body['number_of_files_nearing_Deadline'].length
           this.five_files = response.body['five_files']
-          console.log(typeof this.five_files)
         })
       },
       selectFile(key) {
         console.log(key)
+      },
+
+      changeDate(date){
+        console.log(date)
+        if (!date){
+          return ''
+        }
+        date = date.slice(0,16)
+        return date
       }
     },
     mounted() {

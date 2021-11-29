@@ -17,19 +17,20 @@
                 Create a CSV document
             </button>
         </div>
-        <div class='suggestion-cards-container row row-cols-1 row-cols-md-6 g-4'>
+        <div class='suggestion-cards-container row row-cols-1 row-cols-md-5 g-4'>
             <div class="col" v-for='suggestion in suggestions'>
                 <a :href="'/file/' + suggestion[0] ">
                     <div class="card h-100" v-if='suggestion[2] === "raw file"'>
-                        <img :src="'/static/uploads/' + suggestion[1] "
-                            class="card-img-top" alt="...">
+                        <img :src="'/static/uploads/' + suggestion[1] " class="card-img-top" alt="...">
                         <div class="card-body">
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
                         </div>
                     </div>
                     <div class="card h-100" v-else-if='suggestion[2] === "block doc"'>
-                        <img src="https://play-lh.googleusercontent.com/emmbClh_hm0WpWZqJ0X59B8Pz1mKoB9HVLkYMktxhGE6_-30SdGoa-BmYW73RJ8MGZQ"
-                            class="card-img-top" alt="...">
+                        <div class="image-container">
+                            <img src="https://play-lh.googleusercontent.com/emmbClh_hm0WpWZqJ0X59B8Pz1mKoB9HVLkYMktxhGE6_-30SdGoa-BmYW73RJ8MGZQ"
+                                class="card-img-top" alt="...">
+                        </div>
                         <div class="card-body">
                             <h6 class="card-title">[[ suggestion[1] ]] test</h6>
                         </div>
@@ -59,8 +60,8 @@
                         <td>[[ data[5] ]]</td>
                         <td>[[ data[6] ]]</td>
                         <td>[[ data[7] ]]</td>
-                        <td>[[ data[8] ]]</td>
-                        <td>[[ data[10] ]]</td>
+                        <td>[[ changeDate(data[8]) ]]</td>
+                        <td>[[ changeDate(data[10]) ]]</td>
                     </tr>
                 </tbody>
             </table>
@@ -257,6 +258,14 @@
             },
             selectFile(key) {
                 console.log(key)
+            },
+            changeDate(date) {
+                console.log(date)
+                if (!date) {
+                    return ''
+                }
+                date = date.slice(0, 16)
+                return date
             }
         },
         mounted() {

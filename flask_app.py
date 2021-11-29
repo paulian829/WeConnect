@@ -83,7 +83,7 @@ def test():
 @app.route("/getmyfiles")
 def getmyfiles():
     id = session['userID']
-    getSixFiles = getNFiles(id, 6)
+    getSixFiles = getNFiles(id, 5)
     getAll = getAllFilesUser(id)
 
     dict = {"six_files": getSixFiles,
