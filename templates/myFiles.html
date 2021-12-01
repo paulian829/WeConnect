@@ -12,29 +12,71 @@
                 data-bs-target="#exampleModal2">
                 Create a Block Text File
             </button>
-            <button type="button" class="btn btn-primary btn-add float-right" data-bs-toggle="modal"
-                data-bs-target="#exampleModal3">
-                Create a CSV document
-            </button>
         </div>
         <div class='suggestion-cards-container row row-cols-1 row-cols-md-5 g-4'>
             <div class="col" v-for='suggestion in suggestions'>
                 <a :href="'/file/' + suggestion[0] ">
-                    <div class="card h-100" v-if='suggestion[2] === "raw file"'>
+                    <div class="card h-100" v-if='suggestion[4] === "image/jpeg" || suggestion[4] === "image/png" '>
                         <img :src="'/static/uploads/' + suggestion[1] " class="card-img-top" alt="...">
                         <div class="card-body">
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
                         </div>
                     </div>
-                    <div class="card h-100" v-else-if='suggestion[2] === "block doc"'>
+                    <div class="card h-100" v-else-if='suggestion[4] === "test"'>
                         <div class="image-container">
                             <img src="https://play-lh.googleusercontent.com/emmbClh_hm0WpWZqJ0X59B8Pz1mKoB9HVLkYMktxhGE6_-30SdGoa-BmYW73RJ8MGZQ"
                                 class="card-img-top" alt="...">
                         </div>
                         <div class="card-body">
-                            <h6 class="card-title">[[ suggestion[1] ]] test</h6>
+                            <h6 class="card-title">[[ suggestion[1] ]]</h6>
                         </div>
                     </div>
+                    <div class="card h-100" v-else-if='suggestion[4] === "application/pdf"'>
+                        <div class="image-container">
+                            <img src="https://cdn0.iconfinder.com/data/icons/flat-documents-and-folders/512/File_PDF-512.png"
+                                class="card-img-top" alt="...">
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title">[[ suggestion[1] ]]</h6>
+                        </div>
+                    </div>
+                    <div class="card h-100" v-else-if='suggestion[4] === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"'>
+                        <div class="image-container">
+                            <img src="https://edmond.mpdl.mpg.de/imeji/file/10/12/3b/f5-7fde-4192-ba85-91cd601570c6/0/full/42eeccc13e310dc935368b6063f27e89.jpg?filename=full_data%20cuticle%20and%20symbiont%20titer%20measurements.jpg"
+                                class="card-img-top" alt="...">
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title">[[ suggestion[1] ]]</h6>
+                        </div>
+                    </div>
+                    <div class="card h-100" v-else-if='suggestion[4] === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"'>
+                        <div class="image-container">
+                            <img src="https://i2.wp.com/www.softwarert.com/wp-content/uploads/word-2013-icon.png?fit=256%2C253&ssl=1"
+                                class="card-img-top" alt="...">
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title">[[ suggestion[1] ]]</h6>
+                        </div>
+                    </div>
+                    <div class="card h-100" v-else-if='suggestion[4] === "application/vnd.openxmlformats-officedocument.presentationml.presentation"'>
+                        <div class="image-container">
+                            <img src="https://www.perkinselearning.org/sites/elearning.perkinsdev1.org/files/styles/scale_only_519x374/public/powerpoint.png?itok=mhvG8h5M"
+                                class="card-img-top" alt="...">
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title">[[ suggestion[1] ]]</h6>
+                        </div>
+                    </div>
+                    <div class="card h-100" v-else>
+                        <div class="image-container">
+                            <img src="https://www.insticc.org/node/TechnicalProgram/56e7352809eb881d8c5546a9bbf8406e.png"
+                                class="card-img-top" alt="...">
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title">[[ suggestion[1] ]]</h6>
+                        </div>
+                    </div>
+                    
                 </a>
 
             </div>
@@ -45,23 +87,19 @@
                 <thead>
                     <tr>
                         <th scope="col">Filename</th>
-                        <th scope="col">File Type</th>
-                        <th scope="col">Uploaded BY</th>
-                        <th scope="col">Shared to User</th>
-                        <th scope='col'>Shared to Group</th>
                         <th scope='col'>Deadline</th>
                         <th scope='col'>Uploaded Date</th>
+                        <th scope="col">View</th>
+                        <th scope="col">Delte</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for='data in allData'>
                         <th scope="row">[[ data[1] ]]</th>
-                        <td>[[ data[2] ]]</td>
-                        <td>[[ data[5] ]]</td>
-                        <td>[[ data[6] ]]</td>
-                        <td>[[ data[7] ]]</td>
                         <td>[[ changeDate(data[8]) ]]</td>
                         <td>[[ changeDate(data[10]) ]]</td>
+                        <td><a :href="'/file/' + data[0] ">View</a></td>
+                        <td><a :href="'/file/delete/' + data[0] ">Delete</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -74,7 +112,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">1</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Upload a new File</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="/uploadfile" method='POST' enctype="multipart/form-data">
@@ -108,7 +146,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" value="submit" class="btn btn-primary">Add new User</button>
+                        <button type="submit" value="submit" class="btn btn-primary">Add new File</button>
 
                     </div>
                 </form>
@@ -155,54 +193,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" value="submit" class="btn btn-primary">Add new User</button>
-
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-        data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">3</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="/uploadfile" method='POST' enctype="multipart/form-data">
-                    <div class="modal-body">
-
-                        <div class="mb-3">
-                            <label for="file" class="form-label">File</label>
-                            <input type="file" class="form-control" name="file" id="file" aria-describedby="file"
-                                required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="Position" class="form-label">Share to Group</label>
-                            <select name="Position" class="form-select" aria-label="Default select example"
-                                id="Position">
-                                {% for position in positions %}
-                                <option value={{position[0]}}>{{position[1]}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="targetUser" class="form-label">Share to</label>
-                            <input type="text" class="form-control" id="targetUser" name="targetUser" required>
-                            <small id="emailHelp" class="form-text text-muted">Use email Address to tag the user
-                                seperate with comma(,)</small>
-                        </div>
-                        <div class="mb-3">
-                            <label for="Deadline" class="form-label">Deadline</label>
-                            <input type="date" class="form-control" name="Deadline" id="Deadline" required>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" value="submit" class="btn btn-primary">Add new User</button>
+                        <button type="submit" value="submit" class="btn btn-primary">Add new Block Document Editor</button>
 
                     </div>
                 </form>

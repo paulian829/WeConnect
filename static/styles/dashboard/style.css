@@ -673,26 +673,29 @@ h3.wbtn {
 }
 	
 .file-image{
+	/* margin: 0 50px; */
 	display: block;
-	margin: auto;
+	/* margin: auto; */
 	-webkit-box-shadow: 0 10px 6px -6px #777;
 	-moz-box-shadow: 0 10px 6px -6px #777;
 	box-shadow: 0 10px 6px -6px #777;
 	object-fit: contain;
-	max-width: 100%;
+	max-width: 40vw;
+	/* height: 100%; */
 }
 
 .file-side{
 	display: flex;
-	padding: 50px 50px;
+	/* padding: 50px 50px; */
 	flex-grow: 1;
 	background-color: rgb(236, 236, 236);
 	flex-direction: column;
 	align-content: center;
-	flex-wrap: wrap;
-	max-width: 60vw;
-	min-width: 70%;
+	flex-wrap: nowrap;
+	/* max-width: 60vw; */
+	/* min-width: 70%; */
 	justify-content: center;
+	align-items: center;
 }
 body > div > div.page-content > div.data-container > div > div.file-side{
 	overflow: auto;
@@ -702,7 +705,9 @@ body > div > div.page-content > div.data-container > div > div.file-side{
 
 .file-info-side {
 	padding:30px;
-	max-width: 700px;
+	max-width: 25vw;
+	px; */
+	px; */
 	width: 100%;
 }
 .file-side-container h3{
@@ -778,4 +783,8 @@ img.card-img-top {
 
 #admin td{
 	line-height: 50px;
+}
+.file-side-container{
+	width: 100%;
+	height: 100%;
 }

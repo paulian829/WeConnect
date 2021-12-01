@@ -2,17 +2,33 @@
 {% block content %}
 <div class='file-container'>
     <div class="file-side">
-        <div class="file-side-container">
-            <img class="file-image" src="{{url_for('static', filename='uploads/'+result[1])}}" />
-            <h3>{{result[1]}}</h3>
-        </div>
+        {% if "image/jpeg" in result[4] or "image/png" in result[4] %}
+        <img class="file-image" src="{{url_for('static', filename='uploads/'+result[1])}}" />
+        {% elif "application/pdf" in result[4] %}
+        <iframe src="{{url_for('static', filename='uploads/'+result[1])}}#zoom=100"
+            style="width: 100%;height: 100%;border: none;"></iframe>
+        {% elif "application/vnd.openxmlformats-officedocument.presentationml.presentation" in result[4] %}
+        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=http://weconnect.pythonanywhere.com{{url_for('static', filename='uploads/'+result[1])}}"
+            style="width: 100%;height: 100%;border: none;"></iframe>
+        {% elif "application/vnd.openxmlformats-officedocument.wordprocessingml.document" in result[4] %}
+        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=http://weconnect.pythonanywhere.com{{url_for('static', filename='uploads/'+result[1])}}"
+            style="width: 100%;height: 100%;border: none;"></iframe>
+        {% elif "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" in result[4] %}
+        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=http://weconnect.pythonanywhere.com{{url_for('static', filename='uploads/'+result[1])}}"
+            style="width: 100%;height: 100%;border: none;"></iframe>
+        {% else %}
+        <h3>No Preview</h3>
+        {% endif %}
+        
+
     </div>
     <div class="file-info-side">
         <div>
 
         </div>
         <h3>File Details</h3>
-        <button type="button" class="btn btn-primary">DOWNLOAD</button>
+        <a href="{{url_for('static', filename='uploads/'+result[1])}}" download><button type="button"
+                class="btn btn-primary">DOWNLOAD</button></a>
 
         <table class="table ">
             <tbody>
@@ -54,14 +70,21 @@
                 </tr>
             </tbody>
         </table>
+        <a href="{{url_for('static', filename='file/delete/'+result[1])}}" download><button type="button"
+                class="btn btn-danger">DELETE</button></a>
     </div>
 </div>
 
 <style>
+    td {
+        max-width: 50%;
+        width: 100%;
+        word-break: break-word;
+    }
+    .file-side h3{
+        word-break: break-word;
+        max-width: 25vw;
+    }
 
-td {
-    max-width: 50%;
-    width: 100%;
-}
 </style>
 {% endblock %}
