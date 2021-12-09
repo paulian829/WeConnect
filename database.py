@@ -1,6 +1,7 @@
 from typing import final
 import mysql.connector
 import hashlib
+from datetime import date
 
 def connectDb():
     mydb = mysql.connector.connect(
@@ -184,7 +185,8 @@ def saveFiletoDb(filename,filetype, filesize, file_content_type,uploaded_by, sha
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
-        val = (filename,filetype, filesize, file_content_type,uploaded_by, share_to_user, share_to_group,deadline, revision,)
+        today = date.today()
+        val = (filename,filetype, filesize, file_content_type,uploaded_by, share_to_user, share_to_group,deadline, revision,today)
         mycursor.callproc('saveFile', val)
         mycursor.lastrowid
         mydb.commit()
@@ -379,3 +381,5 @@ def getAllFilesUser(id):
 # print(getusers())
 # print(deleteUserDB(85))
 # print(newPosition('test'))
+today = date.today()
+print(today)
