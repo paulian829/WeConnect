@@ -40,7 +40,8 @@
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
                         </div>
                     </div>
-                    <div class="card h-100" v-else-if='suggestion[4] === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"'>
+                    <div class="card h-100"
+                        v-else-if='suggestion[4] === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"'>
                         <div class="image-container">
                             <img src="https://edmond.mpdl.mpg.de/imeji/file/10/12/3b/f5-7fde-4192-ba85-91cd601570c6/0/full/42eeccc13e310dc935368b6063f27e89.jpg?filename=full_data%20cuticle%20and%20symbiont%20titer%20measurements.jpg"
                                 class="card-img-top" alt="...">
@@ -49,7 +50,8 @@
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
                         </div>
                     </div>
-                    <div class="card h-100" v-else-if='suggestion[4] === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"'>
+                    <div class="card h-100"
+                        v-else-if='suggestion[4] === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"'>
                         <div class="image-container">
                             <img src="https://i2.wp.com/www.softwarert.com/wp-content/uploads/word-2013-icon.png?fit=256%2C253&ssl=1"
                                 class="card-img-top" alt="...">
@@ -58,7 +60,8 @@
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
                         </div>
                     </div>
-                    <div class="card h-100" v-else-if='suggestion[4] === "application/vnd.openxmlformats-officedocument.presentationml.presentation"'>
+                    <div class="card h-100"
+                        v-else-if='suggestion[4] === "application/vnd.openxmlformats-officedocument.presentationml.presentation"'>
                         <div class="image-container">
                             <img src="https://www.perkinselearning.org/sites/elearning.perkinsdev1.org/files/styles/scale_only_519x374/public/powerpoint.png?itok=mhvG8h5M"
                                 class="card-img-top" alt="...">
@@ -76,7 +79,7 @@
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
                         </div>
                     </div>
-                    
+
                 </a>
 
             </div>
@@ -90,16 +93,18 @@
                         <th scope='col'>Deadline</th>
                         <th scope='col'>Uploaded Date</th>
                         <th scope="col">View</th>
-                        <th scope="col">Delte</th>
+                        <th scope="col">Move to Thrash</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for='data in allData'>
+                    <tr v-for='data in allData' v-if='data[12] !=4'>
                         <th scope="row">[[ data[1] ]]</th>
                         <td>[[ changeDate(data[8]) ]]</td>
                         <td>[[ changeDate(data[10]) ]]</td>
                         <td><a :href="'/file/' + data[0] ">View</a></td>
-                        <td><a :href="'/file/delete/' + data[0] ">Delete</a></td>
+                        <!-- <td><span @click='moveToThrash(data[0])' style="cursor: pointer;">Move to Thrash</span></td> -->
+                        <!-- <td><a :href="'/thrash/' + data[0] ">Thrash</a></td> -->
+                        <td><a :href="'/thrash/' + data[0] " onclick="return confirm('Are you sure?')">Thrash</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -193,7 +198,8 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" value="submit" class="btn btn-primary">Add new Block Document Editor</button>
+                        <button type="submit" value="submit" class="btn btn-primary">Add new Block Document
+                            Editor</button>
 
                     </div>
                 </form>
@@ -257,6 +263,13 @@
                 }
                 date = date.slice(0, 16)
                 return date
+            },
+            moveToThrash(data) {
+                if(confirm("Move the file to thrash?")){
+                    Router.push
+                }else{
+
+                }
             }
         },
         mounted() {

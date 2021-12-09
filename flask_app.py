@@ -325,6 +325,11 @@ def getEditorData():
 def forbidden():
     return render_template("forbidden.html")
 
+@app.route("/thrash/<fileid>")
+def thrash(fileid):
+    result = moveFileToThrash(fileid)
+    return redirect(url_for('myFiles'))
+
 @app.route("/editor/<id>")
 def editor(id):
     title = "FILE EDITOR"

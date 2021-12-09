@@ -117,6 +117,7 @@ def loginDB(email, password):
 
     finally:
         mydb.close()
+
     
 
 
@@ -224,6 +225,22 @@ def updateDocDB(id,data):
         return False
     finally:
         mydb.close()
+
+def moveFileToThrash(fileid):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (fileid,)
+        mycursor.callproc("moveFileToThrash", val)
+        mydb.commit()
+        if mycursor.rowcount > 0:
+            return True
+
+        return False
+        
+    finally:
+        mydb.close()
+
 
 def getNumberOfFilesUploaded(id):
     try:
