@@ -92,8 +92,7 @@
                         <th scope="col">Filename</th>
                         <th scope='col'>Deadline</th>
                         <th scope='col'>Uploaded Date</th>
-                        <th scope="col">View</th>
-                        <th scope="col">Move to Thrash</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -104,7 +103,7 @@
                         <td><a :href="'/file/' + data[0] ">View</a></td>
                         <!-- <td><span @click='moveToThrash(data[0])' style="cursor: pointer;">Move to Thrash</span></td> -->
                         <!-- <td><a :href="'/thrash/' + data[0] ">Thrash</a></td> -->
-                        <td><a :href="'/thrash/' + data[0] " onclick="return confirm('Are you sure?')">Thrash</a></td>
+                        <td><a :href="'/thrash/' + data[0] " onclick="return confirm('Are you sure?')">Move to Thrash</a></td>
                     </tr>
                 </tbody>
             </table>

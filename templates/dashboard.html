@@ -37,10 +37,7 @@
         <div class="col ">
           <div class="p-4 border bg-light">
             <h3 class="wbtn">Recent Files</h3>
-            <button type="button" class="btn btn-primary btn-add float-right" data-bs-toggle="modal"
-              data-bs-target="#exampleModal">
-              Upload New File
-            </button>
+            <button type="button " class="btn btn-primary float-right"><a href="{{url_for('myFiles')}}">VIEW FILES</a></button>
             <table class="table">
               <thead>
                 <tr>
@@ -52,7 +49,7 @@
               <tbody>
                 <tr v-for='files in five_files'>
                   <td>[[ files[1] ]]</td>
-                  <td>[[ changeDate(files[10]) ]]</td>
+                  <td>[[ files[10] ]]</td>
                   <td>[[ changeDate(files[8]) ]]</td>
                 </tr>
               </tbody>
@@ -62,7 +59,7 @@
         <div class="col ">
           <div class="p-4 border bg-light">
             <h3 class="wbtn">Files Near Deadlines</h3>
-            <button type="button " class="btn btn-primary float-right">VIEW FILES</button>
+            <button type="button " class="btn btn-primary float-right"><a href="{{url_for('myFiles')}}">VIEW FILES</a></button>
             <table class="table">
               <thead>
                 <tr>
@@ -85,50 +82,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-    data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Upload New File</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form action="/uploadfile" method='POST' enctype="multipart/form-data">
-          <div class="modal-body">
-
-            <div class="mb-3">
-              <label for="file" class="form-label">File</label>
-              <input type="file" class="form-control" name="file" id="file" aria-describedby="file" required>
-            </div>
-            <div class="mb-3">
-              <label for="Position" class="form-label">Share to Group</label>
-              <select name="Position" class="form-select" aria-label="Default select example" id="Position">
-                {% for position in positions %}
-                <option value={{position[0]}}>{{position[1]}}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="targetUser" class="form-label">Share to</label>
-              <input type="text" class="form-control" id="targetUser" name="targetUser" required>
-              <small id="emailHelp" class="form-text text-muted">Use email Address to tag the user seperate with
-                comma(,)</small>
-            </div>
-            <div class="mb-3">
-              <label for="Deadline" class="form-label">Deadline</label>
-              <input type="date" class="form-control" name="Deadline" id="Deadline" required>
-            </div>
-          </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" value="submit" class="btn btn-primary">Upload</button>
-
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+  
 </div>
 
 
