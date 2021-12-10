@@ -1,3 +1,4 @@
+from datetime import timedelta
 from enum import unique
 from flask import Flask, render_template,request,json,redirect,url_for,session,send_from_directory,current_app,jsonify
 from database import *
@@ -161,7 +162,7 @@ def pinned():
     return render_template("pinned.html",title=title)
 @app.route("/shared")
 def shared():
-    title = 'PINNED'
+    title = 'SHARED FILES'
     return render_template("shared.html",title=title)
 
 @app.route("/deleted")
@@ -267,7 +268,7 @@ def uploadFile():
 
         print(file.filename)
         # filesize
-        filename = str(session['userID']) + file.filename 
+        filename = file.filename 
         # filesize = len(file.read())
         filesize = 1
         filetype = 'raw file'
@@ -337,6 +338,17 @@ def editor(id):
     result = result[0]
     print(result)
     return render_template("editor.html", title = title, result= result)
+
+@app.route("/restore/<id>")
+def restore(id):
+    result = restoreFileDB(id)
+    return redirect(url_for('myFiles'))
+
+@app.route("/emptytrash", methods=['GET', 'POST'])
+def emptyTrash():
+    id = session['userID']
+    result = emptyTrashDb(id)
+    return redirect(url_for("deleted"))
 
 
 @app.errorhandler(404)

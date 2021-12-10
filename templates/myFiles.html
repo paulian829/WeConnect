@@ -14,7 +14,7 @@
             </button>
         </div>
         <div class='suggestion-cards-container row row-cols-1 row-cols-md-5 g-4'>
-            <div class="col" v-for='suggestion in suggestions'>
+            <div class="col" v-for='suggestion in suggestions' v-if='suggestion[12] !==4'>
                 <a :href="'/file/' + suggestion[0] ">
                     <div class="card h-100" v-if='suggestion[4] === "image/jpeg" || suggestion[4] === "image/png" '>
                         <img :src="'/static/uploads/' + suggestion[1] " class="card-img-top" alt="...">
@@ -97,7 +97,7 @@
                 </thead>
                 <tbody>
                     <tr v-for='data in allData' v-if='data[12] !=4'>
-                        <th scope="row">[[ data[1] ]]</th>
+                        <th scope="row" class="elipses">[[ data[1] ]]</th>
                         <td>[[ changeDate(data[8]) ]]</td>
                         <td>[[ changeDate(data[10]) ]]</td>
                         <td><a :href="'/file/' + data[0] ">View</a></td>
@@ -249,7 +249,7 @@
                     this.suggestions = response.body['six_files']
                     this.allData = response.body['getall']
                     console.log(this.allData)
-                    console.log(this.suggestions)
+                    console.log("Suggestions",this.suggestions)
                 })
             },
             selectFile(key) {

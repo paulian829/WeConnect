@@ -1,161 +1,145 @@
 {% extends "dash-block.html" %}
 {% block content %}
-<div id="pinned-content">
-  <div>
-      <div class="heading-container">
-        <h5>Pinned Files</h5>
-        <button type="button" class="btn btn-primary btn-add float-right" data-bs-toggle="modal"
-                data-bs-target="#exampleModal1">
-                Upload New File
-            </button>
-            <button type="button" class="btn btn-primary btn-add float-right" data-bs-toggle="modal"
-                data-bs-target="#exampleModal2">
-                Create a Block Text File
-            </button>
-            <button type="button" class="btn btn-primary btn-add float-right" data-bs-toggle="modal"
-                data-bs-target="#exampleModal3">
-                Create a CSV document
-            </button>
-      </div>
-      <div class='suggestion-cards-container row row-cols-1 row-cols-md-6 g-4'>
-        <div class="col">
-          <div class="card h-100">
-            <img src="https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX" class="card-img-top" alt="...">
+<div id="app">
+  <div id='pinned-content'>
+    <div class='suggestion-cards-container row row-cols-1 row-cols-md-5 g-4'>
+      <div class="col" v-for='suggestion in allData' v-if='suggestion[12] == 5'>
+        <a :href="'/file/' + suggestion[0] ">
+          <div class="card h-100" v-if='suggestion[4] === "image/jpeg" || suggestion[4] === "image/png" '>
+            <img :src="'/static/uploads/' + suggestion[1] " class="card-img-top" alt="...">
             <div class="card-body">
-              <h6 class="card-title">Card title</h6>
+              <h6 class="card-title">[[ suggestion[1] ]]</h6>
+              <span>test</span>
             </div>
-            
           </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX" class="card-img-top" alt="...">
+          <div class="card h-100" v-else-if='suggestion[4] === "test"'>
+            <div class="image-container">
+              <img
+                src="https://play-lh.googleusercontent.com/emmbClh_hm0WpWZqJ0X59B8Pz1mKoB9HVLkYMktxhGE6_-30SdGoa-BmYW73RJ8MGZQ"
+                class="card-img-top" alt="...">
+            </div>
             <div class="card-body">
-              <h6 class="card-title">Card title</h6>
+              <h6 class="card-title">[[ suggestion[1] ]]</h6>
+              <span>test</span>
             </div>
-            
           </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX" class="card-img-top" alt="...">
+          <div class="card h-100" v-else-if='suggestion[4] === "application/pdf"'>
+            <div class="image-container">
+              <img src="https://cdn0.iconfinder.com/data/icons/flat-documents-and-folders/512/File_PDF-512.png"
+                class="card-img-top" alt="...">
+            </div>
             <div class="card-body">
-              <h6 class="card-title">Card title</h6>
+              <h6 class="card-title">[[ suggestion[1] ]]</h6>
+              <span>test</span>
             </div>
-            
           </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX" class="card-img-top" alt="...">
+          <div class="card h-100"
+            v-else-if='suggestion[4] === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"'>
+            <div class="image-container">
+              <img
+                src="https://edmond.mpdl.mpg.de/imeji/file/10/12/3b/f5-7fde-4192-ba85-91cd601570c6/0/full/42eeccc13e310dc935368b6063f27e89.jpg?filename=full_data%20cuticle%20and%20symbiont%20titer%20measurements.jpg"
+                class="card-img-top" alt="...">
+            </div>
             <div class="card-body">
-              <h6 class="card-title">Card title</h6>
+              <h6 class="card-title">[[ suggestion[1] ]]</h6>
+              <span>test</span>
             </div>
-            
           </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX" class="card-img-top" alt="...">
+          <div class="card h-100"
+            v-else-if='suggestion[4] === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"'>
+            <div class="image-container">
+              <img src="https://i2.wp.com/www.softwarert.com/wp-content/uploads/word-2013-icon.png?fit=256%2C253&ssl=1"
+                class="card-img-top" alt="...">
+            </div>
             <div class="card-body">
-              <h6 class="card-title">Card title</h6>
+              <h6 class="card-title">[[ suggestion[1] ]]</h6>
+              <span>test</span>
             </div>
-            
           </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX" class="card-img-top" alt="...">
+          <div class="card h-100"
+            v-else-if='suggestion[4] === "application/vnd.openxmlformats-officedocument.presentationml.presentation"'>
+            <div class="image-container">
+              <img
+                src="https://www.perkinselearning.org/sites/elearning.perkinsdev1.org/files/styles/scale_only_519x374/public/powerpoint.png?itok=mhvG8h5M"
+                class="card-img-top" alt="...">
+            </div>
             <div class="card-body">
-              <h6 class="card-title">Card title</h6>
+              <h6 class="card-title">[[ suggestion[1] ]]</h6>
+              <span>test</span>
             </div>
-            
           </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX" class="card-img-top" alt="...">
+          <div class="card h-100" v-else>
+            <div class="image-container">
+              <img src="https://www.insticc.org/node/TechnicalProgram/56e7352809eb881d8c5546a9bbf8406e.png"
+                class="card-img-top" alt="...">
+            </div>
             <div class="card-body">
-              <h6 class="card-title">Card title</h6>
+              <h6 class="card-title">[[ suggestion[1] ]]</h6>
+              <span>test</span>
             </div>
-            
           </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h6 class="card-title">Card title</h6>
-            </div>
-            
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h6 class="card-title">Card title</h6>
-            </div>
-            
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h6 class="card-title">Card title</h6>
-            </div>
-            
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h6 class="card-title">Card title</h6>
-            </div>
-            
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h6 class="card-title">Card title</h6>
-            </div>
-            
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h6 class="card-title">Card title</h6>
-            </div>
-            
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h6 class="card-title">Card title</h6>
-            </div>
-            
-          </div>
-        </div>
-        
-      </div>
-      <div class="files-table">
+
+        </a>
 
       </div>
+
     </div>
-
-
-
   </div>
+
 </div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
+  integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    data: {
+      suggestions: [],
+      allData: []
+    },
+    methods: {
+      testVue: function () {
+        this.$http.get('/getmyfiles').then(response => {
+          console.log(response)
+          this.suggestions = response.body['six_files']
+          this.allData = response.body['getall']
+          console.log(this.allData)
+          console.log(this.suggestions)
+        })
+      },
+      selectFile(key) {
+        console.log(key)
+      },
+      changeDate(date) {
+        console.log(date)
+        if (!date) {
+          return ''
+        }
+        date = date.slice(0, 16)
+        return date
+      },
+      moveToThrash(data) {
+        if (confirm("Move the file to thrash?")) {
+          Router.push
+        } else {
+
+        }
+      }
+    },
+    mounted() {
+      this.testVue()
+    },
+  }
+  )
+</script>
+
 <style>
+  div#pinned-content {
+    padding: 50px;
+  }
+
   .card {
     max-width: 300px;
   }
@@ -165,8 +149,11 @@
     flex-wrap: wrap;
     padding: 50px;
   }
-  div#pinned-content {
-    padding: 50px;
-}
+
+
+
+  .suggestion-cards-container.row.row-cols-1.row-cols-md-6.g-4 {
+    margin-bottom: 30px;
+  }
 </style>
 {% endblock %}

@@ -32,7 +32,7 @@
                         </a>
                     </li>
                     <li>
-                        <a {% if title=='DASHBOARD' %} class='active' {% endif %} href={{url_for('myFiles')}}>
+                        <a {% if title=='MY FILES' %} class='active' {% endif %} href={{url_for('myFiles')}}>
                             <i class="fas fa-tachometer-alt"></i>
                             <span>My Files</span>
                         </a>
@@ -44,13 +44,13 @@
                         </a>
                     </li>
                     <li>
-                        <a {% if title=='SHARED' %} class='active' {% endif %} href={{url_for('shared')}}>
-                            <i class="fas fa-network-wired"></i>
+                        <a {% if title=='SHARED FILES' %} class='active' {% endif %} href={{url_for('shared')}} >
+                            <i class="fas fa-network-wired" style="width: 14px;"></i>
                             <span>Shared with me</span>
                         </a>
                     </li>
                     <li>
-                        <a {% if title=='DELETED' %} class='active' {% endif %} href={{url_for('deleted')}}>
+                        <a {% if title=='DELETE' %} class='active' {% endif %} href={{url_for('deleted')}}>
                             <i class="fas fa-trash"></i>
                             <span>Trash Files</span>
                         </a>
@@ -68,7 +68,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href={{url_for('logout')}}>
+                        <a href={{url_for('logout')}} onclick="return confirm('Are you sure you want to log out?')">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Log out</span>
                         </a>

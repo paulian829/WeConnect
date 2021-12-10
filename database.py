@@ -3,7 +3,11 @@ import mysql.connector
 import hashlib
 from datetime import date
 
+
 def connectDb():
+    """
+    Function used to connecto to database
+    """
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -20,8 +24,10 @@ def connectDb():
     return mydb
 
 
-
 def getAll(table):
+    """
+    Get All positions Used for displayingg the list of positions on registration forms
+    """
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
@@ -36,6 +42,9 @@ def getAll(table):
 
 
 def registerNewUser(email,  password, repeatPass, firstname, lastname, phoneNumber, position):
+    """
+    Cretes a new user
+    """
     try:
         mydb = connectDb()
         # Check if Password are the same
@@ -47,7 +56,8 @@ def registerNewUser(email,  password, repeatPass, firstname, lastname, phoneNumb
         hex_dig = hash_object.hexdigest()
         try:
             mycursor = mydb.cursor()
-            args = (email, hex_dig, firstname, lastname, phoneNumber, position, )
+            args = (email, hex_dig, firstname,
+                    lastname, phoneNumber, position, )
             mycursor.callproc('addUser', args)
             mydb.commit()
             return "Success"
@@ -56,10 +66,12 @@ def registerNewUser(email,  password, repeatPass, firstname, lastname, phoneNumb
                 return ("Duplicate error")
     finally:
         mydb.close()
-    
 
 
 def updateUserDB(id, email, firstName, lastName, phoneNumber, position):
+    """
+    Update User Details
+    """
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
@@ -72,21 +84,22 @@ def updateUserDB(id, email, firstName, lastName, phoneNumber, position):
         return False
     finally:
         mydb.close()
-    
 
 
 def deleteUserDB(id):
+    """
+    Delete a User on Database
+    """
     try:
         mydb = connectDb()
         print(id)
         mycursor = mydb.cursor()
         mycursor.callproc("deleteUser", (id, ))
         mydb.commit()
-        
+
         return "Delete"
     finally:
         mydb.close()
-    
 
 
 def loginDB(email, password):
@@ -119,8 +132,6 @@ def loginDB(email, password):
     finally:
         mydb.close()
 
-    
-
 
 def getUserData(id):
     try:
@@ -135,7 +146,6 @@ def getUserData(id):
         return results
     finally:
         mydb.close()
-    
 
 
 def getAllUsers():
@@ -181,12 +191,13 @@ def newPosition(position):
         mydb.close()
 
 
-def saveFiletoDb(filename,filetype, filesize, file_content_type,uploaded_by, share_to_user, share_to_group,deadline, revision):
+def saveFiletoDb(filename, filetype, filesize, file_content_type, uploaded_by, share_to_user, share_to_group, deadline, revision):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
         today = date.today()
-        val = (filename,filetype, filesize, file_content_type,uploaded_by, share_to_user, share_to_group,deadline, revision,today)
+        val = (filename, filetype, filesize, file_content_type, uploaded_by,
+               share_to_user, share_to_group, deadline, revision, today)
         mycursor.callproc('saveFile', val)
         mycursor.lastrowid
         mydb.commit()
@@ -199,6 +210,7 @@ def saveFiletoDb(filename,filetype, filesize, file_content_type,uploaded_by, sha
         return False
     finally:
         mydb.close()
+
 
 def getFileDb(positionID):
     try:
@@ -214,7 +226,7 @@ def getFileDb(positionID):
         mydb.close()
 
 
-def updateDocDB(id,data):
+def updateDocDB(id, data):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
@@ -228,6 +240,7 @@ def updateDocDB(id,data):
     finally:
         mydb.close()
 
+
 def moveFileToThrash(fileid):
     try:
         mydb = connectDb()
@@ -239,7 +252,7 @@ def moveFileToThrash(fileid):
             return True
 
         return False
-        
+
     finally:
         mydb.close()
 
@@ -256,11 +269,12 @@ def getNumberOfFilesUploaded(id):
             results = result.fetchall()
             # print(results)
             # resultsArray.append(results)
-        
+
         # print(len(results))
         return results
     finally:
         mydb.close()
+
 
 def getNumberOfFilesPassed(id):
     try:
@@ -273,11 +287,12 @@ def getNumberOfFilesPassed(id):
             results = result.fetchall()
             # print(results)
             # resultsArray.append(results)
-        
+
         # print(len(results))
         return results
     finally:
         mydb.close()
+
 
 def getNumberOfFilesDeadline(id):
     try:
@@ -290,11 +305,12 @@ def getNumberOfFilesDeadline(id):
             results = result.fetchall()
             # print(results)
             # resultsArray.append(results)
-        
+
         # print(len(results))
         return results
     finally:
         mydb.close()
+
 
 def getNumberOfFilesNearDeadline(id):
     try:
@@ -307,25 +323,25 @@ def getNumberOfFilesNearDeadline(id):
             results = result.fetchall()
             # print(results)
             # resultsArray.append(results)
-        
+
         # print(len(results))
         return results
     finally:
         mydb.close()
 
 
-def getNFiles(id,number):
+def getNFiles(id, number):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
-        val = (id,number,)
+        val = (id, number,)
         results = list
         mycursor.callproc("getNFiles", val)
         for result in mycursor.stored_results():
             results = result.fetchall()
             # print(results)
             # resultsArray.append(results)
-        
+
         # print(len(results))
         return results
     finally:
@@ -343,11 +359,43 @@ def getAllFilesUser(id):
             results = result.fetchall()
             # print(results)
             # resultsArray.append(results)
-        
+
         # print(len(results))
         return results
     finally:
         mydb.close()
+
+
+def restoreFileDB(id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (id,)
+        mycursor.callproc("Restore", val)
+        mydb.commit()
+        if mycursor.rowcount > 0:
+            return True
+
+        return False
+
+    finally:
+        mydb.close()
+
+def emptyTrashDb(id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (id,)
+        mycursor.callproc("emptyTrash", val)
+        mydb.commit()
+        if mycursor.rowcount > 0:
+            return True
+
+        return False
+
+    finally:
+        mydb.close()
+
 
 
 # ==========================================

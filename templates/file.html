@@ -70,7 +70,7 @@
                 </tr>
             </tbody>
         </table>
-        <a href="{{url_for('static', filename='file/delete/'+result[1])}}" download><button type="button"
+        <a  href="{{'/thrash/' + result[0]|string}}" onclick="return confirm('Are you sure?')"><button type="button"
                 class="btn btn-danger">DELETE</button></a>
     </div>
 </div>

@@ -47,10 +47,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for='files in five_files'>
-                  <td>[[ files[1] ]]</td>
-                  <td>[[ files[10] ]]</td>
-                  <td>[[ changeDate(files[8]) ]]</td>
+                <tr v-for='files in five_files' v-if='files[12] !=4'>
+                  <td class="elipses">[[ files[1] ]]</td>
+                  <td class="elipses">[[ changeDate(files[10]) ]]</td>
+                  <td class="elipses">[[ changeDate(files[8]) ]]</td>
                 </tr>
               </tbody>
             </table>
@@ -69,10 +69,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for='files in five_files'>
-                  <td>[[ files[1] ]]</td>
-                  <td>[[ changeDate(files[10]) ]]</td>
-                  <td>[[ changeDate(files[8]) ]]</td>
+                <tr v-for='files in five_files' v-if='files[12] !=4'>
+                  <td class="elipses">[[ files[1] ]]</td>
+                  <td class="elipses">[[ changeDate(files[10]) ]]</td>
+                  <td class="elipses">[[ changeDate(files[8]) ]]</td>
                 </tr>
               </tbody>
             </table>
@@ -125,6 +125,12 @@
   [type="date"]::-webkit-calendar-picker-indicator {
     opacity: 0;
   }
+
+  #app > div:nth-child(2) > div > div > div:nth-child(1) > div, #app > div:nth-child(2) > div > div > div:nth-child(2) > div{
+    min-height: 500px;
+    margin-bottom:50px
+  }
+  
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
