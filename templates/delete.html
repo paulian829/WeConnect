@@ -3,15 +3,24 @@
 <div id="app">
     <div id='trash-content'>
         <div>
-            <form action="/emptytrash" method="POST">
-                <button type="submit" class="btn btn-primary btn-add" style="margin-bottom: 20px;" onclick="return confirm('Are you sure you want to delete all trash?')">
-                    Empty Trash
-                </button>
-            </form>
+            <button type="submit" class="btn btn-primary btn-add" style="margin-bottom: 20px;"
+                onclick="return confirm('Are you sure you want to delete all trash?')">
+                <a href="/emptytrash" style="color: white;"> Empty Trash</a>
+            </button>
+
+            <button class="btn btn-primary btn-add float-right" style="margin-bottom: 20px;" v-if='table'
+                @click='table = !table'>
+                <i class="fas fa-table "></i>
+            </button>
+            <button class="btn btn-primary btn-add float-right" style="margin-bottom: 20px;" v-else
+                @click='table = !table'>
+                <i class="far fa-images"></i>
+            </button>
 
         </div>
-        <div class='suggestion-cards-container row row-cols-1 row-cols-md-5 g-4'>
-            <div class="col" v-for='suggestion in allData' v-if='suggestion[12] ==4'>
+        <div class='suggestion-cards-container row row-cols-1 row-cols-md-5 g-4' v-if='table'>
+            <!-- Display files that are moved to Thrash -->
+            <div class="col" v-for='suggestion in allData' v-if='suggestion[12] == 4'>
                 <a :href="'/restore/' + suggestion[0] " onclick="return confirm('Do you want to Restore this file?')">
                     <div class="card h-100" v-if='suggestion[4] === "image/jpeg" || suggestion[4] === "image/png" '>
                         <img :src="'/static/uploads/' + suggestion[1] " class="card-img-top" alt="...">
@@ -82,6 +91,30 @@
             </div>
 
         </div>
+        <div v-else>
+            <div class="files-table">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Filename</th>
+                            <th scope='col'>File Content Type</th>
+                            <th scope='col'>Date Uploaded</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        <tr v-for='suggestion in allData' v-if='suggestion[12] == 4'>
+                            <td>[[ suggestion[1] ]]</td>
+                            <td>[[ suggestion[4] ]]</td>
+                            <td>[[ suggestion[10] ]]</td>
+                            <td><button class="btn btn-primary"><a :href="'/restore/' + suggestion[0] " onclick="return confirm('Do you want to Restore this file?')" style="color: white;">Restore</a></button></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
@@ -94,7 +127,8 @@
         delimiters: ['[[', ']]'],
         data: {
             suggestions: [],
-            allData: []
+            allData: [],
+            table: true
         },
         methods: {
             testVue: function () {
@@ -123,6 +157,9 @@
                 } else {
 
                 }
+            },
+            toggleTable() {
+                this.table = !this.table
             }
         },
         mounted() {

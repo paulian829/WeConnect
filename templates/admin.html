@@ -1,150 +1,211 @@
 {% extends "admin-block.html" %}
 {% block admincontent %}
-<div id="admin">
-  <div class="admin-container">
-    <div class="title-container">
-      <h3>User list</h3>
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-secondary btn-add-user" data-bs-toggle="modal"
-        data-bs-target="#exampleModal">
-        Add New User
-      </button>
+<div id='app'>
+  <div id="admin">
+    <div class="admin-container">
+      <div class="title-container">
+        <h3>User list</h3>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-secondary btn-add-user" data-bs-toggle="modal"
+          data-bs-target="#exampleModal"><i class="fas fa-user-plus"></i>
+          Add New User
+        </button>
 
-    </div>
-    <div class="input-group mb-3 seach-bar">
-      <input type="text" class="form-control" placeholder="Usename , Email Address or Fullname"
-        aria-label="Recipient's username" aria-describedby="basic-addon2">
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button">Search</button>
       </div>
-    </div>
-    <div class=result>
-      {% if "Password not The Same" in result %}
-      <div class="alert alert-danger" role="alert">
-        Password are not the same
+      <div class="input-group mb-3 seach-bar">
+        <input type="text" class="form-control" placeholder="Usename , Email Address or Fullname"
+          aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button">Search</button>
+        </div>
       </div>
-      {% elif "Duplicate error" in result %}
-      <div class="alert alert-danger" role="alert">
-        Duplicate Error, You had Added a duplicate of Username or Email Address
+      <div class=result>
+        {% if "Password not The Same" in result %}
+        <div class="alert alert-danger" role="alert">
+          Password are not the same
+        </div>
+        {% elif "Duplicate error" in result %}
+        <div class="alert alert-danger" role="alert">
+          Duplicate Error, You had Added a duplicate of Username or Email Address
+        </div>
+        {% elif "Success" in result %}
+        <div class="alert alert-success" role="alert">
+          Successfully added a new user.
+        </div>
+        {% elif "Delete" in result %}
+        <div class="alert alert-warning" role="alert">
+          Successfully Deleted a user.
+        </div>
+        {% endif %}
       </div>
-      {% elif "Success" in result %}
-      <div class="alert alert-success" role="alert">
-        Successfully added a new user.
-      </div>
-      {% elif "Delete" in result %}
-      <div class="alert alert-warning" role="alert">
-        Successfully Deleted a user.
-      </div>
-      {% endif %}
-    </div>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col" class="userid">User ID#</th>
-          <th scope="col">Email Address</th>
-          <th scope="col">Full Name</th>
-          <th scope="col">Position</th>
-          <th scope="col">Phone Number</th>
-          <th scope="col">Date Created</th>
-          <th scope="col">Edit</th>
-          <th scope="col">Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for user in users %}
-        <tr>
-          <th scope="row">{{user[0]}}</th>
-          <td>{{user[1]}}</td>
-          <td>{{user[3]}} {{user[4]}}</td>
-          {% if user[6] == 1 %}
-          <td>Admin</td>
-          {% elif user[6] == 2 %}
-          <td>District Supervisor</td>
-          {% elif user[6] == 3 %}
-          <td>Grade Chairman</td>
-          {% elif user[6] == 4 %}
-          <td>Teacher</td>
-          {% elif user[6] == 5 %}
-          <td>Principal</td>
-          {% else %}
-          <td>None</td>
-          {% endif %}
-          <td>{{user[5]}}</td>
-          <td>{{user[7]}}</td>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col" class="userid">User ID#</th>
+            <th scope="col">Email Address</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Position</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Date Created</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <th scope="row">{{user[0]}}</th>
+            <td>{{user[1]}}</td>
+            <td>{{user[3]}} {{user[4]}}</td>
+            {% if user[6] == 1 %}
+            <td>Admin</td>
+            {% elif user[6] == 2 %}
+            <td>District Supervisor</td>
+            {% elif user[6] == 3 %}
+            <td>Grade Chairman</td>
+            {% elif user[6] == 4 %}
+            <td>Teacher</td>
+            {% elif user[6] == 5 %}
+            <td>Principal</td>
+            {% else %}
+            <td>None</td>
+            {% endif %}
+            <td>{{user[5]}}</td>
+            <td>{{user[7]}}</td>
+            <td><a href="/admin/edit/{{user[0]}}"><button type="submit" type="button" class="btn btn-primary"><i class="fas fa-edit"></i>Edit</button></a> <a href="/admin/deleteuser/{{user[0]}}" onclick="return confirm('Are you sure you want to Delete User?')"
+              ><button type="submit" type="button" class="btn btn-danger" style="margin-left: 20px;"><i class="fas fa-trash"></i>Delete</button></a></td>
 
-          <form action="/admin/edit/{{user[0]}}" method='POST'>
-            <td><button type="submit" type="button" class="btn btn-primary">Edit</button></td>
-          </form>
+            <!-- <form action="/admin/edit/{{user[0]}}" method='POST'>
+              <td><button type="submit" type="button" class="btn btn-primary">Edit</button></td>
+            </form>
+            <form action="/admin/users" method='POST'>
+              <td><button type="submit" value="{{user[0]}}" name="delete" type="button"
+                  onclick="return confirm('Are you sure you want to Delete?')" class="btn btn-danger">Delete</button>
+              </td>
+            </form> -->
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">New User Form</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
           <form action="/admin/users" method='POST'>
-            <td><button type="submit" value="{{user[0]}}" name="delete" type="button" onclick="return confirm('Are you sure you want to Delete?')"
-                class="btn btn-danger">Delete</button></td>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Email address</label>
+              <input type="email" required class="form-control" name="Email" id="exampleInputEmail1"
+                aria-describedby="emailHelp">
+              <div id="emailHelp" class="form-text">Must be unique email address</div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <label for="FirstName" class="form-label">First Name</label>
+                <input id="FirstName" type="text" class="form-control" name="FirstName" aria-label="First name">
+              </div>
+              <div class="col">
+                <label for="LastName" class="form-label">Last Name</label>
+                <input id="LastName" type="text" class="form-control" name="LastName" aria-label="Last name">
+              </div>
+            </div>
+            <br>
+            <div class="mb-3">
+              <label for="PhoneNumber" class="form-label">Phone Number</label>
+              <input type="text" required class="form-control" name="PhoneNumber" id="PhoneNumber">
+            </div>
+            <div class="mb-3">
+              <label for="Password" class="form-label">Password </label>
+              <input type="password" required class="form-control" id="Password" name="Password" v-model='pass'
+                v-on:keyup='testPassword()'>
+              <span v-if='passWarning' style="color: red;">Invalid Password</span>
+
+              <div id="PasswordHelp" class="form-text">Must be atleast 6 characters long and contains both integers and
+                Regular characters</div>
+            </div>
+            <div class="mb-3">
+              <label for="rePassword" class="form-label">Repeat Password</label>
+              <input type="password" required class="form-control" id="rePassword" name="RepeatPass"
+                v-model='RepeatPass' v-on:keyup='testRePassword()'>
+              <span v-if='RepassWarning' style="color: red;">Invalid Password</span>
+            </div>
+            <div class="mb-3">
+              <label for="Position" class="form-label">Position</label>
+              <select name="Position" class="form-select" aria-label="Default select example" id="Position">
+                {% for position in positions %}
+                <option value={{position[0]}}>{{position[1]}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" value="REGISTER" class="btn btn-primary"
+                :class="{ buttonDisabled : passWarning }">Add
+                new User</button>
           </form>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
 
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-  data-bs-backdrop="static" data-bs-keyboard="false">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New User Form</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
       </div>
-      <div class="modal-body">
-        <form action="/admin/users" method='POST'>
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" required class="form-control" name="Email" id="exampleInputEmail1"
-              aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">Must be unique email address</div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <label for="FirstName" class="form-label">First Name</label>
-              <input id="FirstName" type="text" class="form-control" name="FirstName" aria-label="First name">
-            </div>
-            <div class="col">
-              <label for="LastName" class="form-label">Last Name</label>
-              <input id="LastName" type="text" class="form-control" name="LastName" aria-label="Last name">
-            </div>
-          </div>
-          <br>
-          <div class="mb-3">
-            <label for="PhoneNumber" class="form-label">Phone Number</label>
-            <input type="text" required class="form-control" name="PhoneNumber" id="PhoneNumber">
-          </div>
-          <div class="mb-3">
-            <label for="Password" class="form-label">Password</label>
-            <input type="password" required class="form-control" id="Password" name="Password">
-          </div>
-          <div class="mb-3">
-            <label for="rePassword" class="form-label">Repeat Password</label>
-            <input type="password" required class="form-control" id="rePassword" name="RepeatPass">
-          </div>
-          <div class="mb-3">
-            <label for="Position" class="form-label">Position</label>
-            <select name="Position" class="form-select" aria-label="Default select example" id="Position">
-              {% for position in positions %}
-              <option value={{position[0]}}>{{position[1]}}</option>
-              {% endfor %}
-            </select>
-          </div>
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" value="REGISTER" class="btn btn-primary">Add new User</button>
-        </form>
-
-      </div>
     </div>
   </div>
 </div>
 </div>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
+  integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    data: {
+      passWarning: true,
+      RepassWarning: true,
+      pass: '',
+      RepeatPass: ''
+    },
+    methods: {
+      testPassword() {
+        this.passWarning = false
+        if (this.pass.length <= 6) {
+          this.passWarning = true
+        }
+        if (!/\d/.test(this.pass)) {
+          this.passWarning = true
+        }
+      },
+      testRePassword() {
+        this.RepassWarning = false
+        if (this.RepeatPass.length <= 6) {
+          this.RepassWarning = true
+        }
+        if (!/\d/.test(this.RepeatPass)) {
+          this.RepassWarning = true
+        }
+      }
+    },
+    mounted() {
+      console.log('test')
+    },
+  }
+  )
+</script>
+
+
+<style>
+  .buttonDisabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+</style>
 {% endblock %}

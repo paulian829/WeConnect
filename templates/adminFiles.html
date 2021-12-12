@@ -18,29 +18,23 @@
           <tr>
             <th scope="col" class="userid">File ID#</th>
             <th scope="col">File Name</th>
-            <th scope="col">Uploaded by</th>
-            <th scope="col">Applicable for</th>
-            <th scope="col">Sent to</th>
+            <th scope="col">Uploaded by User ID</th>
             <th scope="col">Date Uploaded</th>
             <th scope="col">Deadline</th>
-            <th scope="col">View</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
+          {% for file in files %}
           <tr>
-            <th scope="row">1</th>
-            <td>Filename.ppt</td>
-            <td>Mark, Principal</td>
-            <td>Teachers</td>
-            <td>N/A</td>
-            <td>10-21-21</td>
-            <td>N/A</td>
-            <td><button type="button" class="btn btn-success">View</button></td>
-            <td><button type="button" class="btn btn-primary">Edit</button></td>
-            <td><button type="button" class="btn btn-danger">Delete</button></td>
+          <th scope="row">{{file[0]}}</th>
+            <td>{{ file[1] }}</td>
+            <td> <a href="/admin/edit/{{file[5]}}"><button class="btn btn-success"><i class="fas fa-user"></i>View UserID: {{ file[5] }}</button></a></td>
+            <td>{{ file[10] }}</td>
+            <td>{{ file[8] }}</td>
+            <td><a href="/file/{{file[0]}}" style="color: white;"><button type="button" class="btn btn-success"><i class="far fa-file"></i>View</button></a> <a href="/admin/deletefile/{{file[0]}}" style="color: white;"><button type="button" class="btn btn-danger" style="margin-left:20px"><i class="fas fa-trash"></i>Delete</a></button></td>
           </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>

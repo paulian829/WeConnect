@@ -20,7 +20,7 @@ body{
 	font-size: 2rem;
 	display: block;
 	line-height: 80px;
-	padding-left: 30px;
+	/* padding-left: 30px; */
 }
 .logo a{
 	
@@ -427,7 +427,7 @@ input[type=submit]:hover {
 	padding:30px
 }
 .fas{
-	margin-right: 15px;
+	/* margin-right: 15px; */
 }
 .upload-button-container {
 	padding-bottom: 30px;
@@ -755,10 +755,11 @@ a {
 }
 img.card-img-top {
     /* max-width: 240px; */
-    /* max-height: 180px; */
+    max-height: 35vh;
     height: 100%;
     width: 100%;
-    min-height: 180px;
+    min-height: 25vh;
+    object-fit: cover;
 }
 #editor .file-side {
     background-color: white;
@@ -804,4 +805,15 @@ a.active {
 	white-space: nowrap;
      overflow: hidden;
      text-overflow: ellipsis;
+}
+
+.aside a:hover{
+	background-color: DARKCYAN;
+}
+.nav-link:hover{
+	color: darkcyan !important;
+	font-weight: 600 !important;
+}
+.logo img {
+    max-width: 240px;
 }

@@ -381,6 +381,7 @@ def restoreFileDB(id):
     finally:
         mydb.close()
 
+
 def emptyTrashDb(id):
     try:
         mydb = connectDb()
@@ -396,6 +397,56 @@ def emptyTrashDb(id):
     finally:
         mydb.close()
 
+
+def setStatusPinned(id, status):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (id, status)
+        mycursor.callproc("SetPinned", val)
+        mydb.commit()
+        if mycursor.rowcount > 0:
+            return True
+
+        return False
+
+    finally:
+        mydb.close()
+
+
+def getAllFilesForAdmin():
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        # val = (id,)
+        results = list
+        mycursor.callproc("getAllFilesForAdmin")
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+            # print(results)
+            # resultsArray.append(results)
+
+        # print(len(results))
+        return results
+    finally:
+        mydb.close()
+
+
+def deleteFileDB(id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (id,)
+        mycursor.callproc("deleteFile", val)
+        mydb.commit()
+        if mycursor.rowcount > 0:
+            return True
+
+        return False
+
+    finally:
+        mydb.close()
+    
 
 
 # ==========================================

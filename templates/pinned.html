@@ -1,15 +1,27 @@
 {% extends "dash-block.html" %}
 {% block content %}
 <div id="app">
+
   <div id='pinned-content'>
-    <div class='suggestion-cards-container row row-cols-1 row-cols-md-5 g-4'>
-      <div class="col" v-for='suggestion in allData' v-if='suggestion[12] == 5'>
+    <div>
+      <h3 style="display: inline-block;">Pinned Files</h3>
+      <button class="btn btn-primary btn-add float-right" style="margin-bottom: 20px;" v-if='table'
+        @click='table = !table'>
+        <i class="fas fa-table "></i>
+      </button>
+      <button class="btn btn-primary btn-add float-right" style="margin-bottom: 20px;" v-else @click='table = !table'>
+        <i class="far fa-images"></i>
+      </button>
+
+    </div>
+    <div class='suggestion-cards-container row row-cols-1 row-cols-md-5 g-4' v-if='table'>
+      <div class="col" v-for='suggestion in allData' v-if='suggestion[13] == 1'>
         <a :href="'/file/' + suggestion[0] ">
           <div class="card h-100" v-if='suggestion[4] === "image/jpeg" || suggestion[4] === "image/png" '>
             <img :src="'/static/uploads/' + suggestion[1] " class="card-img-top" alt="...">
             <div class="card-body">
               <h6 class="card-title">[[ suggestion[1] ]]</h6>
-              <span>test</span>
+              <span>[[ changeDate(suggestion[10]) ]]</span>
             </div>
           </div>
           <div class="card h-100" v-else-if='suggestion[4] === "test"'>
@@ -20,7 +32,7 @@
             </div>
             <div class="card-body">
               <h6 class="card-title">[[ suggestion[1] ]]</h6>
-              <span>test</span>
+              <span>[[ changeDate(suggestion[10]) ]]</span>
             </div>
           </div>
           <div class="card h-100" v-else-if='suggestion[4] === "application/pdf"'>
@@ -30,7 +42,7 @@
             </div>
             <div class="card-body">
               <h6 class="card-title">[[ suggestion[1] ]]</h6>
-              <span>test</span>
+              <span>[[ changeDate(suggestion[10]) ]]</span>
             </div>
           </div>
           <div class="card h-100"
@@ -42,7 +54,7 @@
             </div>
             <div class="card-body">
               <h6 class="card-title">[[ suggestion[1] ]]</h6>
-              <span>test</span>
+              <span>[[ changeDate(suggestion[10]) ]]</span>
             </div>
           </div>
           <div class="card h-100"
@@ -53,7 +65,7 @@
             </div>
             <div class="card-body">
               <h6 class="card-title">[[ suggestion[1] ]]</h6>
-              <span>test</span>
+              <span>[[ changeDate(suggestion[10]) ]]</span>
             </div>
           </div>
           <div class="card h-100"
@@ -65,7 +77,7 @@
             </div>
             <div class="card-body">
               <h6 class="card-title">[[ suggestion[1] ]]</h6>
-              <span>test</span>
+              <span>[[ changeDate(suggestion[10]) ]]</span>
             </div>
           </div>
           <div class="card h-100" v-else>
@@ -75,7 +87,7 @@
             </div>
             <div class="card-body">
               <h6 class="card-title">[[ suggestion[1] ]]</h6>
-              <span>test</span>
+              <span>[[ changeDate(suggestion[10]) ]]</span>
             </div>
           </div>
 
@@ -83,6 +95,32 @@
 
       </div>
 
+    </div>
+    <div v-else>
+      <div class="files-table">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Filename</th>
+              <th scope='col'>File Content Type</th>
+              <th scope='col'>Date Uploaded</th>
+              <th scope="col">Action</th>
+            </tr>
+            <tr v-for='suggestion in allData' v-if='suggestion[13] == 1'>
+              <td>[[ suggestion[1] ]]</td>
+              <td>[[ suggestion[4] ]]</td>
+              <td>[[ suggestion[10] ]]</td>
+              <td><button class="btn btn-primary"><a :href="'/file/' + suggestion[0] "
+                    
+                    style="color: white;">View</a></button></td>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+
+      </div>
     </div>
   </div>
 
@@ -97,7 +135,8 @@
     delimiters: ['[[', ']]'],
     data: {
       suggestions: [],
-      allData: []
+      allData: [],
+      table: true
     },
     methods: {
       testVue: function () {
@@ -126,6 +165,9 @@
         } else {
 
         }
+      },
+      toggleTable() {
+        this.table = !this.table
       }
     },
     mounted() {

@@ -5,11 +5,11 @@
         <div class="heading-container">
             <h5 style='margin-right: 20px; display: inline-block;'>Suggestions</h5>
             <button type="button" class="btn btn-primary btn-add float-right" data-bs-toggle="modal"
-                data-bs-target="#exampleModal1">
+                data-bs-target="#exampleModal1"><i class="fas fa-upload"></i>
                 Upload New File
             </button>
             <button type="button" class="btn btn-primary btn-add float-right" data-bs-toggle="modal"
-                data-bs-target="#exampleModal2">
+                data-bs-target="#exampleModal2"><i class="fas fa-file-alt"></i>
                 Create a Block Text File
             </button>
         </div>
@@ -20,6 +20,7 @@
                         <img :src="'/static/uploads/' + suggestion[1] " class="card-img-top" alt="...">
                         <div class="card-body">
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
+                            <span>[[ changeDate(suggestion[10]) ]]</span>
                         </div>
                     </div>
                     <div class="card h-100" v-else-if='suggestion[4] === "test"'>
@@ -29,6 +30,7 @@
                         </div>
                         <div class="card-body">
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
+                            <span>[[ changeDate(suggestion[10]) ]]</span>
                         </div>
                     </div>
                     <div class="card h-100" v-else-if='suggestion[4] === "application/pdf"'>
@@ -38,6 +40,7 @@
                         </div>
                         <div class="card-body">
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
+                            <span>[[ changeDate(suggestion[10]) ]]</span>
                         </div>
                     </div>
                     <div class="card h-100"
@@ -48,6 +51,7 @@
                         </div>
                         <div class="card-body">
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
+                            <span>[[ changeDate(suggestion[10]) ]]</span>
                         </div>
                     </div>
                     <div class="card h-100"
@@ -58,6 +62,7 @@
                         </div>
                         <div class="card-body">
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
+                            <span>[[ changeDate(suggestion[10]) ]]</span>
                         </div>
                     </div>
                     <div class="card h-100"
@@ -68,6 +73,7 @@
                         </div>
                         <div class="card-body">
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
+                            <span>[[ changeDate(suggestion[10]) ]]</span>
                         </div>
                     </div>
                     <div class="card h-100" v-else>
@@ -77,6 +83,7 @@
                         </div>
                         <div class="card-body">
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
+                            <span>[[ changeDate(suggestion[10]) ]]</span>
                         </div>
                     </div>
 
