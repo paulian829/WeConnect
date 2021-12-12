@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2021 at 02:20 AM
+-- Generation Time: Dec 12, 2021 at 05:21 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -33,6 +33,11 @@ CREATE  PROCEDURE `addUser` (IN `uEmail` VARCHAR(50), IN `uPassword` VARCHAR(100
 INSERT INTO users (Email, Pass, FirstName, LastName, PhoneNumber, Position) VALUES (uEmail, uPassword, uFirstName, uLastName, uPhoneNumber, uPosition);
 END$$
 
+CREATE  PROCEDURE `deleteFile` (IN `uid` INT)  BEGIN
+DELETE FROM files WHERE FileID = uid;
+
+END$$
+
 CREATE  PROCEDURE `deleteUser` (IN `uid` INT(11))  BEGIN
 DELETE FROM users WHERE id = uid;
 END$$
@@ -45,6 +50,10 @@ END$$
 CREATE  PROCEDURE `getAllFiles` (IN `uid` INT)  BEGIN
 SELECT * FROM files where UploadedByID = uid ORDER BY FileID DESC;
 
+END$$
+
+CREATE  PROCEDURE `getAllFilesForAdmin` ()  BEGIN
+SELECT * FROM files ORDER BY FileID DESC;
 END$$
 
 CREATE  PROCEDURE `getFile` (IN `uid` INT(11))  BEGIN
@@ -104,6 +113,10 @@ CREATE  PROCEDURE `selectUserID` (IN `uID` INT(11))  BEGIN
 	SELECT * FROM users WHERE id = uID;
 END$$
 
+CREATE  PROCEDURE `SetPinned` (IN `uID` INT, IN `PinStatus` INT)  BEGIN
+UPDATE files SET pinned = PinStatus WHERE FileID = uID;
+END$$
+
 CREATE  PROCEDURE `updateDOC` (IN `json` LONGTEXT, IN `uID` INT)  BEGIN
 UPDATE files SET block_doc_json = json WHERE FileID = uID;
 
@@ -135,16 +148,17 @@ CREATE TABLE `files` (
   `Revision` int(11) NOT NULL,
   `DateUploaded` date NOT NULL,
   `block_doc_json` longtext NOT NULL DEFAULT '[{"id":"xPmqz3gBHy","type":"header","data":{"text":"This is the Heading!","level":1}}]',
-  `status` int(11) NOT NULL
+  `status` int(11) NOT NULL,
+  `pinned` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `files`
 --
 
-INSERT INTO `files` (`FileID`, `FileName`, `FileType`, `FileSize`, `FileContentType`, `UploadedByID`, `Share_to_user`, `Share_to_group`, `DeadLine`, `Revision`, `DateUploaded`, `block_doc_json`, `status`) VALUES
-(31, 'test', 'block doc', 1, 'test', 83, 0, 1, '1231-03-12', 1, '2021-11-27', '[{\"id\":\"xPmqz3gBHy\",\"type\":\"header\",\"data\":{\"text\":\"This is the Heading!\",\"level\":1}},{\"id\":\"XNKBJiLbTV\",\"type\":\"header\",\"data\":{\"text\":\"1234567890\",\"level\":2}}]', 4),
-(57, 'CAMILLE-P.-MERENE.pdf', 'raw file', 1, 'application/pdf', 82, 0, 1, '1111-11-11', 1, '2021-12-10', '[{\"id\":\"xPmqz3gBHy\",\"type\":\"header\",\"data\":{\"text\":\"This is the Heading!\",\"level\":1}}]', 0);
+INSERT INTO `files` (`FileID`, `FileName`, `FileType`, `FileSize`, `FileContentType`, `UploadedByID`, `Share_to_user`, `Share_to_group`, `DeadLine`, `Revision`, `DateUploaded`, `block_doc_json`, `status`, `pinned`) VALUES
+(57, 'CAMILLE-P.-MERENE.pdf', 'raw file', 1, 'application/pdf', 82, 0, 1, '1111-11-11', 1, '2021-12-10', '[{\"id\":\"xPmqz3gBHy\",\"type\":\"header\",\"data\":{\"text\":\"This is the Heading!\",\"level\":1}}]', 0, 1),
+(60, 'Comments_System.pdf', 'raw file', 1, 'application/pdf', 82, 0, 1, '1111-11-11', 1, '2021-12-12', '[{\"id\":\"xPmqz3gBHy\",\"type\":\"header\",\"data\":{\"text\":\"This is the Heading!\",\"level\":1}}]', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -192,8 +206,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`ID`, `Email`, `Pass`, `FirstName`, `LastName`, `PhoneNumber`, `Position`, `DateCreated`) VALUES
 (82, 'admin@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'super', 'admin', '+4497511601', 1, '2021-11-18 08:36:42'),
-(83, 'test@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'test', 'test', '+4497511601', 2, '2021-11-18 09:06:53'),
-(86, 'weconnect.thesis@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'Super', '2', '01234567890', 1, '2021-11-22 00:17:06');
+(86, 'weconnect.thesis@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'Super', '2', '01234567890', 1, '2021-11-22 00:17:06'),
+(89, 'notadmin@gmail.com', '178851c7e1d219ee12f888a46585d0b7113e558427a150f0bcc2ab1b2c7efb5d', 'not', 'admin', '123456', 3, '2021-12-12 23:37:22');
 
 --
 -- Indexes for dumped tables
@@ -226,7 +240,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
-  MODIFY `FileID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `FileID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `position`
@@ -238,7 +252,7 @@ ALTER TABLE `position`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
