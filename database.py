@@ -1,7 +1,7 @@
 from typing import final
 import mysql.connector
 import hashlib
-from datetime import date
+from datetime import date, datetime
 
 
 def connectDb():
@@ -195,7 +195,7 @@ def saveFiletoDb(filename, filetype, filesize, file_content_type, uploaded_by, s
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
-        today = date.today()
+        today = datetime.now()
         val = (filename, filetype, filesize, file_content_type, uploaded_by,
                share_to_user, share_to_group, deadline, revision, today)
         mycursor.callproc('saveFile', val)

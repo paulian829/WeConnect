@@ -1,118 +1,192 @@
 {% extends "dash-block.html" %}
 {% block content %}
-<div id="app" class="personal-data-section data-container">
-    <h1>PERSONAL INFORMATION</h1>
-    <div class='profile-data-container'>
-        <div class="profile-image-containr">
-            <div class="image-upload">
-                <label for="file-input">
-                    <img :src=[[profileImgSrc1]] alt="">
-                </label>
-
-                <input id="file-input" @change="previewFiles" type="file" accept="image/jpeg, image/png" />
-            </div>
-            <h3>{{profile_details[0][4]}}</h3>
-            <p>{{position}}</p>
-
-        </div>
-        <div class="profile-details">
-            <div class="profile-settings ">
-                <h3>Profile Settings</h3>
-                <button v-on:click="editProfile"><i class="fas fa-user-edit"></i></button>
-            </div>
-            <div class="info-container">
-                <form>
-                    <label for="fname">Full Name</label>
-                    <input type="text" id="fname" name="Fullname" placeholder="Full Name"
-                        value="{{profile_details[0][4]}}" :disabled="disabled">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="Email" placeholder="Email" value="{{profile_details[0][2]}}"
-                        :disabled="disabled">
-                    <label for="phone">Phone Number</label>
-                    <input type="text" id="phone" name="Phone" placeholder="Phone Number"
-                        value="{{profile_details[0][5]}}" :disabled="disabled">
-                    <label for="position">Position</label>
-                    <div class="position">
-                        <label for="">
-                            <select name="" id="" placeholder="Position" disabled>
-                                <option value="" disabled hidden>Position</option>
-                                {% for position in positions %}
-                                {% if position[0] == profile_details[0][6] %}
-                                <option value={{position[0]}} selected>{{position[1]}}</option>
-                                {% else %}
-                                <option value={{position[0]}}>{{position[1]}}</option>
-                                {% endif %}
-                                {% endfor %}
-                            </select>
-                        </label>
+<div class="container profile" id='app'>
+    <form action="/UpdateUser" method="POST">
+        <div class="row gutters">
+            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="account-settings">
+                            <div class="user-profile">
+                                <div class="user-avatar">
+                                    <img src="https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+                                        alt="Maxwell Admin">
+                                </div>
+                                <h5 class="user-name">{{result[0][3]}} {{result[0][4]}}</h5>
+                                <h6 class="user-email">{{result[0][1]}}</h6>
+                            </div>
+                        </div>
                     </div>
-                    <input type="submit" value="SUBMIT" :disabled="disabled">
-                </form>
+                </div>
             </div>
+            <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h6 class="mb-2 text-primary">Personal Details</h6>
+                            </div>
+                            <form action=""></form>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label for="firstName">First Name</label>
+                                    <input type="hidden" name="id" value='{{result[0][0]}}'>
+                                    <input type="hidden" name="type" value='profile'>
+                                    <input type="text" class="form-control" id="firstName" name="firstName"
+                                        placeholder="Enter first name" value="{{result[0][3]}}">
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label for="lastName">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" name="lastName"
+                                        placeholder="Enter last name" value="{{result[0][4]}}">
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label for="phone">Phone</label>
+                                    <input type="text" class="form-control" id="phone" placeholder="Enter phone number"
+                                        name="PhoneNumber" value="{{result[0][5]}}">
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="text" class="form-control" id="email" placeholder="Enter email"
+                                        name="Email" value="{{result[0][1]}}">
+                                </div>
+                            </div>
 
-        </div>
-        <div class="details-container">
-            <div class="profile-settings ">
-                <h3>Previously Uploaded Files</h3>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label for="website">position</label>
+                                    <select name="Position" class="form-select" aria-label="Default select example"
+                                        id="Position">
+                                        {% for position in positions %}
+                                        {% if position[0] == result[0][6] %}
+                                        <option value={{position[0]}} selected>{{position[1]}}</option>
+                                        {% else %}
+                                        <option value={{position[0]}}>{{position[1]}}</option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row gutters button-container">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="text-right">
+                                    <a href={{url_for('dashboard')}}><button type="button"
+                                            class="btn btn-secondary">Cancel</button></a>
+
+
+                                    <button type="submit" id="submit" name="submit"
+                                        class="btn btn-primary">Update</button>
+                                    <a href={{url_for('admin')}}><button type="button" id="submit" name="submit"
+                                            class="btn btn-warning reset-password">Reset Password</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
+
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
-    integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
-    integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<script>
-    var app = new Vue({
-        el: '#app',
-        delimiters: ['[[', ']]'],
-        data: {
-            disabled: true,
-            profileImgSrc: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-        },
-
-        methods: {
-            editProfile() {
-                this.disabled = !this.disabled
-            },
-            async previewFiles(event) {
-                console.log(event.target.files);
-                file = event.target.files[0]
-                await axios.post('/uploadProfileImg', file, {
-                    headers: {
-                        'Content-Type': file.type
-                    }
-                }).then(response => {
-                    console.log(response)
-                })
-
-
-                this.profileImgSrc = window.URL.createObjectURL(file);
-
-                // Blob
-                let blob = await fetch(window.URL.createObjectURL(file)).then(r => r.blob());
-                console.log(blob)
-            },
-
-            async EditImage(event) {
-                this.axios
-            },
-            sendFiles() {
-                console.log('test')
-            }
-        },
-        mounted() {
-        },
+<style>
+    body {
+        margin: 0;
+        color: #2e323c;
+        background: #f5f6fa;
+        position: relative;
+        height: 100%;
     }
-    )
 
+    .account-settings .user-profile {
+        margin: 0 0 1rem 0;
+        padding-bottom: 1rem;
+        text-align: center;
+    }
 
+    .account-settings .user-profile .user-avatar {
+        margin: 0 0 1rem 0;
+    }
 
-</script>
+    .account-settings .user-profile .user-avatar img {
+        width: 150px;
+        height: 150px;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        border-radius: 100px;
+    }
+
+    .account-settings .user-profile h5.user-name {
+        margin: 0 0 0.5rem 0;
+    }
+
+    .account-settings .user-profile h6.user-email {
+        margin: 0;
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: #9fa8b9;
+    }
+
+    .account-settings .about {
+        margin: 2rem 0 0 0;
+        text-align: center;
+    }
+
+    .account-settings .about h5 {
+        margin: 0 0 15px 0;
+        color: #007ae1;
+    }
+
+    .account-settings .about p {
+        font-size: 0.825rem;
+    }
+
+    .form-control {
+        border: 1px solid #cfd1d8;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        font-size: .825rem;
+        background: #ffffff;
+        color: #2e323c;
+    }
+
+    .card {
+        background: #ffffff;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        border: 0;
+        margin-bottom: 1rem;
+    }
+
+    .form-group {
+        padding-top: 15px
+    }
+
+    .row.gutters.button-container {
+        padding-top: 15px;
+    }
+
+    .container.profile {
+        display: flex;
+        justify-content: center;
+        margin-top: 50px;
+
+    }
+
+    .reset-password {
+        float: right;
+    }
+</style>
+
 
 {% endblock %}

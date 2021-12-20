@@ -199,6 +199,7 @@ def settings():
 def updateUser():
     if request.method == "POST":
         id = request.form.get("id")
+        requesttype = request.form.get("type") 
         email = request.form.get('Email')
         firstName = request.form.get('firstName')
         lastName = request.form.get('lastName')
@@ -206,7 +207,10 @@ def updateUser():
         position = request.form.get('Position')
     result = updateUserDB(id, email, firstName, lastName,
                           phoneNumber, position)
-    if result == True:
+    if result == True and requesttype == 'profile':
+        return redirect(url_for("profile"))
+    
+    if result == True and requesttype == 'admin':
         return redirect(url_for("admin"))
 
 
@@ -255,9 +259,8 @@ def profile():
         return redirect(url_for('login'))
 
     result = getUserData(session['userID'])
-    position = getPosition(result[0][6])
     positions = getAll("position")
-    return render_template("profile.html", title=title, profile_details=result, position=position, positions=positions)
+    return render_template("profile.html", title=title, result=result, position=positions, positions=positions)
 
 
 def allowed_file(filename):

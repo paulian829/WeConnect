@@ -750,7 +750,7 @@ button.btn.btn-primary.btn-add.float-right {
 a {
     text-decoration: none !important;
 }
-.card.h-100:hover {
+#pinned-content .card.h-100:hover {
     box-shadow: 10px 10px 10px #a39e9e;
 }
 img.card-img-top {

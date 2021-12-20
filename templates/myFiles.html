@@ -8,10 +8,10 @@
                 data-bs-target="#exampleModal1"><i class="fas fa-upload"></i>
                 Upload New File
             </button>
-            <button type="button" class="btn btn-primary btn-add float-right" data-bs-toggle="modal"
+            <!-- <button type="button" class="btn btn-primary btn-add float-right" data-bs-toggle="modal"
                 data-bs-target="#exampleModal2"><i class="fas fa-file-alt"></i>
                 Create a Block Text File
-            </button>
+            </button> -->
         </div>
         <div class='suggestion-cards-container row row-cols-1 row-cols-md-5 g-4'>
             <div class="col" v-for='suggestion in suggestions' v-if='suggestion[12] !==4'>
@@ -134,7 +134,7 @@
                             <input type="file" class="form-control" name="file" id="file" aria-describedby="file"
                                 required>
                         </div>
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <label for="Position" class="form-label">Share to Group</label>
                             <select name="Position" class="form-select" aria-label="Default select example"
                                 id="Position">
@@ -142,7 +142,7 @@
                                 <option value={{position[0]}}>{{position[1]}}</option>
                                 {% endfor %}
                             </select>
-                        </div>
+                        </div> -->
                         <div class="mb-3">
                             <label for="targetUser" class="form-label">Share to</label>
                             <input type="text" class="form-control" id="targetUser" name="targetUser" required>
@@ -151,7 +151,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="Deadline" class="form-label">Deadline</label>
-                            <input type="date" class="form-control" name="Deadline" id="Deadline" required>
+                            <input type="datetime-local" class="form-control" name="Deadline" id="Deadline" required>
                         </div>
                     </div>
 
@@ -198,7 +198,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="Deadline" class="form-label">Deadline</label>
-                            <input type="date" class="form-control" name="Deadline" id="Deadline" required>
+                            <input type="datetime-local" class="form-control" name="Deadline" id="Deadline" required>
                         </div>
                     </div>
 
@@ -267,7 +267,7 @@
                 if (!date) {
                     return ''
                 }
-                date = date.slice(0, 16)
+                date = date.slice(0, 26)
                 return date
             },
             moveToThrash(data) {
