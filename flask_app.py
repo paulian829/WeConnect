@@ -307,7 +307,7 @@ def uploadFile():
         filesize = 1
         filetype = 'raw file'
         file_content_type = file.content_type
-        share_to_group = request.form.get("Position")
+        share_to_group = 1
         share_to_user = request.form.get("targetUser")
         deadline = request.form.get('Deadline')
         revision = 1
@@ -317,7 +317,7 @@ def uploadFile():
 
         file.save(os.path.join(app.root_path,
                   app.config['UPLOAD_FOLDER'], filename))
-        print(lastID[0][0])
+        # print(lastID[0][0])
         return redirect(url_for('file', id=lastID[0][0]))
 
     return render_template("fileupload.html", title=title)

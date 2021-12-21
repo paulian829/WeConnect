@@ -107,10 +107,10 @@
                         <th scope="row" class="elipses">[[ data[1] ]]</th>
                         <td>[[ changeDate(data[8]) ]]</td>
                         <td>[[ changeDate(data[10]) ]]</td>
-                        <td><a :href="'/file/' + data[0] ">View</a></td>
+                        <td><a :href="'/file/' + data[0] "><button type="button" class="btn btn-success"><i class="far fa-file"></i>View</button></a></td>
                         <!-- <td><span @click='moveToThrash(data[0])' style="cursor: pointer;">Move to Thrash</span></td> -->
                         <!-- <td><a :href="'/thrash/' + data[0] ">Thrash</a></td> -->
-                        <td><a :href="'/thrash/' + data[0] " onclick="return confirm('Are you sure?')">Move to Trash</a></td>
+                        <td><a :href="'/thrash/' + data[0] " onclick="return confirm('Are you sure?')"><button type="button" class="btn btn-warning"><i class="far fa-trash"></i>Trash</button></a></td>
                     </tr>
                 </tbody>
             </table>
@@ -157,7 +157,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" value="submit" class="btn btn-primary">Add new File</button>
+                        <button type="submit" value="submit" class="btn btn-primary">Upload</button>
 
                     </div>
                 </form>
@@ -165,57 +165,6 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-        data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create a Block Text File</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="/uploadfile" method='POST' enctype="multipart/form-data">
-                    <div class="modal-body">
-
-                        <div class="mb-3">
-                            <label for="file" class="form-label">File Name</label>
-                            <input type="text" class="form-control" name="filename" id="    " aria-describedby="file"
-                                required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="Position" class="form-label">Share to Group</label>
-                            <select name="Position" class="form-select" aria-label="Default select example"
-                                id="Position">
-                                {% for position in positions %}
-                                <option value={{position[0]}}>{{position[1]}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="targetUser" class="form-label">Share to</label>
-                            <input type="text" class="form-control" id="targetUser" name="targetUser" required>
-                            <small id="emailHelp" class="form-text text-muted">Use email Address to tag the user
-                                seperate with comma(,)</small>
-                        </div>
-                        <div class="mb-3">
-                            <label for="Deadline" class="form-label">Deadline</label>
-                            <input type="datetime-local" class="form-control" name="Deadline" id="Deadline" required>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" value="submit" class="btn btn-primary">Add new Block Document
-                            Editor</button>
-
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-
-
-
 </div>
 <style>
     .card {

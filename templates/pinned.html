@@ -3,7 +3,7 @@
 <div id="app">
 
   <div id='pinned-content'>
-    <div>
+    <div class="header-container">
       <h3 style="display: inline-block;">Pinned Files</h3>
       <button class="btn btn-primary btn-add float-right" style="margin-bottom: 20px;" v-if='table'
         @click='table = !table'>
@@ -196,6 +196,14 @@
 
   .suggestion-cards-container.row.row-cols-1.row-cols-md-6.g-4 {
     margin-bottom: 30px;
+  }
+
+  #pinned-content h3{
+    margin-left: 12px;
+  }
+
+  #pinned-content .header-container{
+    margin-bottom: 20px;
   }
 </style>
 {% endblock %}
