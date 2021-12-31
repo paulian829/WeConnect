@@ -147,6 +147,31 @@ def getUserData(id):
     finally:
         mydb.close()
 
+def getTeachers(id):
+    try:
+        mydb = connectDb()
+        results = list
+        mycursor = mydb.cursor()
+        mycursor.callproc("getTeachers")
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+        return results
+    finally:
+        mydb.close()
+
+def updateTaskStatus(status,taskID):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (status, taskID)
+        mycursor.callproc("updateTaskStatus", val)
+        mydb.commit()
+        if mycursor.rowcount > 0:
+            return True
+        return False
+    finally:
+        mydb.close()
+
 
 def getAllUsers():
     try:
@@ -191,13 +216,13 @@ def newPosition(position):
         mydb.close()
 
 
-def saveFiletoDb(filename, filetype, filesize, file_content_type, uploaded_by, share_to_user, share_to_group, deadline, revision):
+def saveFiletoDb(filename, filetype, filesize, file_content_type, uploaded_by, share_to_user, share_to_group, deadline, revision,taskID,FilePathName):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
         today = datetime.now()
         val = (filename, filetype, filesize, file_content_type, uploaded_by,
-               share_to_user, share_to_group, deadline, revision, today)
+               share_to_user, share_to_group, deadline, revision, today,taskID,FilePathName)
         mycursor.callproc('saveFile', val)
         mycursor.lastrowid
         mydb.commit()
@@ -447,6 +472,68 @@ def deleteFileDB(id):
     finally:
         mydb.close()
     
+def addTask(taskName,taskImage, taskCreatedBy, taskDeadline, taskDescription,schedule):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor(buffered=True)
+        today = datetime.now()
+        status = 'Pending Teachers'
+        val = (taskName,taskCreatedBy,today, taskDeadline, taskDescription,status ,schedule)
+        mycursor.callproc('AddTask', val)
+        mycursor.lastrowid
+        mydb.commit()
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+        return ("ok")
+    except Exception as e:
+        mycursor.close()
+        print(e)
+        return False
+    finally:
+        mydb.close()
+
+def getAllTask():
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        # val = (id,)
+        results = list
+        mycursor.callproc("SelectAllTask")
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+            # print(results)
+            # resultsArray.append(results)
+        # print(len(results))
+        return results
+    finally:
+        mydb.close()
+
+def getOneTask(id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (id,)
+        results = list
+        mycursor.callproc("SelectOneTask", val)
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+        return results
+    finally:
+        mydb.close()
+
+def checkIfUserUploadedDB(userID, taskID):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (userID,taskID,)
+        results = list
+        mycursor.callproc("checkUserUpload", val)
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+        return results
+    finally:
+        mydb.close()
+
 
 
 # ==========================================
@@ -480,5 +567,3 @@ def deleteFileDB(id):
 # print(getusers())
 # print(deleteUserDB(85))
 # print(newPosition('test'))
-today = date.today()
-print(today)

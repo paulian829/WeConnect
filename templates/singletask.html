@@ -1,0 +1,337 @@
+{% extends "dash-block.html" %}
+{% block content %}
+<div id="app">
+    <div class="users-container task-container">
+        {% for result in results %}
+        <h2>{{result[1]}}</h2>
+        <p>{{result[6]}}</p>
+        <p><strong>Created By: </strong>[[Uploader]]</p>
+        <p><strong>Status: </strong>{{result[7]}}</p>
+        <p><strong>Date Created: </strong>{{result[4]}}</p>
+        <p><strong>Date Deadline: </strong>{{result[5]}}</p>
+        <div v-if='userPosition === 4'>
+            <div v-if='!done'>
+                <form action="/uploadfile" method='POST' enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Upload File</label>
+                        <input type="hidden" name='taskID' value={{result[0]}}>
+                        <input type="file" class="form-control" name="file" id="file" aria-describedby="file" required
+                            accept=".xls,.xlsx,.docx,.ppt,.pdf">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+
+            </div>
+            <div v-else class="file-upload-container">
+                <span><strong>[[ uploadedDetails[1] ]]</strong></span>
+                <span style="margin-left: 2rem;">[[ uploadedDetails[10] ]]</span>
+                <div>
+                    <span style="margin-right:15px;"><a :href="'/file/' + [[ uploadedDetails[0] ]]"><button
+                                type="submit" class="btn btn-primary">View</button></a></span>
+                    <span><a :href="'/task/delete/' + [[ uploadedDetails[0] ]]"><button type="submit"
+                                class="btn btn-primary">Delete</button></a></span>
+                </div>
+
+            </div>
+        </div>
+        <br>
+        <div v-if='userPosition !== 4'>
+            {% if 'Pending Teachers' in result[7] %}
+            <ul class="list-group" style="width: 20rem;">
+
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Teachers
+                    <i class="fas fa-times-circle" style="color: red;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Grade Chairman
+                    <i class="fas fa-times-circle" style="color: red;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Principal
+                    <i class="fas fa-times-circle" style="color: red;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    District Supervisor
+                    <i class="fas fa-times-circle" style="color: red;"></i>
+                </li>
+            </ul>
+            <br>
+            <a href="/updatetask/Pending Grade Chairman/{{result[0]}}" v-if="userPosition == 3 "><button type="submit"
+                    class="btn btn-primary">Forward to Principal</button></a>
+
+            {% elif 'Pending Grade Chairman' in result[7] %}
+            <ul class="list-group" style="width: 20rem;">
+
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Teachers
+                    <i class="fas fa-check-circle" style="color: green;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Grade Chairman
+                    <i class="fas fa-times-circle" style="color: red;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Principal
+                    <i class="fas fa-times-circle" style="color: red;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    District Supervisor
+                    <i class="fas fa-times-circle" style="color: red;"></i>
+                </li>
+            </ul>
+            <br>
+            <a href="/updatetask/Pending Principal/{{result[0]}}" v-if="userPosition == 3 "><button type="submit"
+                    class="btn btn-primary">Forward to Principal</button></a>
+
+            {% elif 'Pending Principal' in result[7] %}
+            <ul class="list-group" style="width: 20rem;">
+
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Teachers
+                    <i class="fas fa-check-circle" style="color: green;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Grade Chairman
+                    <i class="fas fa-check-circle" style="color: green;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Principal
+                    <i class="fas fa-times-circle" style="color: red;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    District Supervisor
+                    <i class="fas fa-times-circle" style="color: red;"></i>
+                </li>
+            </ul>
+            <br>
+            <a href="/updatetask/Pending District/{{result[0]}}" v-if="userPosition == 5"><button type="submit"
+                    class="btn btn-primary">Forward to District Supervisor</button></a>
+            {% elif 'Pending District' in result[7] %}
+            <ul class="list-group" style="width: 20rem;">
+
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Teachers
+                    <i class="fas fa-check-circle" style="color: green;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Grade Chairman
+                    <i class="fas fa-check-circle" style="color: green;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Principal
+                    <i class="fas fa-check-circle" style="color: green;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    District Supervisor
+                    <i class="fas fa-times-circle" style="color: red;"></i>
+                </li>
+            </ul>
+            <BR></BR>
+            <a href="/updatetask/Done/{{result[0]}}" v-if="userPosition ==2"><button type="submit"
+                    class="btn btn-primary">Mark Task as Complete</button></a>
+            {% elif 'Done' in result[7] %}
+            <ul class="list-group" style="width: 20rem;">
+
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Teachers
+                    <i class="fas fa-check-circle" style="color: green;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Grade Chairman
+                    <i class="fas fa-check-circle" style="color: green;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Principal
+                    <i class="fas fa-check-circle" style="color: green;"></i>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    District Supervisor
+                    <i class="fas fa-check-circle" style="color: green;"></i>
+                </li>
+            </ul>
+            {% endif %}
+            <br>
+            <table class="table task">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Date Uploaded</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for='(teacher,index) in teachers' v-if='teacher[6] === 4'>
+                        <th scope="row">[[ teacher[3] ]] [[ teacher[4] ]]</th>
+                        <td>[[ checkStatus(teacher[0]) ]]</td>
+                        <td>[[ getDateUploaded(teacher[0]) ]]</td>
+                        <td><a :href="'/file/' + getFileUrl(teacher[0])" v-if='allowViewing(teacher[0])'><button
+                                    class="btn btn-primary">view</button></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
+    integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {
+            Uploader: '',
+            userPosition: '',
+            userID: '',
+            setStatus: '',
+            done: false,
+            uploadedDetails: [],
+            teachers: [],
+            key: 0,
+            isDone: []
+        },
+        methods: {
+            getUploaderData: function (id) {
+                this.$http.get('/getUserDetails/' + id).then(response => {
+                    let user = response.data.userData
+                    this.Uploader = user[0][3] + ' ' + user[0][4]
+                })
+            },
+            getUserData: function (id) {
+                this.$http.get('/getUserDetails/' + id).then(response => {
+                    let user = response.data.userData
+                    this.userID = user[0][0]
+                    this.userPosition = user[0][6]
+                })
+            },
+            checkIfDone: function (userID, taskID) {
+                this.$http.get('/checkifuseruploaded/' + userID + '/' + taskID).then(response => {
+                    result = response.body.result
+                    if (result.length !== 0) {
+                        this.uploadedDetails = result[0]
+
+                        this.done = true
+                    }
+                })
+            },
+            getTeachers: function () {
+                this.$http.get('/getTeachers/').then(response => {
+                    this.teachers = response.body.users
+                    teachers = response.body.users
+                    for (let i = 0; i < teachers.length; i++) {
+                        this.checkifuseruploaded(teachers[i][0])
+                    }
+
+                })
+
+            },
+            checkifuseruploaded: function (id, taskID = '{{ result[0] }}') {
+                let array = this.isDone
+                console.log('start')
+                this.$http.get(`/checkifuseruploaded/${id}/${taskID}`).then((result) => {
+                    array.push(result)
+                    console.log("end",array)
+                    this.isDone = array
+                })
+            },
+            checkStatus(id) {
+                let array = this.isDone
+                for (let i = 0; i < array.length; i++) {
+                    TaskResult = array[i].body.result
+                    if (TaskResult.length > 0) {
+                        console.log("taskResult",TaskResult)
+                        if (TaskResult[0][5] == id) {
+                            return 'Done'
+                        } else {
+                            
+                        }
+                    }
+
+                }
+                return 'Pending'
+            },
+            allowViewing(id) {
+                let array = this.isDone
+                for (let i = 0; i < array.length; i++) {
+                    TaskResult = array[i].body.result
+                    if (TaskResult.length > 0) {
+                        if (TaskResult[0][5] == id) {
+                            return true
+                        } else {
+                            
+                        }
+                    }
+
+                }
+                return false
+
+            },
+
+            getFileUrl(id) {
+                let array = this.isDone
+                for (let i = 0; i < array.length; i++) {
+                    TaskResult = array[i].body.result
+                    if (TaskResult.length > 0) {
+                        if (TaskResult[0][5] == id) {
+                            return TaskResult[0][0]
+                        }
+                    }
+
+                }
+                return false
+            },
+            getDateUploaded(id) {
+                let array = this.isDone
+                for (let i = 0; i < array.length; i++) {
+                    TaskResult = array[i].body.result
+                    if (TaskResult.length > 0) {
+                        if (TaskResult[0][5] == id) {
+                            return TaskResult[0][10]
+                        } else {
+                            
+                        }
+                    }
+
+                }
+                return 'N/A'
+            }
+        },
+        created() {
+            this.getTeachers()
+            this.checkIfDone("{{id}}", "{{result[0]}}")
+            this.getUserData("{{id}}")
+            this.getUploaderData("{{result[3]}}")
+        }
+    }
+    )
+
+
+</script>
+{% endfor %}
+<style>
+    .task-container {
+        width: 50rem;
+    }
+
+    .file-upload-container {
+        padding: 10px;
+        border: 1px solid #c9c8c8;
+        background: white;
+        display: flex;
+        align-content: center;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .task td {
+        line-height: 50px;
+    }
+</style>
+
+{% endblock %}

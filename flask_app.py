@@ -1,8 +1,11 @@
 from datetime import timedelta
 from enum import unique
 from flask import Flask, render_template, request, json, redirect, url_for, session, send_from_directory, current_app, jsonify
+from werkzeug.wrappers import response
 from database import *
 import os
+from datetime import datetime
+
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 UPLOAD_FOLDER = 'static/uploads'
@@ -101,6 +104,21 @@ def getmyfiles():
 
     return json.dumps(dict)
 
+@app.route('/getUserDetails/<id>')
+def getUserDetails(id):
+    user = getUserData(id)
+    
+    dict = {"userData": user}
+    return json.dumps(dict)
+
+@app.route('/getTeachers/')
+def getTeachers():
+    user = getAllUsers()
+    print("+++++++++++++", user)
+    dict = {"users": user}
+    return json.dumps(dict)
+
+
 
 @app.route("/home")
 def home():
@@ -188,6 +206,58 @@ def deleted():
     title = 'DELETE'
     return render_template("delete.html", title=title)
 
+@app.route('/users')
+def users():
+    title = 'USERS'
+    users = getAllUsers()
+    return render_template('users.html', title=title,users=users)
+
+@app.route('/schedule/')
+def schedule():
+    title = 'TASKS'
+    results = getAllTask()
+    id = session['userID']
+    return render_template('schedule.html', title=title,results = results)
+
+@app.route('/schedule/get/<id>')
+def getSchedule(id):
+    title = 'TASKS'
+    results = getOneTask(id)
+    id = session['userID']
+    return render_template('singletask.html', title=title,results = results,id = id)
+
+@app.route('/updatetask/<status>/<taskID>')
+def updateTask(status,taskID):
+    title = 'TASKS'
+    result = updateTaskStatus(status,taskID)
+    print(status)
+    return redirect(url_for('getSchedule', id=taskID))
+    
+
+
+
+@app.route('/schedule/add', methods=['GET', 'POST'])
+def addSchedule():
+    if request.method == 'POST':
+        taskName = request.form.get("taskName")
+        # imageBlob = request.files['taskImage'].file.name
+        deadline = request.form.get("Deadline")
+        deadline_datetime = datetime.strptime(deadline, '%Y-%m-%dT%H:%M')
+        print(deadline_datetime)
+        schedule = request.form.get("Schedule")
+        description = request.form.get('description')
+        taskCreatedBy = session['userID']
+
+        result = addTask(taskName,"imageBlob", taskCreatedBy,  deadline_datetime, description, schedule)
+        if result:
+            return redirect(url_for("schedule"))
+        else:
+            return 'error'
+@app.route('/checkifuseruploaded/<userID>/<taskID>')
+def checkifuseruploaded(userID, taskID):
+    result = checkIfUserUploadedDB(userID, taskID)
+    dict = {"result": result}
+    return json.dumps(dict) 
 
 @app.route("/settings")
 def settings():
@@ -272,7 +342,6 @@ def allowed_file(filename):
 def uploadFile():
     title = "FILE UPLOAD"
     if request.method == 'POST':
-
         if 'file' not in request.files:
             print('No file part')
             filename = request.form.get("filename")
@@ -286,18 +355,18 @@ def uploadFile():
             deadline = request.form.get('Deadline')
             revision = 1
             uploaded_by = session['userID']
-
+            FilePathName = str(uploaded_by) + filename
+            if request.form.get('taskID'):
+                taskID = request.form.get('taskID')
+            else:
+                taskID = 0
             lastID = saveFiletoDb(filename, filetype, filesize, file_content_type,
-                                  uploaded_by, share_to_user, share_to_group, deadline, revision)
-            # result = getFileDb(lastID[0][0])
-            # data = '[{"id":"xPmqz3gBHy","type":"header","data":{"text":"PAUL IAN MASENDO","level":1}}]'
-            print(lastID[0][0])
+                                  uploaded_by, share_to_user, share_to_group, deadline, revision,taskID,FilePathName)
             return redirect(url_for('editor', id=lastID[0][0], ))
         file = request.files['file']
         # If the user does not select a file, the browser submits an
         # empty file without a filename.
         if file.filename == '':
-            print('No selected file')
             return redirect(request.url)
 
         print(file.filename)
@@ -312,13 +381,21 @@ def uploadFile():
         deadline = request.form.get('Deadline')
         revision = 1
         uploaded_by = session['userID']
+        FilePathName = str(uploaded_by) + filename
+        if request.form.get('taskID'):
+                taskID = request.form.get('taskID')
+        else:
+                taskID = 0
         lastID = saveFiletoDb(filename, filetype, filesize, file_content_type,
-                              uploaded_by, share_to_user, share_to_group, deadline, revision)
+                              uploaded_by, share_to_user, share_to_group, deadline, revision,taskID,FilePathName)
 
         file.save(os.path.join(app.root_path,
-                  app.config['UPLOAD_FOLDER'], filename))
+                  app.config['UPLOAD_FOLDER'], FilePathName))
         # print(lastID[0][0])
-        return redirect(url_for('file', id=lastID[0][0]))
+        if request.form.get('taskID'):
+            return redirect(url_for('getSchedule', id=request.form.get('taskID')))
+        else:
+            return redirect(url_for('file', id=lastID[0][0]))
 
     return render_template("fileupload.html", title=title)
 
@@ -338,8 +415,8 @@ def file(id):
     if result[2] == 'block doc':
         return render_template("editor.html", title=title, result=result)
 
-    if result[5] != session['userID']:
-        return redirect(url_for("forbidden"))
+    # if result[5] != session['userID']:
+    #     return redirect(url_for("forbidden"))
     return render_template("file.html", title=title, result=result)
 
 
@@ -413,11 +490,15 @@ def deletefile(id):
     result = deleteFileDB(id)
     return redirect(url_for('adminFiles'))
 
+@app.route('/task/delete/<id>')
+def deletefileTask(id):
+    result = deleteFileDB(id)
+    return redirect(url_for('schedule'))
+
 
 @app.errorhandler(404)
 def not_found(e):
     return render_template("404.html")
-
 
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=True)

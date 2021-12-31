@@ -3,21 +3,21 @@
 <div class='file-container'>
     <div class="file-side">
         {% if "image/jpeg" in result[4] or "image/png" in result[4] %}
-        <img class="file-image" src="{{url_for('static', filename='uploads/'+result[1])}}" />
+        <img class="file-image" src="{{url_for('static', filename='uploads/'+result[15])}}" />
         {% elif "application/pdf" in result[4] %}
-        <iframe src="{{url_for('static', filename='uploads/'+result[1])}}#zoom=100"
+        <iframe src="{{url_for('static', filename='uploads/'+result[15])}}#zoom=100"
             style="width: 100%;height: 100%;border: none;"></iframe>
         {% elif "application/vnd.openxmlformats-officedocument.presentationml.presentation" in result[4] %}
         <iframe
-            src="https://view.officeapps.live.com/op/embed.aspx?src=http://weconnect.pythonanywhere.com{{url_for('static', filename='uploads/'+result[1])}}"
+            src="https://view.officeapps.live.com/op/embed.aspx?src=http://weconnect.pythonanywhere.com{{url_for('static', filename='uploads/'+result[15])}}"
             style="width: 100%;height: 100%;border: none;"></iframe>
         {% elif "application/vnd.openxmlformats-officedocument.wordprocessingml.document" in result[4] %}
         <iframe
-            src="https://view.officeapps.live.com/op/embed.aspx?src=http://weconnect.pythonanywhere.com{{url_for('static', filename='uploads/'+result[1])}}"
+            src="https://view.officeapps.live.com/op/embed.aspx?src=http://weconnect.pythonanywhere.com{{url_for('static', filename='uploads/'+result[15])}}"
             style="width: 100%;height: 100%;border: none;"></iframe>
         {% elif "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" in result[4] %}
         <iframe
-            src="https://view.officeapps.live.com/op/embed.aspx?src=http://weconnect.pythonanywhere.com{{url_for('static', filename='uploads/'+result[1])}}"
+            src="https://view.officeapps.live.com/op/embed.aspx?src=http://weconnect.pythonanywhere.com{{url_for('static', filename='uploads/'+result[15])}}"
             style="width: 100%;height: 100%;border: none;"></iframe>
         {% else %}
         <h3>No Preview</h3>
@@ -30,7 +30,7 @@
 
         </div>
         <h3>File Details</h3>
-        <a href="{{url_for('static', filename='uploads/'+result[1])}}" download><button type="button"
+        <a href="{{url_for('static', filename='uploads/'+result[15])}}" download><button type="button"
                 class="btn btn-primary"><i class="fas fa-download"></i>DOWNLOAD</button></a>
 
         <table class="table ">

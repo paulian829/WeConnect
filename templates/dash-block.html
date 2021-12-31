@@ -19,10 +19,11 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="aside">
+    <div class="container" id="appmain">
+        <div class="aside" id='aside-toggle' >
             <div class="logo">
-                <a href={{url_for('dashboard')}}> <img src="{{url_for('static', filename='images/weconnectlogo.png' ) }}" alt=""></a>
+                <a href={{url_for('dashboard')}}> <img
+                        src="{{url_for('static', filename='images/weconnectlogo.png' ) }}" alt=""></a>
             </div>
             <nav>
                 <ul>
@@ -39,15 +40,27 @@
                         </a>
                     </li>
                     <li>
+                        <a {% if title=='TASKS' %} class='active' {% endif %} href={{url_for('schedule')}}>
+                            <i class="fas fa-thumbtack"></i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+                    <li>
                         <a {% if title=='PINNED' %} class='active' {% endif %} href={{url_for('pinned')}}>
                             <i class="fas fa-thumbtack"></i>
                             <span>Pinned Files</span>
                         </a>
                     </li>
                     <li>
-                        <a {% if title=='SHARED FILES' %} class='active' {% endif %} href={{url_for('shared')}} >
+                        <a {% if title=='SHARED FILES' %} class='active' {% endif %} href={{url_for('shared')}}>
                             <i class="fas fa-network-wired" style="width: 14px;"></i>
                             <span>Shared with me</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a {% if title == 'USERS' %} class='active' {% endif %} href={{url_for('users')}}>
+                            <i class="fas fa-users" style="width: 14px;"></i>
+                            <span>Users</span>
                         </a>
                     </li>
                     <li>
@@ -69,7 +82,7 @@
                             <span>Admin</span>
                         </a>
                     </li>
-                    {%  endif %}
+                    {% endif %}
                     <li>
                         <a href={{url_for('logout')}} onclick="return confirm('Are you sure you want to log out?')">
                             <i class="fas fa-sign-out-alt"></i>
@@ -118,4 +131,47 @@
         display: flex;
         justify-content: center;
     }
+
+    .aside {
+        margin: 0;
+        width: 240px;
+        transition: 0.3s;
+        overflow: hidden;
+        
+    }
+    .toggle {
+        width: 0 !important;
+    }
+    .fa-bars{
+        cursor: pointer;
+    }
 </style>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
+  integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  var app = new Vue({
+    el: '#appmain',
+    delimiters: ['[[', ']]'],
+    data: {
+        togglestatus: false
+    },
+    methods: {
+        switchToggle(){
+            console.log('test')
+        }
+      
+    },
+  }
+  )
+</script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $(".fa-bars").click(function(){
+    $("#aside-toggle").toggleClass("toggle");
+  });
+});
+</script>

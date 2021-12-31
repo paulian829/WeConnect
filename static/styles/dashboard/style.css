@@ -56,7 +56,7 @@ body{
 	color: #fff;
 	font-size: 1rem;
 	display: block;
-	padding:20px 20px 20px 30px
+	padding:20px 20px 20px 30px;
 }
 a i{
 	margin-right: 10px;
@@ -453,7 +453,7 @@ a{
   table th,
   table td{
 	text-align: left;
-  }
+	}
   table.layout{
 	width: 100%;
 	border-collapse: collapse;
@@ -706,7 +706,9 @@ body > div > div.page-content > div.data-container > div > div.file-side{
 .file-info-side {
 	padding:30px;
 	max-width: 25vw;
-	width: 100%;
+	/* width: 100%; */
+	/* width: 0; */
+	overflow: hidden;
 }
 .file-side-container h3{
 	padding:20px 0 0 0;
@@ -754,9 +756,9 @@ a {
     box-shadow: 10px 10px 10px #a39e9e;
 }
 img.card-img-top {
-    /* max-width: 240px; */
-    max-height: 35vh;
-    height: 100%;
+    /* max-width: 250px; */
+    /* max-height: 35vh; */
+    /* height: 100%; */
     width: 100%;
     /* min-height: 25vh; */
     object-fit: contain;
@@ -816,7 +818,8 @@ a.active {
 	font-weight: 600 !important;
 }
 .logo img {
-    max-width: 240px;
+    width: 100%;
+    /* max-width: 240px; */
 }
 .card-body span{
 	overflow: hidden;
@@ -825,4 +828,11 @@ a.active {
     max-width: 200px;
     width: 100%;
     display: inline-block;
+}
+
+.row.gutters {
+    padding: 0 20px;
+}
+.users-container{
+	padding: 50px;
 }
