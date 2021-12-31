@@ -534,6 +534,20 @@ def checkIfUserUploadedDB(userID, taskID):
     finally:
         mydb.close()
 
+def addProfilePicDB(FilePathName,id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (FilePathName, id, )
+        mycursor.callproc("addProfilePicDB", val)
+        mydb.commit()
+        if mycursor.rowcount > 0:
+            return True
+
+        return False
+    finally:
+        mydb.close()
+
 
 
 # ==========================================

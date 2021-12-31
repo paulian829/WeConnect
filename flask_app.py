@@ -9,12 +9,13 @@ from datetime import datetime
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 UPLOAD_FOLDER = 'static/uploads'
+PROFILE_IMAGES = 'static/uploads/ProfilePictures'
 # UPLOAD_FOLDER = './uploads/'
 
 app = Flask(__name__)
 app.secret_key = 'super secret key'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
+app.config['PROFILE_IMAGES'] = PROFILE_IMAGES
 
 @app.route("/", methods=['GET', 'POST'])
 def login():
@@ -33,6 +34,7 @@ def login():
         session['logged_in'] = True
         session['userID'] = result[0][0]
         session['name'] = result[0][3] + " " + result[0][4]
+        session['profilePic'] = result[0][8]
         if(result[0][6] == 1):
             session['admin'] = True
         else:
@@ -398,6 +400,19 @@ def uploadFile():
             return redirect(url_for('file', id=lastID[0][0]))
 
     return render_template("fileupload.html", title=title)
+
+@app.route('/uploadprofilepic', methods=['GET', 'POST'])
+def uploadprofilepic():
+    if request.method == 'POST':
+        file = request.files['file']
+        id = request.form.get('id')
+        FilePathName = f"{id}_{file.filename}"
+        pathToDb = (f"/{app.config['PROFILE_IMAGES']}/{FilePathName}")
+        file.save(os.path.join(app.root_path,
+                  app.config['PROFILE_IMAGES'], FilePathName))
+        addProfilePicDB(pathToDb,id)
+        return redirect(url_for('profile'))
+
 
 
 @app.route('/uploads', methods=['GET', 'POST'])
