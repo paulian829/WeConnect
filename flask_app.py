@@ -410,6 +410,7 @@ def uploadprofilepic():
         pathToDb = (f"/{app.config['PROFILE_IMAGES']}/{FilePathName}")
         file.save(os.path.join(app.root_path,
                   app.config['PROFILE_IMAGES'], FilePathName))
+        session['profilePic'] = pathToDb
         addProfilePicDB(pathToDb,id)
         return redirect(url_for('profile'))
 
