@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 31, 2021 at 01:36 PM
+-- Generation Time: Jan 03, 2022 at 01:15 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -27,6 +27,10 @@ DELIMITER $$
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addPosition` (IN `test` VARCHAR(50))  BEGIN
 	INSERT INTO position (position_name) VALUES (test);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addProfilePicDB` (IN `str` VARCHAR(200), IN `uID` INT(11))  BEGIN
+UPDATE users SET profilePic = str WHERE id = uID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AddTask` (IN `Name` VARCHAR(100), IN `createdBy` INT(11), IN `dateCreated` DATETIME, IN `deadline` DATETIME, IN `description` TEXT, IN `Tstatus` VARCHAR(100), IN `scheduled` VARCHAR(50))  BEGIN
@@ -260,22 +264,23 @@ CREATE TABLE `users` (
   `LastName` varchar(50) NOT NULL,
   `PhoneNumber` varchar(11) NOT NULL,
   `Position` int(11) NOT NULL,
-  `DateCreated` datetime NOT NULL DEFAULT current_timestamp()
+  `DateCreated` datetime NOT NULL DEFAULT current_timestamp(),
+  `profilePic` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`ID`, `Email`, `Pass`, `FirstName`, `LastName`, `PhoneNumber`, `Position`, `DateCreated`) VALUES
-(82, 'admin@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'super', 'admin', '+4497511601', 1, '2021-11-18 08:36:42'),
-(86, 'weconnect.thesis@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'Super', '2', '01234567890', 1, '2021-11-22 00:17:06'),
-(91, 'teacher@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher', 'Account', '01234567890', 4, '2021-12-21 10:27:00'),
-(93, 'principal@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Principal', 'User', '01234567890', 5, '2021-12-30 10:58:31'),
-(94, 'districtsupervisor@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'District', 'Supervisor', '01234567890', 2, '2021-12-30 10:59:02'),
-(95, 'teacher1@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher', 'One', '01234567890', 4, '2021-12-30 11:02:07'),
-(96, 'teacher2@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'two', '01234567890', 4, '2021-12-30 11:02:33'),
-(97, 'gradeChairman@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Grade1', 'Chairman', '01234567890', 3, '2021-12-31 12:29:37');
+INSERT INTO `users` (`ID`, `Email`, `Pass`, `FirstName`, `LastName`, `PhoneNumber`, `Position`, `DateCreated`, `profilePic`) VALUES
+(82, 'admin@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'super', 'admin', '+4497511601', 1, '2021-11-18 08:36:42', ''),
+(86, 'weconnect.thesis@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'Super', '2', '01234567890', 1, '2021-11-22 00:17:06', ''),
+(91, 'teacher@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher', 'Account', '01234567890', 4, '2021-12-21 10:27:00', '/static/uploads/ProfilePictures/91_18.jpg'),
+(93, 'principal@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Principal', 'User', '01234567890', 5, '2021-12-30 10:58:31', '/static/uploads/ProfilePictures/93_47.jpg'),
+(94, 'districtsupervisor@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'District', 'Supervisor', '01234567890', 2, '2021-12-30 10:59:02', '/static/uploads/ProfilePictures/94_52.jpg'),
+(95, 'teacher1@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher', 'One', '01234567890', 4, '2021-12-30 11:02:07', '/static/uploads/ProfilePictures/95_66.jpg'),
+(96, 'teacher2@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'two', '01234567890', 4, '2021-12-30 11:02:33', '/static/uploads/ProfilePictures/96_85.jpg'),
+(97, 'gradeChairman@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Grade', 'Chairman', '01234567890', 3, '2021-12-31 12:29:37', '/static/uploads/ProfilePictures/97_33.jpg');
 
 --
 -- Indexes for dumped tables
