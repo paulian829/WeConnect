@@ -219,7 +219,7 @@ def schedule():
     title = 'TASKS'
     results = getAllTask()
     id = session['userID']
-    return render_template('schedule.html', title=title,results = results)
+    return render_template('Schedule.html', title=title,results = results)
 
 @app.route('/schedule/get/<id>')
 def getSchedule(id):
