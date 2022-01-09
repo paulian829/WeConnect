@@ -31,6 +31,7 @@ app.config.update(
 def add_security_headers(resp):
     resp.headers['Content-Security-Policy']='default-src \'self\''
     resp.headers['X-Content-Type-Options'] = 'nosniff'
+    resp.set_cookie('username', 'flask', secure=True, httponly=True, samesite='Lax')
     return resp
 
 @app.route("/", methods=['GET', 'POST'])
@@ -46,11 +47,7 @@ def login():
             return render_template('login.html', result=result)
         result = loginDB(email, password)
         if(result == "Error"):
-            
-            r = make_response(render_template('login.html'), result = result)
-            r.headers.set('X-Content-Type-Options', 'nosniff')
-            r.set_cookie('username', 'flask', secure=True, httponly=True, samesite='Lax')
-            return r
+            return render_template(('login.html'), result = result)
 
         # session['logged_in'] = True
         session['userID'] = result[0][0]
@@ -66,10 +63,7 @@ def login():
         else:
             session['admin'] = False
         # return redirect(url_for('dashboard'))
-        r = make_response(render_template('verify.html'))
-        r.headers.set('X-Content-Type-Options', 'nosniff')
-        r.set_cookie('username', 'flask', secure=True, httponly=True, samesite='Lax')
-        return r
+        return render_template(('verify.html'))
         # Direct to the phone verification Screen
     return render_template(('login.html'), result = result)
 
