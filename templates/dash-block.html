@@ -27,49 +27,60 @@
             </div>
             <nav>
                 <ul>
+                    {% if session['admin'] is not true %}
                     <li>
                         <a {% if title=='DASHBOARD' %} class='active' {% endif %} href={{url_for('dashboard')}}>
                             <i class="fas fa-tachometer-alt"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
+                    {% endif %}
+                    {% if session['admin'] is not true %}
                     <li>
                         <a {% if title=='TASKS' %} class='active' {% endif %} href={{url_for('schedule')}}>
                             <i class="fas fa-thumbtack"></i>
                             <span>Tasks</span>
                         </a>
                     </li>
+                    {% endif %}
+                    {% if session['admin'] is not true %}
                     <li>
                         <a {% if title=='MY FILES' %} class='active' {% endif %} href={{url_for('myFiles')}}>
                             <i class="fas fa-tachometer-alt"></i>
                             <span>My Files</span>
                         </a>
                     </li>
-                    
+                    {% endif %}
+                    {% if session['admin'] is not true %}
                     <li>
                         <a {% if title=='PINNED' %} class='active' {% endif %} href={{url_for('pinned')}}>
                             <i class="fas fa-thumbtack"></i>
                             <span>Pinned Files</span>
                         </a>
                     </li>
+                    {% endif %}
                     <!-- <li>
                         <a {% if title=='SHARED FILES' %} class='active' {% endif %} href={{url_for('shared')}}>
                             <i class="fas fa-network-wired" style="width: 14px;"></i>
                             <span>Shared with me</span>
                         </a>
                     </li> -->
+                    {% if session['admin'] is not true %}
                     <li>
                         <a {% if title == 'USERS' %} class='active' {% endif %} href={{url_for('users')}}>
                             <i class="fas fa-users" style="width: 14px;"></i>
                             <span>Users</span>
                         </a>
                     </li>
+                    {% endif %}
+                    {% if session['admin'] is not true %}
                     <li>
                         <a {% if title=='DELETE' %} class='active' {% endif %} href={{url_for('deleted')}}>
                             <i class="fas fa-trash"></i>
                             <span>Trash Files</span>
                         </a>
                     </li>
+                    {% endif %}
                     <!-- <li>
                         <a {% if title=='SETTINGS' %} class='active' {% endif %} href={{url_for('settings')}}>
                             <i class="fas fa-cogs"></i>
