@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href={{url_for('static', filename='styles/login/styles.css' ) }}>
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='images//favicon.ico' ) }}">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app" class="bg-img">
+        <div class="content">
+            <header>
+                <div class='logo-container'><img src="{{url_for('static', filename='images//logo.png' ) }}" alt=""></div>WeConnect
+            </header>
+            <form action="/verify" method='POST'>
+                <p></p>
+                <div class="field">
+                    <input type="text" placeholder="Insert 4 digit code" class='verification-code' name="code">
+                </div>
+                <br>
+                <div class=result>
+                    {% if "Error" in result %}
+                    <h3 class="Error">Username or Password is Wrong, Pls Try Again</h3>
+                    {% endif %}
+                </div>
+                <br>
+                <div class="field field-button">
+                    <input type="submit">
+                </div>
+            </form>
+            <br>
+
+        </div>
+    </div>
+</body>
+
+<style>
+    .Error {
+        color: rgb(216, 88, 88);
+        font-family: 'Montserrat', sans-serif;
+        font-size: 20px;
+    }
+
+    .Success {
+        color: rgb(63, 209, 82);
+        font-family: 'Montserrat', sans-serif;
+        font-size: 24px;
+    }
+</style>

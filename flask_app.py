@@ -1,10 +1,14 @@
 from datetime import timedelta
 from enum import unique
-from flask import Flask, render_template, request, json, redirect, url_for, session, send_from_directory, current_app, jsonify
+from flask import Flask, render_template, request, json, redirect, url_for, session, send_from_directory, current_app, jsonify, escape
+from flask.helpers import make_response
 from werkzeug.wrappers import response
 from database import *
 import os
 from datetime import datetime
+import random
+import http.client
+import json
 
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -17,30 +21,88 @@ app.secret_key = 'super secret key'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['PROFILE_IMAGES'] = PROFILE_IMAGES
 
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+)
+
 @app.route("/", methods=['GET', 'POST'])
 def login():
     result = ''
     session['logged_in'] = False
     if request.method == 'POST':
         email = request.form.get('Email')
+        print(email)
         password = request.form.get('Password')
         if (len(email) == 0 or len(password) == 0):
             result = "Error"
             return render_template('login.html', result=result)
         result = loginDB(email, password)
         if(result == "Error"):
-            return render_template('login.html', result=result)
+            
+            r = make_response(render_template('login.html'), result = result)
+            r.headers.set('X-Content-Type-Options', 'nosniff')
+            r.set_cookie('username', 'flask', secure=True, httponly=True, samesite='Lax')
+            return r
 
-        session['logged_in'] = True
+        # session['logged_in'] = True
         session['userID'] = result[0][0]
         session['name'] = result[0][3] + " " + result[0][4]
         session['profilePic'] = result[0][8]
+        session['phone'] = result[0][5]
+        # session['smsverify'] = random.randint(1000,9999)
+        session['smsverify'] = 1235
+        # Send to phone number
+        # sendMessage()
         if(result[0][6] == 1):
             session['admin'] = True
         else:
             session['admin'] = False
-        return redirect(url_for('dashboard'))
-    return render_template('login.html', result=result)
+        # return redirect(url_for('dashboard'))
+        r = make_response(render_template('verify.html'))
+        r.headers.set('X-Content-Type-Options', 'nosniff')
+        r.set_cookie('username', 'flask', secure=True, httponly=True, samesite='Lax')
+        return r
+        # Direct to the phone verification Screen
+    r = make_response(render_template('login.html'))
+    r.headers.set('X-Content-Type-Options', 'nosniff')
+    r.set_cookie('username', 'flask', secure=True, httponly=True, samesite='Lax')
+    return r
+
+@app.route("/verify", methods = ['POST','GET'])
+def verify():
+    if not session['smsverify']:
+        return redirect(url_for("forbidden"))
+    if request.method == 'POST':
+        code = request.form.get("code")
+        print(code, session['smsverify'])
+        if code == str(session['smsverify']):
+            session['logged_in'] = True
+            return redirect(url_for('dashboard'))
+    return render_template('verify.html')
+
+def sendMessage():
+    phone = session['phone']
+    code = session['smsverify']
+    api_key = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2F1dGg6ODA4MC9hcGkvdjEvdXNlcnMvYXBpL2tleS9nZW5lcmF0ZSIsImlhdCI6MTY0MTMwMzIzNSwibmJmIjoxNjQxMzAzMjM1LCJqdGkiOiJvUExDSVJxbk9Mb29YaVBLIiwic3ViIjozMjQ0NjIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.RNeo7VohKiBBfo1_EyCwFsBPHej9ausI3KVIPe45beo'
+    conn = http.client.HTTPSConnection("api.sms.to")
+    payload = {
+        "message" : "Weconnect OTP code" + str(code), 
+        "to" : "+" + str(phone), 
+        "sender_id" : "SMSto"
+        }
+    headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + api_key
+    }
+    conn.request("POST", "/sms/send", json.dumps(payload), headers)
+    res = conn.getresponse()
+    data = res.read()
+    print(data.decode("utf-8"))
+
+
+
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -65,6 +127,8 @@ def register():
 
 @app.route("/admin/edit/<id>", methods=['GET', 'POST'])
 def viewUser(id):
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     positions = getAll("position")
     result = getUserData(id)
     return render_template("admin-view-profile.html", result=result, positions=positions, title='ADMIN')
@@ -77,6 +141,8 @@ def forgotpassword():
 
 @app.route("/test")
 def test():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     id = session['userID']
     number_of_files_uploaded = getNumberOfFilesUploaded(id)
     number_of_files_passed = getNumberOfFilesPassed(id)
@@ -95,6 +161,8 @@ def test():
 
 @app.route("/getmyfiles")
 def getmyfiles():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     id = session['userID']
     getSixFiles = getNFiles(id, 5)
     getAll = getAllFilesUser(id)
@@ -108,13 +176,20 @@ def getmyfiles():
 
 @app.route('/getUserDetails/<id>')
 def getUserDetails(id):
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     user = getUserData(id)
     
     dict = {"userData": user}
-    return json.dumps(dict)
+    return json.dumps(dict, indent=4, sort_keys=True, default=str)
+
+    # return json.dumps(dict)
+
 
 @app.route('/getTeachers/')
 def getTeachers():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     user = getAllUsers()
     print("+++++++++++++", user)
     dict = {"users": user}
@@ -124,6 +199,8 @@ def getTeachers():
 
 @app.route("/home")
 def home():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     title = 'HOME'
     items = [
         {"message": 'Foo.pdf', "key": 0},
@@ -148,6 +225,8 @@ def home():
 
 @app.route("/uploadProfileImg", methods=['GET', 'POST'])
 def uploadProfileImg():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     if request.method == 'POST':
         return "OK you got it"
 
@@ -162,6 +241,8 @@ def adminThrash():
 
 @app.route("/myfiles")
 def myFiles():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     positions = getAll("position")
     title = 'MY FILES'
     return render_template("myFiles.html", title=title, positions=positions)
@@ -186,6 +267,8 @@ def adminPassword():
 @app.route("/dashboard")
 # ALSO SAVE AN EVENT IN CASE FOR NOTIFICATIONS
 def dashboard():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     positions = getAll("position")
     title = 'DASHBOARD'
     return render_template("dashboard.html", title=title, positions=positions)
@@ -193,29 +276,39 @@ def dashboard():
 
 @app.route("/pinned")
 def pinned():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     title = 'PINNED'
     return render_template("pinned.html", title=title)
 
 
 @app.route("/shared")
 def shared():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     title = 'SHARED FILES'
     return render_template("shared.html", title=title)
 
 
 @app.route("/deleted")
 def deleted():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     title = 'DELETE'
     return render_template("delete.html", title=title)
 
 @app.route('/users')
 def users():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     title = 'USERS'
     users = getAllUsers()
     return render_template('users.html', title=title,users=users)
 
 @app.route('/schedule/')
 def schedule():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     title = 'TASKS'
     results = getAllTask()
     id = session['userID']
@@ -223,6 +316,8 @@ def schedule():
 
 @app.route('/schedule/get/<id>')
 def getSchedule(id):
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     title = 'TASKS'
     results = getOneTask(id)
     id = session['userID']
@@ -230,6 +325,8 @@ def getSchedule(id):
 
 @app.route('/updatetask/<status>/<taskID>')
 def updateTask(status,taskID):
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     title = 'TASKS'
     result = updateTaskStatus(status,taskID)
     print(status)
@@ -240,6 +337,8 @@ def updateTask(status,taskID):
 
 @app.route('/schedule/add', methods=['GET', 'POST'])
 def addSchedule():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     if request.method == 'POST':
         taskName = request.form.get("taskName")
         # imageBlob = request.files['taskImage'].file.name
@@ -257,18 +356,24 @@ def addSchedule():
             return 'error'
 @app.route('/checkifuseruploaded/<userID>/<taskID>')
 def checkifuseruploaded(userID, taskID):
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     result = checkIfUserUploadedDB(userID, taskID)
     dict = {"result": result}
     return json.dumps(dict) 
 
 @app.route("/settings")
 def settings():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     title = 'SETTINGS'
     return render_template("settings.html", title=title)
 
 
 @app.route("/UpdateUser", methods=['GET', 'POST'])
 def updateUser():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     if request.method == "POST":
         id = request.form.get("id")
         requesttype = request.form.get("type") 
@@ -288,6 +393,8 @@ def updateUser():
 
 @app.route("/admin/users", methods=['GET', 'POST'])
 def admin(result=''):
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     if session['admin'] == False:
         return redirect(url_for("forbidden"))
     title = 'ADMIN'
@@ -325,6 +432,8 @@ def adminFiles():
 
 @app.route("/profile/")
 def profile():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     title = 'PROFILE'
     # Check if Sessions Exist
     if session['logged_in'] is False:
@@ -342,6 +451,8 @@ def allowed_file(filename):
 
 @app.route("/uploadfile", methods=['GET', 'POST'])
 def uploadFile():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     title = "FILE UPLOAD"
     if request.method == 'POST':
         if 'file' not in request.files:
@@ -403,6 +514,8 @@ def uploadFile():
 
 @app.route('/uploadprofilepic', methods=['GET', 'POST'])
 def uploadprofilepic():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     if request.method == 'POST':
         file = request.files['file']
         id = request.form.get('id')
@@ -418,6 +531,8 @@ def uploadprofilepic():
 
 @app.route('/uploads', methods=['GET', 'POST'])
 def download(filename="FILENAME.png"):
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     uploads = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'])
     print(uploads)
     return send_from_directory(uploads, filename)
@@ -425,6 +540,8 @@ def download(filename="FILENAME.png"):
 
 @app.route('/file/<id>')
 def file(id):
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     result = getFileDb(id)
     result = result[0]
     title = "File"
@@ -444,6 +561,8 @@ def logout():
 
 @app.route("/test123", methods=['GET', 'POST'])
 def getEditorData():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     data = request.args.get('data')
     id = int(request.args.get('id'))
     print("DATA", data)
@@ -460,12 +579,16 @@ def forbidden():
 
 @app.route("/thrash/<fileid>")
 def thrash(fileid):
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     result = moveFileToThrash(fileid)
     return redirect(url_for('myFiles'))
 
 
 @app.route("/editor/<id>")
 def editor(id):
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     title = "FILE EDITOR"
     result = getFileDb(id)
     result = result[0]
@@ -475,12 +598,16 @@ def editor(id):
 
 @app.route("/restore/<id>")
 def restore(id):
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     result = restoreFileDB(id)
     return redirect(url_for('myFiles'))
 
 
 @app.route("/emptytrash", methods=['GET', 'POST'])
 def emptyTrash():
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     id = session['userID']
     result = emptyTrashDb(id)
     return redirect(url_for("deleted"))
@@ -488,12 +615,15 @@ def emptyTrash():
 
 @app.route("/pin/<id>/<status>", methods=['GET', 'POST'])
 def setPinned(id, status):
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     result = setStatusPinned(id, status)
     print('success')
     return redirect(url_for('file', id=id))
 
 @app.route('/admin/deleteuser/<id>')
 def deleteUser(id):
+    
     if session['admin'] == False:
         return redirect(url_for("forbidden"))
     result = deleteUserDB(id)
@@ -501,6 +631,7 @@ def deleteUser(id):
 
 @app.route('/admin/deletefile/<id>')
 def deletefile(id):
+    
     if session['admin'] == False:
         return redirect(url_for("forbidden"))
     result = deleteFileDB(id)
@@ -508,6 +639,8 @@ def deletefile(id):
 
 @app.route('/task/delete/<id>')
 def deletefileTask(id):
+    if not session['logged_in']:
+        return redirect(url_for("forbidden"))
     result = deleteFileDB(id)
     return redirect(url_for('schedule'))
 

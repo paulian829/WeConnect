@@ -34,17 +34,18 @@
                         </a>
                     </li>
                     <li>
-                        <a {% if title=='MY FILES' %} class='active' {% endif %} href={{url_for('myFiles')}}>
-                            <i class="fas fa-tachometer-alt"></i>
-                            <span>My Files</span>
-                        </a>
-                    </li>
-                    <li>
                         <a {% if title=='TASKS' %} class='active' {% endif %} href={{url_for('schedule')}}>
                             <i class="fas fa-thumbtack"></i>
                             <span>Tasks</span>
                         </a>
                     </li>
+                    <li>
+                        <a {% if title=='MY FILES' %} class='active' {% endif %} href={{url_for('myFiles')}}>
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>My Files</span>
+                        </a>
+                    </li>
+                    
                     <li>
                         <a {% if title=='PINNED' %} class='active' {% endif %} href={{url_for('pinned')}}>
                             <i class="fas fa-thumbtack"></i>
