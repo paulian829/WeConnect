@@ -63,7 +63,7 @@ def login():
         else:
             session['admin'] = False
         # return redirect(url_for('dashboard'))
-        return render_template(('verify.html'))
+        return render_template(('verify.html'),result='')
         # Direct to the phone verification Screen
     return render_template(('login.html'), result = result)
 
