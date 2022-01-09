@@ -30,6 +30,7 @@ app.config.update(
 @app.after_request
 def add_security_headers(resp):
     resp.headers['Content-Security-Policy']='default-src \'self\''
+    resp.headers['X-Content-Type-Options'] = 'nosniff'
     return resp
 
 @app.route("/", methods=['GET', 'POST'])
