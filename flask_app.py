@@ -65,7 +65,7 @@ def login():
         r.set_cookie('username', 'flask', secure=True, httponly=True, samesite='Lax')
         return r
         # Direct to the phone verification Screen
-    r = make_response(render_template('login.html'))
+    r = make_response(render_template('login.html'),result = result)
     r.headers.set('X-Content-Type-Options', 'nosniff')
     r.set_cookie('username', 'flask', secure=True, httponly=True, samesite='Lax')
     return r
