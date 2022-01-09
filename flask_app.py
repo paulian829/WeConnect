@@ -157,7 +157,9 @@ def test():
             "number_of_files_nearing_Deadline": number_of_files_nearing_Deadline,
             "five_files": five_files}
 
-    return json.dumps(dict)
+    return json.dumps(dict, indent=4, sort_keys=True, default=str)
+
+
 
 
 @app.route("/getmyfiles")
@@ -171,9 +173,7 @@ def getmyfiles():
     dict = {"six_files": getSixFiles,
             "getall": getAll
             }
-    print(dict)
-
-    return json.dumps(dict)
+    return json.dumps(dict, indent=4, sort_keys=True, default=str)
 
 @app.route('/getUserDetails/<id>')
 def getUserDetails(id):
@@ -194,7 +194,8 @@ def getTeachers():
     user = getAllUsers()
     print("+++++++++++++", user)
     dict = {"users": user}
-    return json.dumps(dict)
+    return json.dumps(dict, indent=4, sort_keys=True, default=str)
+
 
 
 
@@ -361,7 +362,7 @@ def checkifuseruploaded(userID, taskID):
         return redirect(url_for("forbidden"))
     result = checkIfUserUploadedDB(userID, taskID)
     dict = {"result": result}
-    return json.dumps(dict) 
+    return json.dumps(dict, indent=4, sort_keys=True, default=str)
 
 @app.route("/settings")
 def settings():

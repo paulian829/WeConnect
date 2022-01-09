@@ -5,9 +5,9 @@
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="display: none;">
             <i class="fas fa-plus-circle"></i> Create new Task
         </button>
-        <button type="button" class="btn" v-bind:class="{'btn-success':test}">Weekly</button>
-        <button type="button" class="btn btn-primary">Primary</button>
-        <button type="button" class="btn btn-primary">Primary</button>
+        <button type="button" class="btn" v-bind:class="{'btn-success': Weekly, 'btn-primary':!Weekly }" @click='changeTime("Weekly")'>Weekly</button>
+        <button type="button" class="btn" v-bind:class="{'btn-success': Monthly, 'btn-primary':!Monthly }" @click='changeTime("Monthly")'>Monthly</button>
+        <button type="button" class="btn" v-bind:class="{'btn-success': Quarterly, 'btn-primary':!Quarterly }" @click='changeTime("Quarterly")'>Quarterly</button>
         <br>
         <br>
         <div class="row row-cols-1 row-cols-md-5 g-6" id="Weekly" v-if='Selected==="Weekly"'> 
@@ -136,19 +136,27 @@
         delimiters: ['[[', ']]'],
         data: {
             Selected:'Weekly',
-            test:true
+            Weekly:true,
+            Monthly:false,
+            Quarterly:false,
         },
         methods: {
-            changeSelected(Schedule) {
+            changeTime(Schedule) {
                 this.Selected = Schedule
+                if(Schedule === 'Weekly'){
+                    this.Weekly = true
+                    this.Monthly = false
+                    this.Quarterly = false
+                }else if(Schedule === 'Monthly'){
+                    this.Weekly = false
+                    this.Monthly = true
+                    this.Quarterly = false
+                }else if(Schedule === 'Quarterly'){
+                    this.Weekly = false
+                    this.Monthly = false
+                    this.Quarterly = true
+                }
             },
-            // weeklySelected(Schedule) {
-            //     console.log('testing')
-            //     if(this.Selected === 'Weekly') {
-            //         return {'btn-sucess':true}
-            //     }
-            //     return {'btn-primary':true}
-            // }
         },
         mounted() {
             
