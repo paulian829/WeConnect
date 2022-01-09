@@ -27,6 +27,11 @@ app.config.update(
     SESSION_COOKIE_SAMESITE='Lax',
 )
 
+@app.after_request
+def add_security_headers(resp):
+    resp.headers['Content-Security-Policy']='default-src \'self\''
+    return resp
+
 @app.route("/", methods=['GET', 'POST'])
 def login():
     result = ''
@@ -65,10 +70,7 @@ def login():
         r.set_cookie('username', 'flask', secure=True, httponly=True, samesite='Lax')
         return r
         # Direct to the phone verification Screen
-    r = make_response(render_template('login.html'), result = "Error")
-    r.headers.set('X-Content-Type-Options', 'nosniff')
-    r.set_cookie('username', 'flask', secure=True, httponly=True, samesite='Lax')
-    return r
+    return render_template(('login.html'), result = result)
 
 @app.route("/verify", methods = ['POST','GET'])
 def verify():
