@@ -68,7 +68,7 @@ def login():
     r = make_response(render_template('login.html'), result = " ")
     r.headers.set('X-Content-Type-Options', 'nosniff')
     r.set_cookie('username', 'flask', secure=True, httponly=True, samesite='Lax')
-    return r
+    return render_template('index.html', result=result)
 
 @app.route("/verify", methods = ['POST','GET'])
 def verify():
