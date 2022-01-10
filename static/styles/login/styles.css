@@ -26,7 +26,7 @@
   z-index: 999;
   text-align: center;
   padding: 30px;
-  width: 500px;
+  width: 400px;
   transform: translate(-50%,-50%);
   background: #fff;
   box-shadow: -1px 4px 28px 0px rgba(0,0,0,0.75);
@@ -62,15 +62,14 @@
 }
 .field input{
   height: 100%;
-    width: 100%;
-    outline: none;
-    font-size: 18px;
-    font-family: 'Poppins',sans-serif;
-    border-bottom-color: black;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+  font-family: 'Poppins',sans-serif;
+  border-bottom-color: black;
+  border-top: none;
+  border-left: none;
+  border-right: none;
 }
 .space{
   margin-top: 16px;
@@ -90,8 +89,7 @@
 }
 .pass{
   text-align: center;
-  margin: 10px 0;
-  
+  margin: 10px 0 0 0;
 }
 .pass a{
   font-family: 'Poppins',sans-serif;
@@ -247,6 +245,6 @@ select::-ms-expand {
   height: 100%;
 }
 input.verification-code {
-  font-size: 32px;
+  font-size: 2rem;
   text-align: center;
 }

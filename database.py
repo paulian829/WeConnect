@@ -147,6 +147,22 @@ def getUserData(id):
     finally:
         mydb.close()
 
+
+def getUserViaEmail(email):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (email,)
+        mycursor.callproc("getUserViaEmail", val)
+        results = list
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+        mycursor.close()
+        return results
+    finally:
+        mydb.close()
+
+
 def getTeachers(id):
     try:
         mydb = connectDb()

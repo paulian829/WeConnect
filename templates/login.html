@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href={{url_for('static', filename='styles/login/styles.css' ) }}>
     <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='images//favicon.ico' ) }}">
-    <title>Document</title>
+    <title>Weconnect:Login</title>
 </head>
 
 <body>
@@ -26,35 +26,33 @@
                     <span class="show">SHOW</span>
                 </div>
                 <br>
-                <!-- <div class=result>
-                    {% if "Error" in result %}
-                    <h3 class="Error">Username or Password is Wrong, Pls Try Again</h3>
-                    {% endif %}
-                </div> -->
-                <br>
                 <div class="field field-button">
                     <input type="submit">
                 </div>
             </form>
+            <div class=result>
+                {% if "Error" in result %}
+                <h3 class="Error">Email or Password is Wrong, Try Again</h3>
+                {% endif %}
+            </div>
             <div class="pass">
                 <a href={{url_for('forgotpassword')}}>Forgot Password?</a>
             </div>
-            <br>
-
         </div>
     </div>
 </body>
 
 <style>
     .Error {
+        padding-top: 10px;
         color: rgb(216, 88, 88);
         font-family: 'Montserrat', sans-serif;
-        font-size: 20px;
+        font-size: 14px;
     }
 
     .Success {
         color: rgb(63, 209, 82);
         font-family: 'Montserrat', sans-serif;
-        font-size: 24px;
+        font-size: 14px;
     }
 </style>
