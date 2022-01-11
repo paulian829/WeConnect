@@ -9,10 +9,7 @@ def connectDb():
     Function used to connecto to database
     """
     mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database='weconnect'
+        host="localhost", user="root", password="", database="weconnect"
     )
     # mydb = mysql.connector.connect(
     #     host="WeConnect.mysql.pythonanywhere-services.com",
@@ -38,32 +35,68 @@ def getAll(table):
         return results
     finally:
         mydb.close()
-        print('test')
+        print("test")
 
 
-def registerNewUser(email,  password, repeatPass, firstname, lastname, phoneNumber, position):
+def registerNewUser(
+    email, password, repeatPass, firstname, lastname, phoneNumber, position
+):
     """
     Cretes a new user
     """
     try:
         mydb = connectDb()
         # Check if Password are the same
-        if(password != repeatPass):
-            return("Password not The Same")
+        if password != repeatPass:
+            return "Password not The Same"
         # Hashing
-        password = bytes(password, encoding='utf-8')
-        hash_object = hashlib.sha256(str(password).encode('utf-8'))
+        password = bytes(password, encoding="utf-8")
+        hash_object = hashlib.sha256(str(password).encode("utf-8"))
         hex_dig = hash_object.hexdigest()
         try:
             mycursor = mydb.cursor()
-            args = (email, hex_dig, firstname,
-                    lastname, phoneNumber, position, )
-            mycursor.callproc('addUser', args)
+            args = (
+                email,
+                hex_dig,
+                firstname,
+                lastname,
+                phoneNumber,
+                position,
+            )
+            mycursor.callproc("addUser", args)
             mydb.commit()
             return "Success"
         except Exception as e:
             if "Duplicate entry" in str(e):
-                return ("Duplicate error")
+                return "Duplicate error"
+    finally:
+        mydb.close()
+
+
+def resetPassword(password, id):
+    """
+    Reset Password
+    """
+    try:
+        mydb = connectDb()
+        # Hashing
+        password = bytes(password, encoding="utf-8")
+        hash_object = hashlib.sha256(str(password).encode("utf-8"))
+        hex_dig = hash_object.hexdigest()
+        mycursor = mydb.cursor()
+        val = (
+            hex_dig,
+            id,
+        )
+        mycursor.callproc("resetPassword", val)
+        mydb.commit()
+        if mycursor.rowcount > 0:
+            return True
+
+        return "Error"
+    except Exception as e:
+        return "Error"
+
     finally:
         mydb.close()
 
@@ -75,7 +108,14 @@ def updateUserDB(id, email, firstName, lastName, phoneNumber, position):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
-        val = (email, firstName, lastName, phoneNumber, position, id, )
+        val = (
+            email,
+            firstName,
+            lastName,
+            phoneNumber,
+            position,
+            id,
+        )
         mycursor.callproc("updateUser", val)
         mydb.commit()
         if mycursor.rowcount > 0:
@@ -94,7 +134,7 @@ def deleteUserDB(id):
         mydb = connectDb()
         print(id)
         mycursor = mydb.cursor()
-        mycursor.callproc("deleteUser", (id, ))
+        mycursor.callproc("deleteUser", (id,))
         mydb.commit()
 
         return "Delete"
@@ -110,17 +150,17 @@ def loginDB(email, password):
         val = (email,)
         mycursor.callproc("SelectUserEmail", val)
         for result in mycursor.stored_results():
-            myresult = (result.fetchall())
-        if(len(myresult) == 0):
+            myresult = result.fetchall()
+        if len(myresult) == 0:
             mycursor.close()
             return "Error"
         realPassword = myresult[0][2]
         # Compare Password
-        typedpassword = bytes(password, encoding='utf-8')
-        hash_object = hashlib.sha256(str(typedpassword).encode('utf-8'))
+        typedpassword = bytes(password, encoding="utf-8")
+        hash_object = hashlib.sha256(str(typedpassword).encode("utf-8"))
         hex_dig = hash_object.hexdigest()
         print(realPassword, hex_dig)
-        if(realPassword == hex_dig):
+        if realPassword == hex_dig:
             print(myresult)
             mycursor.close()
             return myresult
@@ -175,7 +215,8 @@ def getTeachers(id):
     finally:
         mydb.close()
 
-def updateTaskStatus(status,taskID):
+
+def updateTaskStatus(status, taskID):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
@@ -200,7 +241,7 @@ def getAllUsers():
         return results
     finally:
         mydb.close()
-        print('test')
+        print("test")
 
 
 def getPosition(positionID):
@@ -222,7 +263,7 @@ def newPosition(position):
         mydb = connectDb()
         mycursor = mydb.cursor()
         val = (position,)
-        mycursor.callproc('addPosition', val)
+        mycursor.callproc("addPosition", val)
         mydb.commit()
         return True
     except:
@@ -232,19 +273,43 @@ def newPosition(position):
         mydb.close()
 
 
-def saveFiletoDb(filename, filetype, filesize, file_content_type, uploaded_by, share_to_user, share_to_group, deadline, revision,taskID,FilePathName):
+def saveFiletoDb(
+    filename,
+    filetype,
+    filesize,
+    file_content_type,
+    uploaded_by,
+    share_to_user,
+    share_to_group,
+    deadline,
+    revision,
+    taskID,
+    FilePathName,
+):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
         today = datetime.now()
-        val = (filename, filetype, filesize, file_content_type, uploaded_by,
-               share_to_user, share_to_group, deadline, revision, today,taskID,FilePathName)
-        mycursor.callproc('saveFile', val)
+        val = (
+            filename,
+            filetype,
+            filesize,
+            file_content_type,
+            uploaded_by,
+            share_to_user,
+            share_to_group,
+            deadline,
+            revision,
+            today,
+            taskID,
+            FilePathName,
+        )
+        mycursor.callproc("saveFile", val)
         mycursor.lastrowid
         mydb.commit()
         for result in mycursor.stored_results():
             results = result.fetchall()
-            return (results)
+            return results
     except Exception as e:
         mycursor.close()
         print(e)
@@ -375,7 +440,10 @@ def getNFiles(id, number):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
-        val = (id, number,)
+        val = (
+            id,
+            number,
+        )
         results = list
         mycursor.callproc("getNFiles", val)
         for result in mycursor.stored_results():
@@ -487,26 +555,38 @@ def deleteFileDB(id):
 
     finally:
         mydb.close()
-    
-def addTask(taskName,taskImage, taskCreatedBy, taskDeadline, taskDescription,schedule):
+
+
+def addTask(
+    taskName, taskImage, taskCreatedBy, taskDeadline, taskDescription, schedule
+):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor(buffered=True)
         today = datetime.now()
-        status = 'Pending Teachers'
-        val = (taskName,taskCreatedBy,today, taskDeadline, taskDescription,status ,schedule)
-        mycursor.callproc('AddTask', val)
+        status = "Pending Teachers"
+        val = (
+            taskName,
+            taskCreatedBy,
+            today,
+            taskDeadline,
+            taskDescription,
+            status,
+            schedule,
+        )
+        mycursor.callproc("AddTask", val)
         mycursor.lastrowid
         mydb.commit()
         for result in mycursor.stored_results():
             results = result.fetchall()
-        return ("ok")
+        return "ok"
     except Exception as e:
         mycursor.close()
         print(e)
         return False
     finally:
         mydb.close()
+
 
 def getAllTask():
     try:
@@ -524,6 +604,7 @@ def getAllTask():
     finally:
         mydb.close()
 
+
 def getOneTask(id):
     try:
         mydb = connectDb()
@@ -537,11 +618,15 @@ def getOneTask(id):
     finally:
         mydb.close()
 
+
 def checkIfUserUploadedDB(userID, taskID):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
-        val = (userID,taskID,)
+        val = (
+            userID,
+            taskID,
+        )
         results = list
         mycursor.callproc("checkUserUpload", val)
         for result in mycursor.stored_results():
@@ -550,17 +635,36 @@ def checkIfUserUploadedDB(userID, taskID):
     finally:
         mydb.close()
 
-def addProfilePicDB(FilePathName,id):
+
+def addProfilePicDB(FilePathName, id):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
-        val = (FilePathName, id, )
+        val = (
+            FilePathName,
+            id,
+        )
         mycursor.callproc("addProfilePicDB", val)
         mydb.commit()
         if mycursor.rowcount > 0:
             return True
 
         return False
+    finally:
+        mydb.close()
+
+    
+def getTasksDB(sched):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (sched,)
+        results = list
+        mycursor.callproc("getTasksDB",val)
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+            
+        return results
     finally:
         mydb.close()
 

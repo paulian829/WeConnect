@@ -94,8 +94,12 @@ def verify():
     if request.method == "POST":
         code = request.form.get("code")
         print(code, session["smsverify"])
+            
         if code == str(session["smsverify"]):
             session["logged_in"] = True
+            if session["admin"] == True:
+                return redirect(url_for("admin"))
+            
             return redirect(url_for("dashboard"))
     return render_template("verify.html")
 
@@ -210,6 +214,24 @@ def resetPass(id):
 
     return render_template("reset.html", id=id, result=result)
 
+
+@app.route("/resetpassword/<id>/update", methods = ['POST'])
+def submitResetPass(id):
+    user = getUserData(id)
+    result = ''
+    print(user[0][1])
+    if session["resetPassword"] != user[0][1]:
+        return redirect(url_for("forbidden"))
+        
+    if request.method == "POST":
+        password = request.form.get("pass")
+        rePass = request.form.get("Repass")
+        if password != rePass:
+            return redirect(url_for("resetPass", result="Error",id=id))
+        result = resetPassword(password, id)
+        return redirect(url_for("login"))
+
+    return redirect(url_for("resetPass",id=id, result= result))
 
 @app.route("/test")
 def test():
@@ -387,6 +409,8 @@ def schedule():
     return render_template("Schedule.html", title=title, results=results)
 
 
+
+
 @app.route("/schedule/get/<id>")
 def getSchedule(id):
     if not session["logged_in"]:
@@ -396,6 +420,20 @@ def getSchedule(id):
     id = session["userID"]
     return render_template("singletask.html", title=title, results=results, id=id)
 
+@app.route('/admin/tasks/<sched>')
+def getTasks(sched):
+    if not session["admin"]:
+        return redirect(url_for("forbidden"))
+    results = getTasksDB(sched)
+    return render_template("singletaskadmin.html", title='ADMIN', results=results)
+
+@app.route('/admin/tasks/edit/<id>')
+def getTaskForEdit(id):
+    if not session["admin"]:
+        return redirect(url_for("forbidden"))
+    result = getOneTask(id)
+    dict = {"result": result}
+    return json.dumps(dict, indent=4, sort_keys=True, default=str)
 
 @app.route("/updatetask/<status>/<taskID>")
 def updateTask(status, taskID):

@@ -609,6 +609,7 @@ ul.nav.admin-nav {
 }
 .admin-container {
     padding: 25px;
+    min-height: 100vh;
 }
 .userid {
     max-width: 50px;

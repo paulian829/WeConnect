@@ -1,0 +1,222 @@
+{% extends "admin-block.html" %}
+{% block admincontent %}
+
+<div id='app'>
+    <div id="admin">
+        <div class="admin-container">
+            <div class="title-container">
+                <h3>Task list</h3>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-secondary btn-add-user" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"><i class="fas fa-user-plus"></i>
+                    Add New Task
+                </button>
+
+            </div>
+            <table class="table table-hover" id='tasksTable'>
+                <thead>
+                    <tr>
+                        <th scope="col" class="userid">Task ID#</th>
+                        <th scope="col">Task Name</th>
+                        <th scope="col">Created Date</th>
+                        <th scope="col">Deadline</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <th scope="row">{{result[0]}}</th>
+                        <td>{{result[1]}}</td>
+                        <td>{{result[3]}} {{result[4]}}</td>
+                        <td>{{result[5]}}</td>
+                        <td>{{result[6]}}</td>
+                        <td>{{result[7]}}</td>
+                        <td class="actions"><button type="submit" type="button" class="btn btn-primary"
+                                data-bs-toggle="modal" data-bs-target="#EditModal" @click=getTaskData({{result[0]}})><i
+                                    class="fas fa-edit"></i></button>
+
+
+                            <a href="/admin/deleteuser/{{result[0]}}"
+                                onclick="return confirm('Are you sure you want to Delete User?')"><button type="submit"
+                                    type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add new Scheduled Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/schedule/add" method='POST' enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="taskName" class="form-label">Task Name</label>
+                            <input type="text" class="form-control" id="taskName" name="taskName" required>
+                        </div>
+                        <!-- <div class="mb-3">
+                            <label for="taskImage" class="form-label">Upload Image</label>
+                            <input type="file" class="form-control" name="taskImage" id="taskImage"
+                                aria-describedby="taskImage" required>
+                        </div> -->
+                        <div class="mb-3">
+                            <label for="Deadline" class="form-label">Deadline</label>
+                            <input type="datetime-local" class="form-control" name="Deadline" id="Deadline" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Schedule" class="form-label">Schedule</label>
+                            <select class="form-select" aria-label="Default select example" name='Schedule'
+                                id='Schedule'>
+                                <option selected value="" disabled>Select Scheduled</option>
+                                <option value="Weekly">Weekly</option>
+                                <option value="Monthly">Monthly</option>
+                                <option value="Quarterly">Quarterly</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" rows="3" name=description></textarea>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" value="submit" class="btn btn-primary">Add</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Scheduled Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/schedule/edit/" method='POST' enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <input type="hidden" class="form-control" id="taskID" name="taskName" value=>
+                        <div class="mb-3">
+                            <label for="taskName" class="form-label">Task Name</label>
+                            <input type="text" class="form-control" id="taskName" name="taskName" required>
+                        </div>
+                        <!-- <div class="mb-3">
+                            <label for="taskImage" class="form-label">Upload Image</label>
+                            <input type="file" class="form-control" name="taskImage" id="taskImage"
+                                aria-describedby="taskImage" required>
+                        </div> -->
+                        <div class="mb-3">
+                            <label for="Deadline" class="form-label">Deadline</label>
+                            <input type="datetime-local" class="form-control" name="Deadline" id="Deadline" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Schedule" class="form-label">Schedule</label>
+                            <select class="form-select" aria-label="Default select example" name='Schedule'
+                                id='Schedule'>
+                                <option selected value="" disabled>Select Scheduled</option>
+                                <option value="Weekly">Weekly</option>
+                                <option value="Monthly">Monthly</option>
+                                <option value="Quarterly">Quarterly</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" rows="3" name=description></textarea>
+                        </div>
+                        <label for="Status" class="form-label"></label>
+                        <select class="form-select" aria-label="Default select example" name='Status' id='Status'>
+                            <option selected value="" disabled>Select Status</option>
+                            <option value="Pending Teachers">Pending Teachers</option>
+                            <option value="Pending Grade Chairman">Pending Grade Chairman</option>
+                            <option value="Pending Principal">Pending Principal</option>
+                            <option value="Pending District Supervisor">Pending District Supervisor</option>
+
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" value="submit" class="btn btn-primary">Add</button>
+                    </div>
+            </div>
+
+
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
+    integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {
+            result: []
+        },
+        methods: {
+            getTaskData(id) {
+                this.$http.get(`/admin/tasks/edit/${id}`).then(response => {
+                    console.log(response)
+                    this.result = response.data
+                    console.log(result)
+
+                }).catch((e) => console.log(e))
+            },
+            mounted() {
+                console.log('test')
+            },
+        }
+    }
+    )
+</script>
+
+
+<style>
+    .buttonDisabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    .actions i.fas.fa-edit {
+        margin: 0;
+        width: 30px;
+    }
+
+    .actions i.fas.fa-trash {
+        margin: 0;
+        width: 30px;
+    }
+
+    #tasksTable td {
+        line-height: 25px;
+    }
+
+    .actions button.btn.btn-danger {
+        margin: 10px 0 0 0;
+    }
+</style>
+
+{% endblock %}

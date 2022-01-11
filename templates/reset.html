@@ -16,11 +16,11 @@
             <header>Reset Password</header>
             <form action="/resetpassword/{{id}}/update" method="POST">
                 <div class="field">
-                    <input type="password" required placeholder="New Password" name="Email">
+                    <input type="password" required placeholder="New Password" name="pass">
                 </div>
                 <br>
                 <div class="field">
-                    <input type="password" required placeholder="Repeat Password" name="Email">
+                    <input type="password" required placeholder="Repeat Password" name="Repass">
                 </div>
                 <br>
                 <div class="field field-button">
@@ -28,7 +28,7 @@
                 </div>
                 {% if "Error" in result %}
                 <div class=result>
-                    <h3 class="Error">Password is not supported</h3>
+                    <h3 class="Error">Error in Resetting Password</h3>
                 </div>
                 {% endif %}
             </form>
