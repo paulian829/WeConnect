@@ -83,17 +83,21 @@
             <div class="form-group">
                 <label for="comment">Comment:</label>
                 <textarea class="form-control" rows="5" id="comment" placeholder="Type Comment Here"
-                    v-on:keyup.enter="onEnter( {{ session['userID'] }}, {{ result[0] }} )" v-model='comment'></textarea>
+                     v-model='comment'></textarea>
+                <button type="button" class="btn btn-primary comment-button" v-on:click="onEnter( {{ session['userID'] }}, {{ result[0] }} )"><i class="fas fa-share"></i>Comment</button>
             </div>
+            <br>
             <div class="comments-list">
                 <div class="media">
                     <div v-for='(comment, index) in commentsArray'>
                         <p class="pull-right"><small>[[ getDateString(comment[3]) ]]</small></p>
                         <div class="media-body">
-                            <h4 class="media-heading user_name">[[ arrayName[index] ]]</h4>
+                            <h4 class="media-heading user_name" v-for='user in users' v-if='user[0] === comment[2]'>[[
+                                user[3] ]] [[ user[4] ]]</h4>
                             <p>[[ comment[4] ]]</p>
-                            
-                            <p  class="delete-link" v-if="sessionID == comment[2]" v-on:click='deleteComment(comment[0])'>Delete</p>
+
+                            <p class="delete-link" v-if="sessionID == comment[2]"
+                                v-on:click='deleteComment(comment[0])'>Delete</p>
                         </div>
                     </div>
 
@@ -139,9 +143,18 @@
     .media-body p {
         margin: 0;
     }
-    .delete-link{
+
+    .delete-link {
+        padding-top: 8px;
+        font-size: 12px;
         color: #0000EE !important;
         cursor: pointer;
+    }
+    .comment-button{
+        margin-top: 10px;
+    }
+    .fa-share{
+        margin-right: 5px;
     }
 </style>
 
@@ -159,13 +172,13 @@
             taskID: 0,
             comment: '',
             commentsArray: [],
-            arrayName:[],
-            sessionID:0,
+            arrayName: [],
+            sessionID: 0,
+            users: []
         },
         methods: {
             onEnter(userID, fileID) {
                 if (this.comment.length == 1) {
-                    console.log('comment small')
                     this.comment = ''
                     return
                 }
@@ -177,34 +190,37 @@
             getComments(id) {
                 this.$http.get(`/comments/${id}`).then(response => {
                     this.commentsArray = response.data.data
-                    let arrayUser = []
-                    let users = response.data.data
-                    for (user in users){
-                        this.$http.get(`/getUserDetails/${users[user][2]}`).then(response => {
-                            result = response.json()
-                            arrayUser.push(response.body.userData[0][1])
-                        })
-                    } 
-                    console.log(arrayUser)
-                    this.arrayName = arrayUser
+                    // let arrayUser = []
+                    // let users = response.data.data
+                    // for (user in users){
+                    //     this.$http.get(`/getUserDetails/${users[user][2]}`).then(response => {
+                    //         result = response.json()
+                    //         arrayUser.push(response.body.userData[0][1])
+                    //     })
+                    // } 
+                    // console.log(arrayUser)
+                    // this.arrayName = arrayUser
                 }).catch((e) => console.log(e))
             },
+            getTeachers() {
+                this.$http.get(`/getTeachers/`).then(response => {
+                    this.users = response.data.users
+                }).catch((e) => console.log(e))
+
+            },
             deleteComment(commentID) {
-                console.log('test')
                 this.$http.get(`/comment/delete/${commentID}`).then(response => {
                     this.getComments("{{ result[0] }}")
 
                 }).catch((e) => console.log(e))
             },
-            getSessionID(id){
-                console.log("session", id)
+            getSessionID(id) {
                 this.sessionID = id
             },
-            getDateString(dateValue){
+            getDateString(dateValue) {
                 var d = new Date(dateValue * 1000);
                 d = d.toDateString()
-                console.log(typeof d)
-                d = d.slice(0,26)
+                d = d.slice(0, 26)
                 return d
 
             }
@@ -213,6 +229,7 @@
         created() {
             this.getComments("{{ result[0] }}")
             this.getSessionID("{{ session['userID'] }}")
+            this.getTeachers()
 
 
         }
