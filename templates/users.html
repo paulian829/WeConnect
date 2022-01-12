@@ -3,75 +3,98 @@
 <div id="app">
     <div class="users-container">
         <h3>Teachers</h3>
-        <div class="row row-cols-1 row-cols-md-6 g-4">
+        <div class="row row-cols-1 row-cols-md-6 g-4" >
             {% for user in users %}
-                {% if user[6] == 4%}
-                <div class="col">
-                    <div class="card h-100 text-center">
-                        <img src="{{user[8]}}"
-                            class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{user[3]}} {{user[4]}}</h5>
-                            <p class="card-text">{{user[1]}}</p>
-                        </div>
+            {% if user[6] == 4%}
+            <div class="col" >
+                <div class="card h-100 text-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop" v-on:click='click( {{user[0]}} )'>
+                    <img src="{{user[8]}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{user[3]}} {{user[4]}}</h5>
+                        <!-- <p class="card-text">{{user[1]}}</p> -->
                     </div>
                 </div>
-                {% endif %}
+            </div>
+            {% endif %}
             {% endfor %}
         </div>
         <br>
         <h3>Grade Chairman</h3>
         <div class="row row-cols-1 row-cols-md-6 g-4">
             {% for user in users %}
-                {% if user[6] == 3%}
-                <div class="col">
-                    <div class="card h-100 text-center">
-                        <img src="{{user[8]}}"
-                            class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{user[3]}} {{user[4]}}</h5>
-                            <p class="card-text">{{user[1]}}</p>
-                        </div>
+            {% if user[6] == 3%}
+            <div class="col">
+                <div class="card h-100 text-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop" v-on:click='click( {{user[0]}} )'>
+                    <img src="{{user[8]}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{user[3]}} {{user[4]}}</h5>
+                        <!-- <p class="card-text">{{user[1]}}</p> -->
                     </div>
                 </div>
-                {% endif %}
+            </div>
+            {% endif %}
             {% endfor %}
         </div>
         <br>
         <h3>Principal</h3>
         <div class="row row-cols-1 row-cols-md-6 g-4">
             {% for user in users %}
-                {% if user[6] == 5 %}
-                <div class="col">
-                    <div class="card h-100 text-center">
-                        <img src="{{user[8]}}"
-                            class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{user[3]}} {{user[4]}}</h5>
-                            <p class="card-text">{{user[1]}}</p>
-                        </div>
+            {% if user[6] == 5 %}
+            <div class="col">
+                <div class="card h-100 text-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop" v-on:click='click( {{user[0]}} )'>
+                    <img src="{{user[8]}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{user[3]}} {{user[4]}}</h5>
+                        <p class="card-text">{{user[1]}}</p>
                     </div>
                 </div>
-                {% endif %}
+            </div>
+            {% endif %}
             {% endfor %}
         </div>
         <br>
         <h3>District Supervisor</h3>
         <div class="row row-cols-1 row-cols-md-6 g-4">
             {% for user in users %}
-                {% if user[6] == 2 %}
-                <div class="col">
-                    <div class="card h-100 text-center">
-                        <img src="{{user[8]}}"
-                            class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{user[3]}} {{user[4]}}</h5>
-                            <p class="card-text">{{user[1]}}</p>
-                        </div>
+            {% if user[6] == 2 %}
+            <div class="col">
+                <div class="card h-100 text-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop" v-on:click='click( {{user[0]}} )'>
+                    <img src="{{user[8]}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{user[3]}} {{user[4]}}</h5>
+                        <p class="card-text">{{user[1]}}</p>
                     </div>
                 </div>
-                {% endif %}
+            </div>
+            {% endif %}
             {% endfor %}
+        </div>
+    </div>
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">User Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="profile-image-container">
+                        <img src="test/[[ url ]]" alt="">
+                    </div>
+                    <div class="profile-details-container">
+                        <h4>JOHN DOE</h4>
+                        <h5>position@gmail.com</h5>
+                        <h5>012345678</h5>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -80,18 +103,69 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
     integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
 <script>
     var app = new Vue({
         el: '#app',
         delimiters: ['[[', ']]'],
         data: {
+            name:'',
+            url:'',
+            email:'',
+            phone:'',
+
         },
         methods: {
+            click(id){
+                this.$http.get(`/getUserDetails/${id}`).then(response => {
+                    // this.users = response.data.users
+                    console.log(response.data.userData)
+                    user = response.data.userData
+                    this.name = `${user[3]} ${user[4]}`
+                    this.email = user[1]
+                    this.url = user[8]
+                    this.phone = user[5]
+                }).catch((e) => console.log(e))
+            }
         },
         mounted() {
         },
     }
     )
 </script>
+
+<style>
+    .modal-body {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        align-items: center;
+    }
+
+    .profile-image-container img {
+        border-radius: 100px;
+    }
+
+    .card-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 14px;
+    }
+
+    h5.card-title {
+        font-size: 18px !important;
+    }
+    .profile-details-container{
+        text-align: center;
+    }
+    .card{
+        cursor: pointer;
+    }
+    .card:hover{
+        cursor: pointer;
+        box-shadow: 5px 10px 10px rgb(204, 204, 204);
+    }
+</style>
 
 {% endblock %}
