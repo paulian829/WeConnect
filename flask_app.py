@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import time, timedelta
 from enum import unique
 from flask import (
     Flask,
@@ -13,6 +13,7 @@ from flask import (
     jsonify,
     escape,
 )
+import time
 from flask.helpers import make_response
 from werkzeug.wrappers import response
 from database import *
@@ -447,8 +448,6 @@ def updateTask(status, taskID):
 
 @app.route("/schedule/add", methods=["GET", "POST"])
 def addSchedule():
-    if not session["logged_in"]:
-        return redirect(url_for("forbidden"))
     if request.method == "POST":
         taskName = request.form.get("taskName")
         # imageBlob = request.files['taskImage'].file.name
@@ -468,10 +467,32 @@ def addSchedule():
             schedule,
         )
         if result:
-            return redirect(url_for("schedule"))
+            return redirect(url_for("getTasks",sched = 'Weekly'))
         else:
             return "error"
 
+
+@app.route("/schedule/edit", methods=["POST"])
+def editSchedule():
+    if not session["logged_in"]:
+        return redirect(url_for("forbidden"))
+    if request.method == "POST":
+        taskID = request.form.get('taskID')
+        print("Task ID",taskID)
+        taskName = request.form.get("taskName")
+        # imageBlob = request.files['taskImage'].file.name
+        deadline = request.form.get("Deadline")
+        deadline_datetime = datetime.strptime(deadline, "%Y-%m-%dT%H:%M")
+        print(deadline_datetime)
+        schedule = request.form.get("Schedule")
+        description = request.form.get("description")
+        taskCreatedBy = session["userID"]
+        status = request.form.get('Status')
+        result = updateTaskDB(taskID,taskName,"imageBlob",taskCreatedBy,deadline_datetime,description,schedule,status)
+        if result:
+            return redirect(url_for("getTasks", sched='Weekly'))
+        else:
+            return "error"
 
 @app.route("/checkifuseruploaded/<userID>/<taskID>")
 def checkifuseruploaded(userID, taskID):
@@ -480,6 +501,11 @@ def checkifuseruploaded(userID, taskID):
     result = checkIfUserUploadedDB(userID, taskID)
     dict = {"result": result}
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
+
+@app.route('/admin/deleteTask/<id>')
+def deleteTask(id):
+    result = deleteTaskDb(id)
+    return redirect(url_for("getTasks", sched='Weekly'))
 
 
 @app.route("/settings")
@@ -812,10 +838,32 @@ def deletefileTask(id):
     return redirect(url_for("schedule"))
 
 
+@app.route('/comment/new/<userID>/<fileID>/<comment>')
+def addComment(userID, fileID, comment):
+    Timetoday = time.time()
+    print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(Timetoday)))
+    result = newComment(userID, fileID,comment,Timetoday)
+    dict = {"result": 'result'}
+    return json.dumps(dict, indent=4, sort_keys=True, default=str)
+
+
+@app.route('/comments/<fileID>')
+def getComments(fileID):
+    result = getCommentsDB(fileID)
+    dict = {'data':result}
+    return json.dumps(dict, indent=4, sort_keys=True, default=str)
+
+@app.route('/comment/delete/<commentID>')
+def deleteComment(commentID):
+    result = deleteCommentDB(commentID)
+    dict = {'data':result}
+    return json.dumps(dict, indent=4, sort_keys=True, default=str)
+
 @app.errorhandler(404)
 def not_found(e):
+    print(e)
     return render_template("404.html")
-
+    
 
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=True)

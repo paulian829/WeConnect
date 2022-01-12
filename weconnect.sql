@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 09, 2022 at 12:47 PM
+-- Generation Time: Jan 12, 2022 at 12:00 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -46,9 +46,17 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `checkUserUpload` (IN `userID` INT, 
 	SELECT * FROM files WHERE (UploadedByID = userID AND taskID = TtaskID);
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteCommentDB` (IN `uid` INT)  BEGIN
+DELETE FROM comments WHERE ID = uid;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteFile` (IN `uid` INT)  BEGIN
 DELETE FROM files WHERE FileID = uid;
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteTaskDb` (IN `uid` INT(11))  BEGIN
+DELETE FROM tasks WHERE TaskID = uid;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUser` (IN `uid` INT(11))  BEGIN
@@ -69,6 +77,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllFilesForAdmin` ()  BEGIN
 SELECT * FROM files ORDER BY FileID DESC;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getCommentsDB` (IN `uid` INT)  BEGIN
+	SELECT * FROM comments WHERE FileID = uid ORDER BY ID DESC;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getFile` (IN `uid` INT(11))  BEGIN
 	SELECT * FROM files WHERE FileID = uid;
 END$$
@@ -85,12 +97,24 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getNumberOfFilesUploaded` (IN `uid`
 	SELECT * FROM files WHERE UploadedByID = uid AND status=0;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getTasksDB` (IN `sched` VARCHAR(100))  BEGIN
+	SELECT * FROM tasks WHERE TaskSchedule = sched;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getTeachers` ()  BEGIN
 	SELECT * FROM users WHERE Position = 4;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserViaEmail` (IN `Uemail` VARCHAR(100))  BEGIN
+	SELECT * FROM users WHERE Email = Uemail;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `moveFileToThrash` (IN `id` INT)  BEGIN
 UPDATE files SET status = 4 where FileID = id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `newComment` (IN `userID` INT, IN `fileID` INT, IN `TimeToday` INT(20), IN `Tcomment` VARCHAR(300))  BEGIN
+	INSERT INTO comments (FileID,UserID,DateCreated,CommentMsg  ) VALUES (fileID, userID, TimeToday,Tcomment );
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `number_of_files_deadline` (IN `uid` INT)  BEGIN
@@ -99,6 +123,11 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `number_of_files_nearing_Deadline` (IN `uid` INT)  BEGIN
 	SELECT * FROM files WHERE UploadedByID = uid AND status=3;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `resetPassword` (IN `NewPass` VARCHAR(100), IN `uID` INT)  BEGIN
+UPDATE users SET Pass = NewPass WHERE id = uID;
+
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `Restore` (IN `uID` INT)  BEGIN
@@ -157,6 +186,11 @@ UPDATE files SET block_doc_json = json WHERE FileID = uID;
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateTask` (IN `uID` INT, IN `name` VARCHAR(100), IN `deadline` DATETIME, IN `description` TEXT, IN `Tstatus` VARCHAR(100), IN `Tschedule` VARCHAR(50))  BEGIN
+UPDATE tasks SET taskName  = name, TaskDeadline = deadline, TaskDescription= description, TaskStatus=Tstatus, TaskSchedule = Tschedule WHERE TaskID  = uID;
+
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateTaskStatus` (IN `statusText` VARCHAR(100), IN `ID` INT)  BEGIN
 UPDATE tasks SET TaskStatus = statusText WHERE TaskID = ID;
 
@@ -168,6 +202,28 @@ UPDATE users SET Email = uEmail, FirstName = uFirstname, LastName= uLastName, Ph
 END$$
 
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `ID` int(11) NOT NULL,
+  `FileID` int(11) NOT NULL,
+  `UserID` int(11) NOT NULL,
+  `DateCreated` int(20) NOT NULL,
+  `CommentMsg` varchar(300) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`ID`, `FileID`, `UserID`, `DateCreated`, `CommentMsg`) VALUES
+(16, 80, 97, 1641965507, 'test\n'),
+(18, 80, 91, 1641984005, 'this is a test comment\n');
 
 -- --------------------------------------------------------
 
@@ -199,7 +255,7 @@ CREATE TABLE `files` (
 --
 
 INSERT INTO `files` (`FileID`, `FileName`, `FileType`, `FileSize`, `FileContentType`, `UploadedByID`, `Share_to_user`, `Share_to_group`, `DeadLine`, `Revision`, `DateUploaded`, `block_doc_json`, `status`, `pinned`, `taskID`, `FilePathName`) VALUES
-(80, 'Comments.pdf', 'raw file', 1, 'application/pdf', 91, NULL, 1, NULL, 1, '2022-01-09 18:28:02', NULL, 0, 0, 49, '91Comments.pdf');
+(80, 'Comments.pdf', 'raw file', 1, 'application/pdf', 91, NULL, 1, NULL, 1, '2022-01-12 00:20:55', NULL, 0, 1, 49, '91Comments.pdf');
 
 -- --------------------------------------------------------
 
@@ -278,7 +334,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`ID`, `Email`, `Pass`, `FirstName`, `LastName`, `PhoneNumber`, `Position`, `DateCreated`, `profilePic`) VALUES
-(82, 'admin@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'admin', 'account', '+639751160135', 1, '2021-11-18 08:36:42', '/static/uploads/ProfilePictures/82_2874.png'),
+(82, 'admin@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'admin1', 'account', '+639751160135', 1, '2021-11-18 08:36:42', '/static/uploads/ProfilePictures/82_2874.png'),
 (86, 'weconnect.thesis@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'Super', '2', '01234567890', 1, '2021-11-22 00:17:06', ''),
 (91, 'teacher@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher', 'Account', '01234567890', 4, '2021-12-21 10:27:00', '/static/uploads/ProfilePictures/91_18.jpg'),
 (93, 'principal@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Principal', 'User', '01234567890', 5, '2021-12-30 10:58:31', '/static/uploads/ProfilePictures/93_47.jpg'),
@@ -290,6 +346,12 @@ INSERT INTO `users` (`ID`, `Email`, `Pass`, `FirstName`, `LastName`, `PhoneNumbe
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `files`
@@ -321,6 +383,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
@@ -336,13 +404,13 @@ ALTER TABLE `position`
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `TaskID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `TaskID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

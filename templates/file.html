@@ -1,6 +1,6 @@
 {% extends "dash-block.html" %}
 {% block content %}
-<div class='file-container'>
+<div class='file-container' id='app'>
     <div class="file-side">
         {% if "image/jpeg" in result[4] or "image/png" in result[4] %}
         <img class="file-image" src="{{url_for('static', filename='uploads/'+result[15])}}" />
@@ -43,10 +43,6 @@
                     <td><Strong>File Type:</Strong></td>
                     <td>{{result[4]}}</td>
                 </tr>
-                <!-- <tr>
-                    <td><strong>File Content Type:</strong></td>
-                    <td>{{result[4]}}</td>
-                </tr> -->
                 <tr>
                     <td><strong>Uploaded By Id:</strong></td>
                     <td>{{result[5]}}</td>
@@ -69,16 +65,44 @@
                 </tr>
             </tbody>
         </table>
-        <a href="{{'/thrash/' + result[0]|string}}" onclick="return confirm('Are you sure?')"><button type="button"
-                class="btn btn-danger"><i class="fas fa-trash"></i>TRASH</button></a>
-        {% if (1 == result[13]) %}
-        <a href="{{'/pin/' + result[0]|string + '/0'}}" onclick="return confirm('Are you sure?')"><button type="button"
-                class="btn btn-info" style="margin-right: 30px;"><i class="fas fa-thumbtack"></i> UNPIN</button></a>
-        {% else %}
-        <a href="{{'/pin/' + result[0]|string + '/1'}}" onclick="return confirm('Are you sure?')"><button type="button"
-                class="btn btn-info" style="margin-right: 30px;"><i class="fas fa-thumbtack"></i> PIN</button></a>
-        {% endif %}
+        <div>
+            <a href="{{'/thrash/' + result[0]|string}}" onclick="return confirm('Are you sure?')"><button type="button"
+                    class="btn btn-danger"><i class="fas fa-trash"></i>TRASH</button></a>
+            {% if (1 == result[13]) %}
+            <a href="{{'/pin/' + result[0]|string + '/0'}}" onclick="return confirm('Are you sure?')"><button
+                    type="button" class="btn btn-info" style="margin-right: 30px;"><i class="fas fa-thumbtack"></i>
+                    UNPIN</button></a>
+            {% else %}
+            <a href="{{'/pin/' + result[0]|string + '/1'}}" onclick="return confirm('Are you sure?')"><button
+                    type="button" class="btn btn-info" style="margin-right: 30px;"><i class="fas fa-thumbtack"></i>
+                    PIN</button></a>
+            {% endif %}
+        </div>
+        <br>
+        <div style="margin-top: 30px;">
+            <div class="form-group">
+                <label for="comment">Comment:</label>
+                <textarea class="form-control" rows="5" id="comment" placeholder="Type Comment Here"
+                    v-on:keyup.enter="onEnter( {{ session['userID'] }}, {{ result[0] }} )" v-model='comment'></textarea>
+            </div>
+            <div class="comments-list">
+                <div class="media">
+                    <div v-for='(comment, index) in commentsArray'>
+                        <p class="pull-right"><small>[[ getDateString(comment[3]) ]]</small></p>
+                        <div class="media-body">
+                            <h4 class="media-heading user_name">[[ arrayName[index] ]]</h4>
+                            <p>[[ comment[4] ]]</p>
+                            
+                            <p  class="delete-link" v-if="sessionID == comment[2]" v-on:click='deleteComment(comment[0])'>Delete</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
     </div>
+</div>
 </div>
 
 <style>
@@ -92,5 +116,108 @@
         word-break: break-word;
         max-width: 25vw;
     }
+
+    .user_name {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .comments-list {
+        margin-top: 20px;
+    }
+
+    p.pull-right {
+        margin: 15px 0 0 0;
+    }
+
+    .media-body {
+        padding: 10px;
+        background: white;
+        border-radius: 10px;
+    }
+
+    .media-body p {
+        margin: 0;
+    }
+    .delete-link{
+        color: #0000EE !important;
+        cursor: pointer;
+    }
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
+    integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {
+            taskID: 0,
+            comment: '',
+            commentsArray: [],
+            arrayName:[],
+            sessionID:0,
+        },
+        methods: {
+            onEnter(userID, fileID) {
+                if (this.comment.length == 1) {
+                    console.log('comment small')
+                    this.comment = ''
+                    return
+                }
+                this.$http.get(`/comment/new/${userID}/${fileID}/${this.comment}`).then(response => {
+                    this.getComments("{{ result[0] }}")
+                    this.comment = ''
+                }).catch((e) => console.log(e))
+            },
+            getComments(id) {
+                this.$http.get(`/comments/${id}`).then(response => {
+                    this.commentsArray = response.data.data
+                    let arrayUser = []
+                    let users = response.data.data
+                    for (user in users){
+                        this.$http.get(`/getUserDetails/${users[user][2]}`).then(response => {
+                            result = response.json()
+                            arrayUser.push(response.body.userData[0][1])
+                        })
+                    } 
+                    this.arrayName = arrayUser
+                }).catch((e) => console.log(e))
+            },
+            deleteComment(commentID) {
+                console.log('test')
+                this.$http.get(`/comment/delete/${commentID}`).then(response => {
+                    this.getComments("{{ result[0] }}")
+
+                }).catch((e) => console.log(e))
+            },
+            getSessionID(id){
+                console.log("session", id)
+                this.sessionID = id
+            },
+            getDateString(dateValue){
+                var d = new Date(dateValue * 1000);
+                d = d.toDateString()
+                console.log(typeof d)
+                d = d.slice(0,26)
+                return d
+
+            }
+
+        },
+        created() {
+            this.getComments("{{ result[0] }}")
+            this.getSessionID("{{ session['userID'] }}")
+
+
+        }
+
+
+    }
+    )
+</script>
 {% endblock %}

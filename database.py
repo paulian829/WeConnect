@@ -668,7 +668,78 @@ def getTasksDB(sched):
     finally:
         mydb.close()
 
+def updateTaskDB(taskID,taskName,imageBlob,taskCreatedBy,deadline_datetime,description,status,schedule):
+    try:
+        print(imageBlob)
+        print(taskCreatedBy)
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (taskID,taskName,deadline_datetime,description,schedule,status)
+        mycursor.callproc("updateTask", val)
+        mydb.commit()
+        if mycursor.rowcount > 0:
+            return True
 
+        return False
+
+    finally:
+        mydb.close()
+
+def deleteTaskDb(id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (id,)
+        mycursor.callproc("deleteTaskDb", val)
+        mydb.commit()
+        if mycursor.rowcount > 0:
+            return True
+
+        return False
+
+    finally:
+        mydb.close()
+
+def newComment(userID, fileID,comment,Timetoday):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (userID, fileID,Timetoday,comment)
+        mycursor.callproc("newComment", val)
+        mydb.commit()
+        return True
+    except:
+        mycursor.close()
+        return False
+    finally:
+        mydb.close()
+
+def getCommentsDB(fileID):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (fileID,)
+        results = list
+        mycursor.callproc("getCommentsDB",val)
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+        return results
+    finally:
+        mydb.close()
+
+def deleteCommentDB(commentID):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (commentID,)
+        mycursor.callproc("deleteCommentDB", val)
+        mydb.commit()
+        if mycursor.rowcount > 0:
+            return "Success"
+        return "Failed"
+
+    finally:
+        mydb.close()
 
 # ==========================================
 # TESTING FUNCTIONS

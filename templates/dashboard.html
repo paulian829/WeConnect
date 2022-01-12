@@ -12,8 +12,15 @@
     <div class="card text-white bg-success mb-3" style="max-width: 18rem; width: 100%;">
       <div class="card-header">Success</div>
       <div class="card-body">
-        <h5 class="card-title">Files Passed</h5>
+        <h5 class="card-title">Finished</h5>
         <p class="card-text big-number-text">[[number_of_files_uploaded]]</p>
+      </div>
+    </div>
+    <div class="card text-dark bg-warning mb-3 " style="max-width: 18rem; width: 100%;">
+      <div class="card-header">Warning</div>
+      <div class="card-body">
+        <h5 class="card-title">Pending</h5>
+        <p class="card-text big-number-text">[[number_of_files_nearing_Deadline]]</p>
       </div>
     </div>
     <div class="card text-white bg-danger mb-3" style="max-width: 18rem; width: 100%;">
@@ -23,13 +30,6 @@
         <p class="card-text big-number-text">[[number_of_files_deadline]]</p>
       </div>
     </div>
-    <div class="card text-dark bg-warning mb-3 " style="max-width: 18rem; width: 100%;">
-      <div class="card-header">Warning</div>
-      <div class="card-body">
-        <h5 class="card-title">Nearing Deadline</h5>
-        <p class="card-text big-number-text">[[number_of_files_nearing_Deadline]]</p>
-      </div>
-    </div>
   </div>
   <div>
     <div class="container px-4 info-container">
@@ -37,7 +37,8 @@
         <div class="col ">
           <div class="p-4 border bg-light">
             <h3 class="wbtn">Recent Files</h3>
-            <button type="button " class="btn btn-primary float-right"><a href="{{url_for('myFiles')}}"><i class="fas fa-folder-open"></i>VIEW FILES</a></button>
+            <button type="button " class="btn btn-primary float-right"><a href="{{url_for('myFiles')}}"><i
+                  class="fas fa-folder-open"></i>VIEW FILES</a></button>
             <table class="table">
               <thead>
                 <tr>
@@ -56,7 +57,7 @@
             </table>
           </div>
         </div>
-        <div class="col ">
+        <!-- <div class="col ">
           <div class="p-4 border bg-light">
             <h3 class="wbtn">Files Near Deadlines</h3>
             <button type="button " class="btn btn-primary float-right"><a href="{{url_for('myFiles')}}"><i class="fas fa-folder-open"></i>VIEW FILES</a></button>
@@ -77,12 +78,12 @@
               </tbody>
             </table>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
 
-  
+
 </div>
 
 
@@ -126,11 +127,11 @@
     opacity: 0;
   }
 
-  #app > div:nth-child(2) > div > div > div:nth-child(1) > div, #app > div:nth-child(2) > div > div > div:nth-child(2) > div{
+  #app>div:nth-child(2)>div>div>div:nth-child(1)>div,
+  #app>div:nth-child(2)>div>div>div:nth-child(2)>div {
     min-height: 500px;
-    margin-bottom:50px
+    margin-bottom: 50px
   }
-  
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
@@ -163,12 +164,12 @@
         console.log(key)
       },
 
-      changeDate(date){
+      changeDate(date) {
         console.log(date)
-        if (!date){
+        if (!date) {
           return ''
         }
-        date = date.slice(0,26)
+        date = date.slice(0, 26)
         return date
       }
     },
