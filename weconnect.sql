@@ -25,178 +25,178 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `addPosition` (IN `test` VARCHAR(50))  BEGIN
+CREATE  PROCEDURE `addPosition` (IN `test` VARCHAR(50))  BEGIN
 	INSERT INTO position (position_name) VALUES (test);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `addProfilePicDB` (IN `str` VARCHAR(200), IN `uID` INT(11))  BEGIN
+CREATE  PROCEDURE `addProfilePicDB` (IN `str` VARCHAR(200), IN `uID` INT(11))  BEGIN
 UPDATE users SET profilePic = str WHERE id = uID;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AddTask` (IN `Name` VARCHAR(100), IN `createdBy` INT(11), IN `dateCreated` DATETIME, IN `deadline` DATETIME, IN `description` TEXT, IN `Tstatus` VARCHAR(100), IN `scheduled` VARCHAR(50))  BEGIN
+CREATE  PROCEDURE `AddTask` (IN `Name` VARCHAR(100), IN `createdBy` INT(11), IN `dateCreated` DATETIME, IN `deadline` DATETIME, IN `description` TEXT, IN `Tstatus` VARCHAR(100), IN `scheduled` VARCHAR(50))  BEGIN
 INSERT INTO tasks (TaskName, TaskCreatedBy, TaskDateCreated, TaskDeadline, TaskDescription,TaskStatus, TaskSchedule) VALUES (Name, createdBy,dateCreated, deadline, description, Tstatus, scheduled);
 SELECT last_insert_id();
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `addUser` (IN `uEmail` VARCHAR(50), IN `uPassword` VARCHAR(100), IN `uFirstName` VARCHAR(50), IN `uLastName` VARCHAR(50), IN `uPhoneNumber` VARCHAR(11), IN `uPosition` INT(1))  BEGIN
+CREATE  PROCEDURE `addUser` (IN `uEmail` VARCHAR(50), IN `uPassword` VARCHAR(100), IN `uFirstName` VARCHAR(50), IN `uLastName` VARCHAR(50), IN `uPhoneNumber` VARCHAR(11), IN `uPosition` INT(1))  BEGIN
 INSERT INTO users (Email, Pass, FirstName, LastName, PhoneNumber, Position) VALUES (uEmail, uPassword, uFirstName, uLastName, uPhoneNumber, uPosition);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `checkUserUpload` (IN `userID` INT, IN `TtaskID` INT)  BEGIN
+CREATE  PROCEDURE `checkUserUpload` (IN `userID` INT, IN `TtaskID` INT)  BEGIN
 	SELECT * FROM files WHERE (UploadedByID = userID AND taskID = TtaskID);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteCommentDB` (IN `uid` INT)  BEGIN
+CREATE  PROCEDURE `deleteCommentDB` (IN `uid` INT)  BEGIN
 DELETE FROM comments WHERE ID = uid;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteFile` (IN `uid` INT)  BEGIN
+CREATE  PROCEDURE `deleteFile` (IN `uid` INT)  BEGIN
 DELETE FROM files WHERE FileID = uid;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteTaskDb` (IN `uid` INT(11))  BEGIN
+CREATE  PROCEDURE `deleteTaskDb` (IN `uid` INT(11))  BEGIN
 DELETE FROM tasks WHERE TaskID = uid;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUser` (IN `uid` INT(11))  BEGIN
+CREATE  PROCEDURE `deleteUser` (IN `uid` INT(11))  BEGIN
 DELETE FROM users WHERE id = uid;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `emptyTrash` (IN `uid` INT)  BEGIN
+CREATE  PROCEDURE `emptyTrash` (IN `uid` INT)  BEGIN
 DELETE FROM files WHERE status = 4 AND UploadedByID = uid;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllFiles` (IN `uid` INT)  BEGIN
+CREATE  PROCEDURE `getAllFiles` (IN `uid` INT)  BEGIN
 SELECT * FROM files where UploadedByID = uid ORDER BY FileID DESC;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllFilesForAdmin` ()  BEGIN
+CREATE  PROCEDURE `getAllFilesForAdmin` ()  BEGIN
 SELECT * FROM files ORDER BY FileID DESC;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getCommentsDB` (IN `uid` INT)  BEGIN
+CREATE  PROCEDURE `getCommentsDB` (IN `uid` INT)  BEGIN
 	SELECT * FROM comments WHERE FileID = uid ORDER BY ID DESC;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getFile` (IN `uid` INT(11))  BEGIN
+CREATE  PROCEDURE `getFile` (IN `uid` INT(11))  BEGIN
 	SELECT * FROM files WHERE FileID = uid;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getNFiles` (IN `uid` INT, IN `number` INT)  BEGIN
+CREATE  PROCEDURE `getNFiles` (IN `uid` INT, IN `number` INT)  BEGIN
 SELECT * FROM files WHERE UploadedByID = uid AND status=0 ORDER BY FileID DESC LIMIT number;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getNumberOfFilesPassed` (IN `uid` INT)  BEGIN
+CREATE  PROCEDURE `getNumberOfFilesPassed` (IN `uid` INT)  BEGIN
 	SELECT * FROM files WHERE UploadedByID = uid AND status=1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getNumberOfFilesUploaded` (IN `uid` INT)  BEGIN
+CREATE  PROCEDURE `getNumberOfFilesUploaded` (IN `uid` INT)  BEGIN
 	SELECT * FROM files WHERE UploadedByID = uid AND status=0;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getTasksDB` (IN `sched` VARCHAR(100))  BEGIN
+CREATE  PROCEDURE `getTasksDB` (IN `sched` VARCHAR(100))  BEGIN
 	SELECT * FROM tasks WHERE TaskSchedule = sched;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getTeachers` ()  BEGIN
+CREATE  PROCEDURE `getTeachers` ()  BEGIN
 	SELECT * FROM users WHERE Position = 4;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserViaEmail` (IN `Uemail` VARCHAR(100))  BEGIN
+CREATE  PROCEDURE `getUserViaEmail` (IN `Uemail` VARCHAR(100))  BEGIN
 	SELECT * FROM users WHERE Email = Uemail;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `moveFileToThrash` (IN `id` INT)  BEGIN
+CREATE  PROCEDURE `moveFileToThrash` (IN `id` INT)  BEGIN
 UPDATE files SET status = 4 where FileID = id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `newComment` (IN `userID` INT, IN `fileID` INT, IN `TimeToday` INT(20), IN `Tcomment` VARCHAR(300))  BEGIN
+CREATE  PROCEDURE `newComment` (IN `userID` INT, IN `fileID` INT, IN `TimeToday` INT(20), IN `Tcomment` VARCHAR(300))  BEGIN
 	INSERT INTO comments (FileID,UserID,DateCreated,CommentMsg  ) VALUES (fileID, userID, TimeToday,Tcomment );
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `number_of_files_deadline` (IN `uid` INT)  BEGIN
+CREATE  PROCEDURE `number_of_files_deadline` (IN `uid` INT)  BEGIN
 	SELECT * FROM files WHERE UploadedByID = uid AND status=2;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `number_of_files_nearing_Deadline` (IN `uid` INT)  BEGIN
+CREATE  PROCEDURE `number_of_files_nearing_Deadline` (IN `uid` INT)  BEGIN
 	SELECT * FROM files WHERE UploadedByID = uid AND status=3;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `resetPassword` (IN `NewPass` VARCHAR(100), IN `uID` INT)  BEGIN
+CREATE  PROCEDURE `resetPassword` (IN `NewPass` VARCHAR(100), IN `uID` INT)  BEGIN
 UPDATE users SET Pass = NewPass WHERE id = uID;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Restore` (IN `uID` INT)  BEGIN
+CREATE  PROCEDURE `Restore` (IN `uID` INT)  BEGIN
 UPDATE files SET status = 0 WHERE FileID = uID;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `saveFile` (IN `uFileName` VARCHAR(100), IN `uFileType` VARCHAR(20), IN `uFileSize` INT(11), IN `uFileContentType` VARCHAR(100), IN `uUploadedByID` INT(11), IN `uShare_to_user` INT(11), IN `uShare_to_group` INT(11), IN `uDeadLine` DATETIME, IN `uRevision` INT(11), IN `date` DATETIME, IN `tID` INT, IN `filepath` VARCHAR(100))  BEGIN
+CREATE  PROCEDURE `saveFile` (IN `uFileName` VARCHAR(100), IN `uFileType` VARCHAR(20), IN `uFileSize` INT(11), IN `uFileContentType` VARCHAR(100), IN `uUploadedByID` INT(11), IN `uShare_to_user` INT(11), IN `uShare_to_group` INT(11), IN `uDeadLine` DATETIME, IN `uRevision` INT(11), IN `date` DATETIME, IN `tID` INT, IN `filepath` VARCHAR(100))  BEGIN
 INSERT INTO files (FileName, FileType,FileSize, FileContentType, UploadedByID, Share_to_user, Share_to_group, DeadLine, Revision,dateUploaded,taskID,FilePathName) VALUES (uFileName, uFileType, uFileSize, uFileContentType, uUploadedByID, uShare_to_user, uShare_to_group, uDeadLine, uRevision,date,tID,filepath);
 SELECT last_insert_id();
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SelectAllPostions` ()  BEGIN
+CREATE  PROCEDURE `SelectAllPostions` ()  BEGIN
 	SELECT * FROM position;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SelectAllTask` ()  BEGIN
+CREATE  PROCEDURE `SelectAllTask` ()  BEGIN
 	SELECT * FROM tasks;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SelectAllUsers` ()  BEGIN
+CREATE  PROCEDURE `SelectAllUsers` ()  BEGIN
 	SELECT * FROM users;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SelectOneTask` (IN `uid` INT)  BEGIN
+CREATE  PROCEDURE `SelectOneTask` (IN `uid` INT)  BEGIN
 	SELECT * FROM tasks WHERE TaskID = uid;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `selectPositionID` (IN `uID` INT(11))  BEGIN
+CREATE  PROCEDURE `selectPositionID` (IN `uID` INT(11))  BEGIN
 	SELECT * FROM position WHERE id = uID;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `selectUserEmail` (IN `uEmail` VARCHAR(50))  BEGIN
+CREATE  PROCEDURE `selectUserEmail` (IN `uEmail` VARCHAR(50))  BEGIN
 	SELECT * FROM users WHERE email = uEmail;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `selectUserID` (IN `uID` INT(11))  BEGIN
+CREATE  PROCEDURE `selectUserID` (IN `uID` INT(11))  BEGIN
 	SELECT * FROM users WHERE id = uID;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SetPinned` (IN `uID` INT, IN `PinStatus` INT)  BEGIN
+CREATE  PROCEDURE `SetPinned` (IN `uID` INT, IN `PinStatus` INT)  BEGIN
 UPDATE files SET pinned = PinStatus WHERE FileID = uID;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Update Task` (IN `ID` INT, IN `name` VARCHAR(100), IN `imageBlob` BLOB, IN `deadline` DATETIME, IN `description` TEXT)  BEGIN
+CREATE  PROCEDURE `Update Task` (IN `ID` INT, IN `name` VARCHAR(100), IN `imageBlob` BLOB, IN `deadline` DATETIME, IN `description` TEXT)  BEGIN
 UPDATE tasks SET TaskName = name, TaskImage = imageBlob, TaskDeadline = deadline, TaskDescription = description WHERE TaskID = ID;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Update Task Status` (IN `ID` INT, IN `tstatus` VARCHAR(100))  BEGIN
+CREATE  PROCEDURE `Update Task Status` (IN `ID` INT, IN `tstatus` VARCHAR(100))  BEGIN
 UPDATE tasks SET TaskStatus = tstatus WHERE TaskID = ID;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updateDOC` (IN `json` LONGTEXT, IN `uID` INT)  BEGIN
+CREATE  PROCEDURE `updateDOC` (IN `json` LONGTEXT, IN `uID` INT)  BEGIN
 UPDATE files SET block_doc_json = json WHERE FileID = uID;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updateTask` (IN `uID` INT, IN `name` VARCHAR(100), IN `deadline` DATETIME, IN `description` TEXT, IN `Tstatus` VARCHAR(100), IN `Tschedule` VARCHAR(50))  BEGIN
+CREATE  PROCEDURE `updateTask` (IN `uID` INT, IN `name` VARCHAR(100), IN `deadline` DATETIME, IN `description` TEXT, IN `Tstatus` VARCHAR(100), IN `Tschedule` VARCHAR(50))  BEGIN
 UPDATE tasks SET taskName  = name, TaskDeadline = deadline, TaskDescription= description, TaskStatus=Tstatus, TaskSchedule = Tschedule WHERE TaskID  = uID;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updateTaskStatus` (IN `statusText` VARCHAR(100), IN `ID` INT)  BEGIN
+CREATE  PROCEDURE `updateTaskStatus` (IN `statusText` VARCHAR(100), IN `ID` INT)  BEGIN
 UPDATE tasks SET TaskStatus = statusText WHERE TaskID = ID;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updateUser` (IN `uEmail` VARCHAR(50), IN `uFirstname` VARCHAR(50), IN `uLastName` VARCHAR(50), IN `uPhoneNumber` VARCHAR(100), IN `uPosition` INT(11), IN `uID` INT(11))  BEGIN
+CREATE  PROCEDURE `updateUser` (IN `uEmail` VARCHAR(50), IN `uFirstname` VARCHAR(50), IN `uLastName` VARCHAR(50), IN `uPhoneNumber` VARCHAR(100), IN `uPosition` INT(11), IN `uID` INT(11))  BEGIN
 UPDATE users SET Email = uEmail, FirstName = uFirstname, LastName= uLastName, PhoneNumber=uPhoneNumber, Position = uPosition WHERE id = uID;
 
 END$$
