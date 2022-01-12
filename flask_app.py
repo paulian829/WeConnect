@@ -106,6 +106,7 @@ def verify():
 
 
 def sendMessage():
+    "SMS.to"
     phone = session["phone"]
     code = session["smsverify"]
     api_key = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2F1dGg6ODA4MC9hcGkvdjEvdXNlcnMvYXBpL2tleS9nZW5lcmF0ZSIsImlhdCI6MTY0MTMwMzIzNSwibmJmIjoxNjQxMzAzMjM1LCJqdGkiOiJvUExDSVJxbk9Mb29YaVBLIiwic3ViIjozMjQ0NjIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.RNeo7VohKiBBfo1_EyCwFsBPHej9ausI3KVIPe45beo"
