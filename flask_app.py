@@ -347,7 +347,9 @@ def adminComments():
     if session["admin"] == False:
         return redirect(url_for("forbidden"))
     title = "ADMIN"
-    return render_template("admin-comments.html", title=title)
+    results = getAllComments()
+    users = getAllUsers()
+    return render_template("admin-comments.html", title=title, results=results,users=users)
 
 
 @app.route("/admin/password")

@@ -744,6 +744,20 @@ def deleteCommentDB(commentID):
     finally:
         mydb.close()
 
+
+def getAllComments():
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        # val = (fileID,)
+        results = list
+        mycursor.callproc("getAllComments")
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+        return results
+    finally:
+        mydb.close()
+
 # ==========================================
 # TESTING FUNCTIONS
 

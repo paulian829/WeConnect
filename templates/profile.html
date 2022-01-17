@@ -85,8 +85,13 @@
                         <div class="row gutters button-container">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="text-right">
+                                    {% if session['admin'] is not true %}
                                     <a href={{url_for('dashboard')}}><button type="button"
                                             class="btn btn-secondary">Cancel</button></a>
+                                    {% else %}
+                                    <a href={{url_for('admin')}}><button type="button"
+                                        class="btn btn-secondary">Cancel</button></a>
+                                    {% endif %}
                                     <button type="submit" id="submit" name="submit"
                                         class="btn btn-primary">Update</button>
                                     <!-- <a href={{url_for('admin')}}><button type="button" id="submit" name="submit"

@@ -80,12 +80,19 @@
         </div>
         <br>
         <div style="margin-top: 30px;">
+            {% if session['admin']is not true %}
+
             <div class="form-group">
                 <label for="comment">Comment:</label>
                 <textarea class="form-control" rows="5" id="comment" placeholder="Type Comment Here"
-                     v-model='comment'></textarea>
-                <button type="button" class="btn btn-primary comment-button" v-on:click="onEnter( {{ session['userID'] }}, {{ result[0] }} )"><i class="fas fa-share"></i>Comment</button>
+                    v-model='comment'></textarea>
+                <button type="button" class="btn btn-primary comment-button"
+                    v-on:click="onEnter( {{ session['userID'] }}, {{ result[0] }} )"><i
+                        class="fas fa-share"></i>Comment</button>
+
             </div>
+            {% endif %}
+
             <br>
             <div class="comments-list">
                 <div class="media">
@@ -150,10 +157,12 @@
         color: #0000EE !important;
         cursor: pointer;
     }
-    .comment-button{
+
+    .comment-button {
         margin-top: 10px;
     }
-    .fa-share{
+
+    .fa-share {
         margin-right: 5px;
     }
 </style>

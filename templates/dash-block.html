@@ -111,8 +111,13 @@
                 <div class="header-content">
                     <div class="row1">
                         <div class="title-header">
+                            {%  if session['admin'] is not true %}
                             <span><i class="fas fa-bars"></i></span>
                             <h2>{{title}}</h2>
+
+                            {% endif %}
+                            <h1></h1>
+                            <h2><a href="{{url_for('admin')}}">ADMIN DASHBOARD</a></h2>
                         </div>
                         <div class="profile-container">
                             <a href={{url_for('profile')}}>
