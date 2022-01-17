@@ -21,6 +21,7 @@
             <th scope="col">Uploaded by User ID</th>
             <th scope="col">Date Uploaded</th>
             <th scope="col">Deadline</th>
+            <th scope="col">Status</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -32,7 +33,12 @@
             <td> <a href="/admin/edit/{{file[5]}}"><button class="btn btn-success"><i class="fas fa-user"></i>View UserID: {{ file[5] }}</button></a></td>
             <td>{{ file[10] }}</td>
             <td>{{ file[8] }}</td>
-            <td><a href="/file/{{file[0]}}" style="color: white;"><button type="button" class="btn btn-success"><i class="far fa-file"></i>View</button></a> <a href="/admin/deletefile/{{file[0]}}" style="color: white;"><button type="button" class="btn btn-danger" style="margin-left:20px"><i class="fas fa-trash"></i>Delete</a></button></td>
+            {% if file[12] == 4 %}
+              <td>Trash</td>
+            {% else %}
+              <td>Active</td>
+            {% endif %}
+s            <td><a href="/file/{{file[0]}}" style="color: white;"><button type="button" class="btn btn-success"><i class="far fa-file"></i>View</button></a> <a href="/admin/deletefile/{{file[0]}}" style="color: white;"><button type="button" class="btn btn-danger" style="margin-left:20px"><i class="fas fa-trash"></i>Delete</a></button></td>
           </tr>
           {% endfor %}
         </tbody>
