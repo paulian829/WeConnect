@@ -218,10 +218,14 @@
 
             },
             deleteComment(commentID) {
-                this.$http.get(`/comment/delete/${commentID}`).then(response => {
-                    this.getComments("{{ result[0] }}")
+                if (confirm("Delete Comment?")) {
+                    this.$http.get(`/comment/delete/${commentID}`).then(response => {
+                        this.getComments("{{ result[0] }}")
+                    }).catch((e) => console.log(e))
+                }else{
+                    return
+                }
 
-                }).catch((e) => console.log(e))
             },
             getSessionID(id) {
                 this.sessionID = id
