@@ -154,9 +154,9 @@
         this.$http.get('/test').then(response => {
           console.log(response)
           this.number_of_files = response.body['number_of_files'].length
-          this.number_of_files_uploaded = response.body['number_of_files_passed'].length
-          this.number_of_files_deadline = response.body['number_of_files_deadline'].length
-          this.number_of_files_nearing_Deadline = response.body['number_of_files_nearing_Deadline'].length
+          this.number_of_files_uploaded = response.body['number_of_files_passed']
+          this.number_of_files_deadline = response.body['number_of_files_deadline']
+          this.number_of_files_nearing_Deadline = response.body['number_of_files_nearing_Deadline']
           this.five_files = response.body['five_files']
         })
       },

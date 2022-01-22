@@ -77,6 +77,7 @@ def login():
         session["phone"] = result[0][5]
         # session['smsverify'] = random.randint(1000,9999)
         session["smsverify"] = 1235
+        session['position'] = result[0][6]
         # Send to phone number
         # sendMessage()
         if result[0][6] == 1:
@@ -241,19 +242,41 @@ def test():
     if not session["logged_in"]:
         return redirect(url_for("forbidden"))
     id = session["userID"]
-    number_of_files_uploaded = getNumberOfFilesUploaded(id)
-    number_of_files_passed = getNumberOfFilesPassed(id)
-    number_of_files_deadline = getNumberOfFilesDeadline(id)
-    number_of_files_nearing_Deadline = getNumberOfFilesNearDeadline(id)
-    five_files = getNFiles(id, 5)
+    email = session['email']
 
+    if session['position'] == 4:
+        number_of_files_uploaded = getNumberOfFilesUploaded(id)
+        number_of_files_passed = getNumberOfFilesPassed(id)
+        number_of_files_deadline = getNumberOfFilesDeadline(id)
+        number_of_files_nearing_Deadline = getNumberOfFilesNearDeadline(id)
+        
+    elif session['position'] == 3:
+        number_of_files_uploaded = getNumberOfFilesUploaded(id)
+        number_of_files_passed = getPassed('Pending Grade Chairman')
+        number_of_files_deadline = getFailed('Pending Grade Chairman')
+        number_of_files_nearing_Deadline = getPending('Pending Grade Chairman')
+
+    elif session['position'] == 5:
+        number_of_files_uploaded = getNumberOfFilesUploaded(id)
+        number_of_files_passed = getPassed('Pending Principal')
+        number_of_files_deadline = getFailed('Pending Principal')
+        number_of_files_nearing_Deadline = getPending('Pending Principal')
+
+    elif session['position'] == 2:
+        number_of_files_uploaded = getNumberOfFilesUploaded(id)
+        number_of_files_passed = getPassed('Pending District Supervisor')
+        number_of_files_deadline = getFailed('Pending District Supervisor')
+        number_of_files_nearing_Deadline = getPending('Pending District Supervisor')
+
+
+    five_files = getNFiles(id, 5, email)
     dict = {
-        "number_of_files": number_of_files_uploaded,
-        "number_of_files_passed": number_of_files_passed,
-        "number_of_files_deadline": number_of_files_deadline,
-        "number_of_files_nearing_Deadline": number_of_files_nearing_Deadline,
-        "five_files": five_files,
-    }
+            "number_of_files": number_of_files_uploaded,
+            "number_of_files_passed": number_of_files_passed,
+            "number_of_files_deadline": number_of_files_deadline,
+            "number_of_files_nearing_Deadline": number_of_files_nearing_Deadline,
+            "five_files": five_files,
+        }
 
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
 

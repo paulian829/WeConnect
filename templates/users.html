@@ -81,7 +81,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="profile-image-container">
-                        <img src="test/[[ url ]]" alt="">
+                        <img :src="[[ url ]]" alt="">
                     </div>
                     <div class="profile-details-container">
                         <h4>[[ name ]]</h4>
@@ -92,7 +92,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
+                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
                 </div>
             </div>
         </div>
@@ -121,10 +121,10 @@
                     // this.users = response.data.users
                     console.log(response.data.userData)
                     user = response.data.userData
-                    this.name = `${user[3]} ${user[4]}`
-                    this.email = user[1]
-                    this.url = user[8]
-                    this.phone = user[5]
+                    this.name = `${user[0][3]} ${user[0][4]}`
+                    this.email = user[0][1]
+                    this.url = user[0][8]
+                    this.phone = user[0][5]
                 }).catch((e) => console.log(e))
             }
         },

@@ -1,3 +1,4 @@
+from calendar import timegm
 from typing import final
 import mysql.connector
 import hashlib
@@ -9,18 +10,18 @@ def connectDb():
     Function used to connecto to database
     """
     #for localhost
-    mydb = mysql.connector.connect(
-        host="localhost", user="root", password="", database="weconnect"
-    )
+    # mydb = mysql.connector.connect(
+    #     host="localhost", user="root", password="", database="weconnect"
+    # )
     
     # for pythonanywhere
-    # mydb = mysql.connector.connect(
-    #     host="WeConnect.mysql.pythonanywhere-services.com",
-    #     user="WeConnect",
-    #     password="Shokugeki2021!",
-    #     database='WeConnect$weconnect'
-    # )
-    # print("Connect")
+    mydb = mysql.connector.connect(
+        host="WeConnect.mysql.pythonanywhere-services.com",
+        user="WeConnect",
+        password="Shokugeki2021!",
+        database='WeConnect$weconnect'
+    )
+    print("Connect")
     return mydb
 
 
@@ -389,15 +390,36 @@ def getNumberOfFilesPassed(id):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
-        val = (id,)
+        status = 'Pending Teachers'
+        val = (id,status)
         results = list
+        count = 0
         mycursor.callproc("getNumberOfFilesPassed", val)
         for result in mycursor.stored_results():
             results = result.fetchall()
-            # print(results)
-            # resultsArray.append(results)
+            for result in results:
+                print(result[0])
+                taskID = result[0]
+                match = getMatch(id, taskID)
+                if (len(match) > 0):
+                    count = count + 1
+                    print(count)
 
         # print(len(results))
+        return count
+    finally:
+        mydb.close()
+
+
+def getMatch(userID, taskID):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (userID,taskID)
+        results = list
+        mycursor.callproc("getFileTask", val)
+        for result in mycursor.stored_results():
+            results = result.fetchall()
         return results
     finally:
         mydb.close()
@@ -407,16 +429,23 @@ def getNumberOfFilesDeadline(id):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
-        val = (id,)
+        status = 'Pending Teachers'
+        val = (id,status)
         results = list
-        mycursor.callproc("number_of_files_deadline", val)
+        count = 0
+        mycursor.callproc("getNumberOfFilesPassed", val)
         for result in mycursor.stored_results():
             results = result.fetchall()
-            # print(results)
-            # resultsArray.append(results)
+            for result in results:
+                print(result[0])
+                taskID = result[0]
+                match = getMatch(id, taskID)
+                if (len(match) == 0):
+                    count = count + 1
+                    print(count)
 
         # print(len(results))
-        return results
+        return count
     finally:
         mydb.close()
 
@@ -425,16 +454,88 @@ def getNumberOfFilesNearDeadline(id):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
-        val = (id,)
+        status = 'Pending Teachers'
+        val = (status,)
         results = list
-        mycursor.callproc("number_of_files_nearing_Deadline", val)
+        count = 0
+        mycursor.callproc("getTaskByStatus", val)
         for result in mycursor.stored_results():
             results = result.fetchall()
-            # print(results)
-            # resultsArray.append(results)
+            # for result in results:
+            #     print(result[0])
+            #     taskID = result[0]
+            #     match = getMatch(id, taskID)
+            #     if (len(match) > 0):
+            #         count = count + 1
+            #         print(count)
 
         # print(len(results))
-        return results
+        return len(results)
+    finally:
+        mydb.close()
+
+def getPassed(status):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        results = list
+        if status == 'Pending Grade Chairman':
+            mycursor.callproc('getPassedForGradeChairman')
+            for result in mycursor.stored_results():
+                results = result.fetchall()
+            return len(results)
+        if status == 'Pending Principal':
+            mycursor.callproc('getPassedForPrincipal')
+            for result in mycursor.stored_results():
+                results = result.fetchall()
+            return len(results)
+        if status == 'Pending District Supervisor':
+            mycursor.callproc('getDone')
+            for result in mycursor.stored_results():
+                results = result.fetchall()
+            return len(results)
+
+        return 0
+    finally:
+        mydb.close()
+
+def getPending(status):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        results = list
+        val = (status,) 
+        mycursor.callproc("getPending", val)
+        today = datetime.today()
+        count = 0
+        print(today)
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+            for result in results:
+                if(today < result[5]):
+                    count = count + 1
+                    print(result[5], 'Passed Deadline')
+        return count
+    finally:
+        mydb.close()
+
+def getFailed(status):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        results = list
+        val = (status,) 
+        mycursor.callproc("getPending", val)
+        today = datetime.today()
+        count = 0
+        print(today)
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+            for result in results:
+                if(today > result[5]):
+                    count = count + 1
+                    print(result[5], 'Passed Deadline')
+        return count
     finally:
         mydb.close()
 
@@ -452,8 +553,6 @@ def getNFiles(id, number,email):
         mycursor.callproc("getNFiles", val)
         for result in mycursor.stored_results():
             results = result.fetchall()
-            # print(results)
-            # resultsArray.append(results)
 
         # print(len(results))
         return results
@@ -790,3 +889,5 @@ def getAllComments():
 # print(getusers())
 # print(deleteUserDB(85))
 # print(newPosition('test'))
+
+print(getPassed('Pending Grade Chairman'))
