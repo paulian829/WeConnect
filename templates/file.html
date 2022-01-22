@@ -3,7 +3,7 @@
 <div class='file-container' id='app'>
     <div class="file-side">
         {% if "image/jpeg" in result[4] or "image/png" in result[4] %}
-        <img class="file-image" src="{{url_for('static', filename='uploads/'+result[15])}}" />
+        <img class="file-image" src="{{url_for('static', filename='uploads/' + result[15])}}" />
         {% elif "application/pdf" in result[4] %}
         <iframe src="{{url_for('static', filename='uploads/'+result[15])}}#zoom=100"
             style="width: 100%;height: 100%;border: none;"></iframe>
@@ -45,7 +45,7 @@
                 </tr>
                 <tr>
                     <td><strong>Uploaded By Id:</strong></td>
-                    <td>{{result[5]}}</td>
+                    <td>{{userName}}</td>
                 </tr>
                 <tr>
                     <td><strong>Share to User:</strong></td>
@@ -53,11 +53,7 @@
                 </tr>
                 <tr>
                     <td><strong>Deadline:</strong> </td>
-                    <td>{{result[8]}}</td>
-                </tr>
-                <tr>
-                    <td><strong>Revision:</strong> </td>
-                    <td>{{result[9]}}</td>
+                    <td>{{deadline}}</td>
                 </tr>
                 <tr>
                     <td><strong>Date Upload:</strong> </td>

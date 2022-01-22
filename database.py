@@ -439,13 +439,14 @@ def getNumberOfFilesNearDeadline(id):
         mydb.close()
 
 
-def getNFiles(id, number):
+def getNFiles(id, number,email):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
         val = (
             id,
             number,
+            email
         )
         results = list
         mycursor.callproc("getNFiles", val)
@@ -460,11 +461,11 @@ def getNFiles(id, number):
         mydb.close()
 
 
-def getAllFilesUser(id):
+def getAllFilesUser(id,email):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
-        val = (id,)
+        val = (id,email,)
         results = list
         mycursor.callproc("getAllFiles", val)
         for result in mycursor.stored_results():

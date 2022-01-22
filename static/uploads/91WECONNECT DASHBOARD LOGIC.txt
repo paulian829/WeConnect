@@ -1,0 +1,44 @@
+Teacher
+Finished
+get all the list of files and tasks that are still pending Teachers
+Count all files thajt are uploaded to a task -> Finished
+
+Pending
+Count all tasks that are still pending teachers
+
+Failed
+Get all tasks that are not pending teachers and look for tasks with no files uploaded for it
+
+
+Grade Prinicipal
+Finished
+get all tasks that are not pending teachers and not pending gradechairman
+
+Pending
+Get all Pending grade chairman and pending teachers that are not yet Passed Deadline
+
+Failed
+Get all tasks that are pending teachers but passed deadline
+
+
+Principal
+Finished 
+all tasks that are Pending distict supervisor
+
+Pending
+all tasks that are pending Principal
+
+Failed
+Get all tasks that are pending principal that are passed deadline
+
+District Supervisor
+
+Finished
+All tasks that are Done
+
+Pending
+get all tasks that pending district supervisor that is not on deadline
+
+
+Failed
+Get al tasks taht are pending district super visor but passed deadline

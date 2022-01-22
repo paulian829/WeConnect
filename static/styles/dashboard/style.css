@@ -759,10 +759,10 @@ a {
 }
 img.card-img-top {
     /* max-width: 250px; */
-    /* max-height: 35vh; */
-    /* height: 100%; */
+    max-height: 35vh;
+    height: 100%;
     width: 100%;
-    /* min-height: 25vh; */
+    min-height: 25vh;
     object-fit: contain;
 }
 #editor .file-side {

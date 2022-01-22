@@ -72,6 +72,7 @@ def login():
         # session['logged_in'] = True
         session["userID"] = result[0][0]
         session["name"] = result[0][3] + " " + result[0][4]
+        session["email"] = result[0][1]
         session["profilePic"] = result[0][8]
         session["phone"] = result[0][5]
         # session['smsverify'] = random.randint(1000,9999)
@@ -262,8 +263,9 @@ def getmyfiles():
     if not session["logged_in"]:
         return redirect(url_for("forbidden"))
     id = session["userID"]
-    getSixFiles = getNFiles(id, 5)
-    getAll = getAllFilesUser(id)
+    email = session['email']
+    getSixFiles = getNFiles(id, 5, email)
+    getAll = getAllFilesUser(id,email)
 
     dict = {"six_files": getSixFiles, "getall": getAll}
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
@@ -740,10 +742,17 @@ def file(id):
     title = "File"
     if result[2] == "block doc":
         return render_template("editor.html", title=title, result=result)
+    task = getOneTask(result[14])
+    if not task:
+        deadline = 'N/A'
+    else:
+        deadline = task[0][5]
 
-    # if result[5] != session['userID']:
-    #     return redirect(url_for("forbidden"))
-    return render_template("file.html", title=title, result=result)
+    user = getUserData(result[5])
+    user = user[0]
+    userName = user[3] + ' ' + user[4]
+    print(userName)
+    return render_template("file.html", title=title, result=result, deadline = deadline, userName = userName)
 
 
 @app.route("/logout")

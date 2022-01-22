@@ -17,7 +17,7 @@
             <div class="col" v-for='suggestion in suggestions' v-if='suggestion[12] !==4'>
                 <a :href="'/file/' + suggestion[0] ">
                     <div class="card h-100" v-if='suggestion[4] === "image/jpeg" || suggestion[4] === "image/png" '>
-                        <img :src="'/static/uploads/' + suggestion[1] " class="card-img-top" alt="...">
+                        <img :src="'/static/uploads/' + suggestion[5]+suggestion[1] " class="card-img-top" alt="...">
                         <div class="card-body">
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
                             <span>[[ changeDate(suggestion[10]) ]]</span>
@@ -105,7 +105,7 @@
                 <tbody>
                     <tr v-for='data in allData' v-if='data[12] !=4'>
                         <th scope="row" class="elipses">[[ data[1] ]]</th>
-                        <td>[[ changeDate(data[8]) ]]</td>
+                        <td>[[ changeDate(data[8]) ]] test</td>
                         <td>[[ changeDate(data[10]) ]]</td>
                         <td><a :href="'/file/' + data[0] "><button type="button" class="btn btn-success"><i class="far fa-file"></i>View</button></a></td>
                         <!-- <td><span @click='moveToThrash(data[0])' style="cursor: pointer;">Move to Thrash</span></td> -->
@@ -146,13 +146,12 @@
                         <div class="mb-3">
                             <label for="targetUser" class="form-label">Share to</label>
                             <input type="text" class="form-control" id="targetUser" name="targetUser" required>
-                            <small id="emailHelp" class="form-text text-muted">Use email Address to tag the user
-                                seperate with comma(,)</small>
+                            <small id="emailHelp" class="form-text text-muted">Use email Address to tag the user</small>
                         </div>
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <label for="Deadline" class="form-label">Deadline</label>
                             <input type="datetime-local" class="form-control" name="Deadline" id="Deadline" required>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div class="modal-footer">
