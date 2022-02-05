@@ -33,8 +33,9 @@
           <td>{{ user[3] }} {{user[4]}}</td>
           {% endif %}
           {% endfor %}
-          <td><button type="button" class="btn btn-primary "><a class='view-file-btn' href="/file/{{ comment[1] }}">View File
-                FILE {{comment[1]}}</a> </button></td>
+          <!-- <td><button type="button" class="btn btn-primary "><a class='view-file-btn' href="/file/{{ comment[1] }}">View File
+                FILE {{comment[1]}}</a> </button></td> -->
+          <td>FILE {{comment[1]}}</td>
           <td>[[ getDateString({{comment[3]}}) ]]</td>
           <td class="comment-col">{{ comment[4] }}</td>
           <td><button type="button" class="btn btn-danger"  v-on:click='deleteComment({{comment[0]}})'>Delete</button></td>

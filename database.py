@@ -561,13 +561,17 @@ def getNFiles(id, number,email):
         mydb.close()
 
 
-def getAllFilesUser(id,email):
+def getAllFilesUser(id,email,sort):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
         val = (id,email,)
         results = list
-        mycursor.callproc("getAllFiles", val)
+        if sort == 'filename':
+            mycursor.callproc("getAllFiles", val)
+        elif sort == 'filetype':
+            mycursor.callproc("getAllFilesType", val)
+
         for result in mycursor.stored_results():
             results = result.fetchall()
             # print(results)
@@ -644,6 +648,30 @@ def getAllFilesForAdmin():
     finally:
         mydb.close()
 
+def getAllFilesForAdminSorted(sort):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        # val = (id,)
+        results = list
+        if sort == 'id':
+            mycursor.callproc("getAllFilesForAdmin")
+        elif sort == 'name':
+            mycursor.callproc("getAllFileSortedByName")
+        elif sort == 'type':
+            mycursor.callproc("getAllFileSortedByType")
+        else:
+            mycursor.callproc("getAllFilesForAdmin")
+
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+            # print(results)
+            # resultsArray.append(results)
+
+        # print(len(results))
+        return results
+    finally:
+        mydb.close()
 
 def deleteFileDB(id):
     try:

@@ -172,7 +172,7 @@ def reset():
         email = request.form.get("Email")
         print(email)
         sender_address = "weconnect.thesis@gmail.com"
-        sender_pass = "Shokugeki2021!"
+        sender_pass = "eplnssqbajzfqonw"
         # Setup the MIME
         # Check 1st if user Exist
         result = getUserViaEmail(email)
@@ -243,8 +243,9 @@ def test():
         return redirect(url_for("forbidden"))
     id = session["userID"]
     email = session['email']
-
+    number_of_files_uploaded = 0
     if session['position'] == 4:
+        print('test')
         number_of_files_uploaded = getNumberOfFilesUploaded(id)
         number_of_files_passed = getNumberOfFilesPassed(id)
         number_of_files_deadline = getNumberOfFilesDeadline(id)
@@ -288,7 +289,8 @@ def getmyfiles():
     id = session["userID"]
     email = session['email']
     getSixFiles = getNFiles(id, 5, email)
-    getAll = getAllFilesUser(id,email)
+    sort = request.args.get('sort')
+    getAll = getAllFilesUser(id,email,sort)
 
     dict = {"six_files": getSixFiles, "getall": getAll}
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
@@ -311,7 +313,6 @@ def getTeachers():
     if not session["logged_in"]:
         return redirect(url_for("forbidden"))
     user = getAllUsers()
-    print("+++++++++++++", user)
     dict = {"users": user}
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
 
@@ -451,15 +452,15 @@ def getSchedule(id):
 
 @app.route('/admin/tasks/<sched>')
 def getTasks(sched):
-    if not session["admin"]:
-        return redirect(url_for("forbidden"))
+    # if not session["admin"]:
+    #     return redirect(url_for("forbidden"))
     results = getTasksDB(sched)
     return render_template("singletaskadmin.html", title='ADMIN', results=results)
 
 @app.route('/admin/tasks/edit/<id>')
 def getTaskForEdit(id):
-    if not session["admin"]:
-        return redirect(url_for("forbidden"))
+    # if not session["admin"]:
+    #     return redirect(url_for("forbidden"))
     result = getOneTask(id)
     dict = {"result": result}
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
@@ -495,7 +496,7 @@ def addSchedule():
             schedule,
         )
         if result:
-            return redirect(url_for("getTasks",sched = 'Weekly'))
+            return redirect(url_for("schedule"))
         else:
             return "error"
 
@@ -518,7 +519,10 @@ def editSchedule():
         status = request.form.get('Status')
         result = updateTaskDB(taskID,taskName,"imageBlob",taskCreatedBy,deadline_datetime,description,schedule,status)
         if result:
-            return redirect(url_for("getTasks", sched='Weekly'))
+            if session['admin']:
+                return redirect(url_for("getTasks", sched='Weekly'))
+            else:
+                return redirect(url_for("schedule"))
         else:
             return "error"
 
@@ -533,7 +537,11 @@ def checkifuseruploaded(userID, taskID):
 @app.route('/admin/deleteTask/<id>')
 def deleteTask(id):
     result = deleteTaskDb(id)
-    return redirect(url_for("getTasks", sched='Weekly'))
+    if session['admin']:
+        return redirect(url_for("getTasks", sched='Weekly'))
+    else:
+        return redirect(url_for("schedule"))
+    
 
 
 @app.route("/settings")
@@ -610,6 +618,10 @@ def adminFiles():
     if session["admin"] == False:
         return redirect(url_for("forbidden"))
     title = "ADMIN"
+    if request.args.get("sort"):
+        sort = request.args.get("sort")
+        files = getAllFilesForAdminSorted(sort)
+        return render_template("adminFiles.html", title=title, files=files)
     files = getAllFilesForAdmin()
     return render_template("adminFiles.html", title=title, files=files)
 
@@ -637,6 +649,39 @@ def profile():
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def sendEmail(receiver_email,sender_ID):
+    print(receiver_email)
+    sender_address = "weconnect.thesis@gmail.com"
+    sender_pass = "eplnssqbajzfqonw"
+    # Setup the MIME
+    # Check 1st if user Exist
+    result = getUserData(sender_ID)
+    if len((result)) == 0:
+        print("error")
+        return redirect(url_for("forgotpassword", result="Error"))
+    userID = result[0][1]  # ignore ERrors
+    print("UserID",userID)
+
+    # get the User ID
+
+    content = f"User {userID} had Tagged you in file check it now at www.weconnect.sbs" 
+    message = MIMEMultipart()
+    message["From"] = sender_address
+    message["To"] = receiver_email
+    message["Subject"] = "File Tagged"  # The subject line
+    # The body and the attachments for the mail
+    message.attach(MIMEText(content, "plain"))
+    # Create SMTP session for sending the mail
+    sessionEmail = smtplib.SMTP("smtp.gmail.com", 587)  # use gmail with port
+    sessionEmail.starttls()  # enable security
+    sessionEmail.login(
+        sender_address, sender_pass
+    )  # login with mail_id and password
+    text = message.as_string()
+    sessionEmail.sendmail(sender_address, receiver_email, text)
+    sessionEmail.quit()
+    print("Mail Sent")
+
 
 @app.route("/uploadfile", methods=["GET", "POST"])
 def uploadFile():
@@ -654,9 +699,12 @@ def uploadFile():
             file_content_type = "test"
             share_to_group = request.form.get("Position")
             share_to_user = request.form.get("targetUser")
+            uploaded_by = session["userID"]
+            if share_to_user != "None":
+                print('++++++++++++++')
+                sendEmail(share_to_user,uploaded_by)
             deadline = request.form.get("Deadline")
             revision = 1
-            uploaded_by = session["userID"]
             FilePathName = str(uploaded_by) + filename
             if request.form.get("taskID"):
                 taskID = request.form.get("taskID")
@@ -692,13 +740,16 @@ def uploadFile():
         filename = file.filename
         # filesize = len(file.read())
         filesize = 1
-        filetype = "raw file"
+        filetype = filename.split(".")[-1]
         file_content_type = file.content_type
         share_to_group = 1
+        uploaded_by = session["userID"]
         share_to_user = request.form.get("targetUser")
+        if share_to_user != "None":
+                print('++++++++++++++')
+                sendEmail(share_to_user,uploaded_by)
         deadline = request.form.get("Deadline")
         revision = 1
-        uploaded_by = session["userID"]
         FilePathName = str(uploaded_by) + filename
         if request.form.get("taskID"):
             taskID = request.form.get("taskID")

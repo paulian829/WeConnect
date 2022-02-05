@@ -617,7 +617,7 @@ ul.nav.admin-nav {
 .title-container {
     display: flex;
     padding: 0 0 10px 0;
-
+    flex-direction: row;
 }
 td {
     line-height: 20px;
@@ -841,3 +841,6 @@ a.active {
 .col{
 	margin-bottom: 25px;
   }
+.margin-right{
+	margin-right: 10px;
+}

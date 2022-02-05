@@ -96,8 +96,8 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">Filename</th>
-                        <th scope='col'>Deadline</th>
+                        <th scope='col' class="pointers" @click="testVue('filename')">Filename <i class="fas fa-caret-up"></i></th>
+                        <th scope="col" class="pointers" @click="testVue('filetype')">File Type <i class="fas fa-caret-up"></i></th>
                         <th scope='col'>Uploaded Date</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -105,7 +105,7 @@
                 <tbody>
                     <tr v-for='data in allData' v-if='data[12] !=4'>
                         <th scope="row" class="elipses">[[ data[1] ]]</th>
-                        <td>[[ changeDate(data[8]) ]] test</td>
+                        <td>[[ changeDate(data[2]) ]]</td>
                         <td>[[ changeDate(data[10]) ]]</td>
                         <td><a :href="'/file/' + data[0] "><button type="button" class="btn btn-success"><i class="far fa-file"></i>View</button></a></td>
                         <!-- <td><span @click='moveToThrash(data[0])' style="cursor: pointer;">Move to Thrash</span></td> -->
@@ -146,7 +146,7 @@
                         <div class="mb-3">
                             <label for="targetUser" class="form-label">Share to</label>
                             <input type="text" class="form-control" id="targetUser" name="targetUser" required>
-                            <small id="emailHelp" class="form-text text-muted">Use email Address to tag the user</small>
+                            <small id="emailHelp" class="form-text text-muted">Use email Address to tag the user. Type <strong>'None'</strong> if no user to Tag</small>
                         </div>
                         <!-- <div class="mb-3">
                             <label for="Deadline" class="form-label">Deadline</label>
@@ -183,6 +183,9 @@
     .suggestion-cards-container.row.row-cols-1.row-cols-md-6.g-4 {
         margin-bottom: 30px;
     }
+    .pointers{
+        cursor: pointer;
+    }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
@@ -198,8 +201,8 @@
             allData: []
         },
         methods: {
-            testVue: function () {
-                this.$http.get('/getmyfiles').then(response => {
+            testVue: function (sort = 'filename') {
+                this.$http.get(`/getmyfiles?sort=${sort}`).then(response => {
                     console.log(response)
                     this.suggestions = response.body['six_files']
                     this.allData = response.body['getall']

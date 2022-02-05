@@ -43,18 +43,6 @@
                     Teachers
                     <i class="fas fa-times-circle" style="color: red;"></i>
                 </li>
-                <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Grade Chairman
-                    <i class="fas fa-times-circle" style="color: red;"></i>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Principal
-                    <i class="fas fa-times-circle" style="color: red;"></i>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    District Supervisor
-                    <i class="fas fa-times-circle" style="color: red;"></i>
-                </li> -->
             </ul>
             <br>
             <a href="/updatetask/Pending Grade Chairman/{{result[0]}}" v-if="userPosition == 3 "><button type="submit"
@@ -67,18 +55,6 @@
                     Teachers
                     <i class="fas fa-check-circle" style="color: green;"></i>
                 </li>
-                <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Grade Chairman
-                    <i class="fas fa-times-circle" style="color: red;"></i>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Principal
-                    <i class="fas fa-times-circle" style="color: red;"></i>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    District Supervisor
-                    <i class="fas fa-times-circle" style="color: red;"></i>
-                </li> -->
             </ul>
             <br>
             <a href="/updatetask/Pending Principal/{{result[0]}}" v-if="userPosition == 3 "><button type="submit"
@@ -95,14 +71,6 @@
                     Grade Chairman
                     <i class="fas fa-check-circle" style="color: green;"></i>
                 </li>
-                <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Principal
-                    <i class="fas fa-times-circle" style="color: red;"></i>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    District Supervisor
-                    <i class="fas fa-times-circle" style="color: red;"></i>
-                </li> -->
             </ul>
             <br>
             <a href="/updatetask/Pending District/{{result[0]}}" v-if="userPosition == 5"><button type="submit"
@@ -122,10 +90,6 @@
                     Principal
                     <i class="fas fa-check-circle" style="color: green;"></i>
                 </li>
-                <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                    District Supervisor
-                    <i class="fas fa-times-circle" style="color: red;"></i>
-                </li> -->
             </ul>
             <BR></BR>
             <a href="/updatetask/Done/{{result[0]}}" v-if="userPosition ==2"><button type="submit"
@@ -150,6 +114,13 @@
                     <i class="fas fa-check-circle" style="color: green;"></i>
                 </li>
             </ul>
+            <div class="task-buttons-section"></div>
+            {% endif %}
+            {% if '5' == session['position'] %}
+            <button type="button" class="btn btn-danger margin-right"><i class="fas fa-trash-alt margin-right"></i><a class='button-link' href="/admin/deleteTask/{{result[0]}}">Delete Task</a></button>
+            <td class="actions"><button type="submit" type="button" class="btn btn-primary"
+                data-bs-toggle="modal" data-bs-target="#EditModal" @click=getTaskData({{result[0]}})><i
+                    class="fas fa-edit margin-right"></i>Edit</button>
             {% endif %}
             <br>
             <table class="table task">
@@ -173,7 +144,66 @@
                 </tbody>
             </table>
         </div>
+        <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Scheduled Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/schedule/edit" method='POST' enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <input type="hidden" class="form-control" id="taskID" name="taskID" v-model='taskID'>
+                        <div class="mb-3">
+                            <label for="taskName" class="form-label">Task Name</label>
+                            <input type="text" class="form-control" id="taskName" name="taskName" required v-model='taskName'>
+                        </div>
+                        <!-- <div class="mb-3">
+                            <label for="taskImage" class="form-label">Upload Image</label>
+                            <input type="file" class="form-control" name="taskImage" id="taskImage"
+                                aria-describedby="taskImage" required>
+                        </div> -->
+                        <div class="mb-3">
+                            <label for="Deadline" class="form-label">Deadline</label>
+                            <input type="datetime-local" class="form-control" name="Deadline" id="Deadline" required v-model='deadLine'>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Schedule" class="form-label">Schedule</label>
+                            <select class="form-select" aria-label="Default select example" name='Schedule'
+                                id='Schedule' v-model='schedule'>
+                                <option selected value="" disabled >Select Scheduled</option>
+                                <option value="Weekly">Weekly</option>
+                                <option value="Monthly">Monthly</option>
+                                <option value="Quarterly">Quarterly</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" rows="3" name=description v-model='description'></textarea>
+                        </div>
+                        <label for="Status" class="form-label">Status</label>
+                        <select class="form-select" aria-label="Default select example" name='Status' id='Status' v-model='status'>
+                            <option selected value="" disabled>Select Status</option>
+                            <option value="Pending Teachers">Pending Teachers</option>
+                            <option value="Pending Grade Chairman">Pending Grade Chairman</option>
+                            <option value="Pending Principal">Pending Principal</option>
+                            <option value="Pending District Supervisor">Pending District Supervisor</option>
 
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" value="submit" class="btn btn-primary">Add</button>
+                    </div>
+            </div>
+
+
+
+            </form>
+
+        </div>
+    </div>
     </div>
 </div>
 
@@ -181,6 +211,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
     integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
 <script>
     var app = new Vue({
         el: '#app',
@@ -194,7 +226,12 @@
             uploadedDetails: [],
             teachers: [],
             key: 0,
-            isDone: []
+            isDone: [],
+            taskID:'',
+            taskName:'',
+            deadLine:'',
+            schedule:'',
+            description:''
         },
         methods: {
             getUploaderData: function (id) {
@@ -294,7 +331,19 @@
 
                 }
                 return 'N/A'
-            }
+            },
+            getTaskData(id) {
+                this.$http.get(`/admin/tasks/edit/${id}`).then(response => {
+                    console.log(response)
+                    let result = response.data.result
+                    this.taskID = result[0][0]
+                    this.taskName = result[0][1]
+                    this.deadLine = moment(result[0][5]).format('YYYY-MM-DDThh:mm')
+                    this.schedule = result[0][8]
+                    this.description = result[0][6]
+                    this.status = result[0][7]
+                }).catch((e) => console.log(e))
+            },
         },
         created() {
             this.getTeachers()
@@ -325,6 +374,15 @@
 
     .task td {
         line-height: 50px;
+    }
+    .margin-right{
+        margin-right: 10px;
+    }
+    .button-link{
+        color: white;
+    }
+    .button-link:hover{
+        color: white;
     }
 </style>
 

@@ -61,6 +61,7 @@
                 </tr>
             </tbody>
         </table>
+        {% if not session['admin'] %}
         <div>
             <a href="{{'/thrash/' + result[0]|string}}" onclick="return confirm('Are you sure?')"><button type="button"
                     class="btn btn-danger"><i class="fas fa-trash"></i>TRASH</button></a>
@@ -74,6 +75,7 @@
                     PIN</button></a>
             {% endif %}
         </div>
+        {% endif %}
         <br>
         <div style="margin-top: 30px;">
             {% if session['admin']is not true %}

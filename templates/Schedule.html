@@ -2,9 +2,11 @@
 {% block content %}
 <div id="app">
     <div class="users-container">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="display: none;">
+        {% if '5' == session['position'] %}
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             <i class="fas fa-plus-circle"></i> Create new Task
-        </button>
+        </button><br><br>
+        {% endif %}
         <button type="button" class="btn" v-bind:class="{'btn-success': Weekly, 'btn-primary':!Weekly }" @click='changeTime("Weekly")'>Weekly</button>
         <button type="button" class="btn" v-bind:class="{'btn-success': Monthly, 'btn-primary':!Monthly }" @click='changeTime("Monthly")'>Monthly</button>
         <button type="button" class="btn" v-bind:class="{'btn-success': Quarterly, 'btn-primary':!Quarterly }" @click='changeTime("Quarterly")'>Quarterly</button>
@@ -74,7 +76,6 @@
             {%  endfor %}
         </div>
     </div>
-
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
         data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">

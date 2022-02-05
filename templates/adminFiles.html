@@ -1,50 +1,71 @@
 {% extends "admin-block.html" %}
 {% block admincontent %}
-  <div id="admin">
-    <div class="admin-container">
-      <div class="title-container">
-        <h3>Files list</h3>
-
-      </div>
-      <!-- <div class="input-group mb-3 seach-bar">
+<div id="admin">
+  <div class="admin-container">
+    <div class="title-container">
+      <h3 class="margin-right">Files list</h3>
+      <!-- <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          Sort By
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item" href="/admin/files?sort=id">ID</a></li>
+          <li><a class="dropdown-item" href="/admin/files?sort=name">Name</a></li>
+          <li><a class="dropdown-item" href="/admin/files?sort=type">File type</a></li>
+        </ul>
+      </div> -->
+    </div>
+    <!-- <div class="input-group mb-3 seach-bar">
         <input type="text" class="form-control" placeholder="File name"
           aria-label="Recipient's username" aria-describedby="basic-addon2">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button">Search</button>
         </div>
       </div> -->
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col" class="userid">File ID#</th>
-            <th scope="col">File Name</th>
-            <th scope="col">Uploaded by User ID</th>
-            <th scope="col">Date Uploaded</th>
-            <th scope="col">Deadline</th>
-            <th scope="col">Status</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for file in files %}
-          <tr>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col" class="userid">  <a href="/admin/files?sort=id" class="uncolored-link">File ID# <i class="fas fa-caret-up"></i></a> </th>
+          <th scope="col"> <a href="/admin/files?sort=name" class="uncolored-link">File Name <i class="fas fa-caret-up"></i></a> </th>
+          <th scope="col"> <a href="/admin/files?sort=type" class="uncolored-link">File Type <i class="fas fa-caret-up"></i></a> </th>
+          <th scope="col">Uploaded by User ID</th>
+          <th scope="col">Date Uploaded</th>
+          <th scope="col">Deadline</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for file in files %}
+        <tr>
           <th scope="row">{{file[0]}}</th>
-            <td>{{ file[1] }}</td>
-            <td> <a href="/admin/edit/{{file[5]}}"><button class="btn btn-success"><i class="fas fa-user"></i>View UserID: {{ file[5] }}</button></a></td>
-            <td>{{ file[10] }}</td>
-            <td>{{ file[8] }}</td>
-            {% if file[12] == 4 %}
-              <td>Trash</td>
-            {% else %}
-              <td>Active</td>
-            {% endif %}
-s            <td><a href="/file/{{file[0]}}" style="color: white;"><button type="button" class="btn btn-success"><i class="far fa-file"></i>View</button></a> <a href="/admin/deletefile/{{file[0]}}" style="color: white;"><button type="button" class="btn btn-danger" style="margin-left:20px"><i class="fas fa-trash"></i>Delete</a></button></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+          <td>{{ file[1] }}</td>
+          <td>{{ file[2] }}</td>
+          <td> <a href="/admin/edit/{{file[5]}}"><button class="btn btn-success"><i class="fas fa-user"></i>View UserID:
+                {{ file[5] }}</button></a></td>
+          <td>{{ file[10] }}</td>
+          <td>{{ file[8] }}</td>
+          {% if file[12] == 4 %}
+          <td>Trash</td>
+          {% else %}
+          <td>Active</td>
+          {% endif %}
+          <td><a href="/file/{{file[0]}}" style="color: white;"><button type="button" class="btn btn-success"><i
+                  class="far fa-file"></i>View</button></a> <a href="/admin/deletefile/{{file[0]}}" onclick="return confirm('Are you sure?')"
+              style="color: white;"></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
+</div>
 
+
+<style>
+  .uncolored-link{
+    color: black;
+  }
+</style>
 {% endblock %}
