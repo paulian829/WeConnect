@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 22, 2022 at 05:59 PM
+-- Generation Time: Feb 05, 2022 at 09:13 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -73,12 +73,25 @@ CREATE  PROCEDURE `getAllComments` ()  BEGIN
 END$$
 
 CREATE  PROCEDURE `getAllFiles` (IN `uid` INT, IN `uemail` VARCHAR(100))  BEGIN
-SELECT * FROM files where UploadedByID = uid OR Share_to_user = uemail ORDER BY FileID DESC;
+SELECT * FROM files where UploadedByID = uid OR Share_to_user = uemail ORDER BY FileName ASC;
 
 END$$
 
 CREATE  PROCEDURE `getAllFilesForAdmin` ()  BEGIN
-SELECT * FROM files ORDER BY FileID DESC;
+SELECT * FROM files ORDER BY FileID ASC;
+END$$
+
+CREATE  PROCEDURE `getAllFileSortedByName` ()  BEGIN
+SELECT * FROM files ORDER BY FileName ASC;
+END$$
+
+CREATE  PROCEDURE `getAllFileSortedByType` ()  BEGIN
+SELECT * FROM files ORDER BY FileType ASC;
+END$$
+
+CREATE  PROCEDURE `getAllFilesType` (IN `uid` INT, IN `uemail` VARCHAR(100))  BEGIN
+SELECT * FROM files where UploadedByID = uid OR Share_to_user = uemail ORDER BY FileType ASC;
+
 END$$
 
 CREATE  PROCEDURE `getCommentsDB` (IN `uid` INT)  BEGIN
@@ -245,14 +258,6 @@ CREATE TABLE `comments` (
   `CommentMsg` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `comments`
---
-
-INSERT INTO `comments` (`ID`, `FileID`, `UserID`, `DateCreated`, `CommentMsg`) VALUES
-(21, 80, 95, 1642004008, 'test3\n'),
-(25, 80, 91, 1642522591, 'test');
-
 -- --------------------------------------------------------
 
 --
@@ -277,19 +282,6 @@ CREATE TABLE `files` (
   `taskID` int(11) NOT NULL,
   `FilePathName` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `files`
---
-
-INSERT INTO `files` (`FileID`, `FileName`, `FileType`, `FileSize`, `FileContentType`, `UploadedByID`, `Share_to_user`, `Share_to_group`, `DeadLine`, `Revision`, `DateUploaded`, `block_doc_json`, `status`, `pinned`, `taskID`, `FilePathName`) VALUES
-(80, 'Comments.pdf', 'raw file', 1, 'application/pdf', 91, NULL, 1, NULL, 1, '2022-01-12 00:20:55', NULL, 0, 1, 49, '91Comments.pdf'),
-(81, 'requirements.txt', 'raw file', 1, 'text/plain', 91, '0', 1, '2021-12-01 12:31:00', 1, '2022-01-17 21:59:49', NULL, 4, 0, 0, '91requirements.txt'),
-(85, 'WECONNECT DASHBOARD LOGIC.txt', 'raw file', 1, 'text/plain', 91, 'username@paul', 1, NULL, 1, '2022-01-22 16:35:48', NULL, 0, 0, 0, '91WECONNECT DASHBOARD LOGIC.txt'),
-(86, 'Screenshot_1642261230.png', 'raw file', 1, 'image/png', 91, 'paulian829@gmail.com', 1, NULL, 1, '2022-01-22 16:36:11', NULL, 0, 0, 0, '91Screenshot_1642261230.png'),
-(87, '2874.png', 'raw file', 1, 'image/png', 91, 'teacher1@gmail.com', 1, NULL, 1, '2022-01-22 17:37:21', NULL, 0, 0, 0, '912874.png'),
-(88, 'Screenshot_1642260883.png', 'raw file', 1, 'image/png', 95, 'teacher2@gmail.com', 1, NULL, 1, '2022-01-22 19:45:49', NULL, 0, 0, 0, '95Screenshot_1642260883.png'),
-(89, 'yarn.lock', 'raw file', 1, 'application/octet-stream', 97, 'none', 1, NULL, 1, '2022-01-23 00:22:24', NULL, 0, 0, 0, '97yarn.lock');
 
 -- --------------------------------------------------------
 
@@ -337,13 +329,14 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`TaskID`, `TaskName`, `TaskImage`, `TaskCreatedBy`, `TaskDateCreated`, `TaskDeadline`, `TaskDescription`, `TaskStatus`, `TaskSchedule`) VALUES
-(49, 'Individual daily log and accomplishment report (IDLAR)', '', 82, '2021-12-30 22:04:16', '2022-01-02 22:03:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Done', 'Weekly'),
-(50, 'Weekly Assesment', '', 82, '2022-01-06 22:39:41', '2022-01-16 22:39:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Done', 'Weekly'),
-(51, 'Weekly home learning plan', '', 82, '2022-01-06 22:49:33', '2022-01-15 22:49:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Grade Chairman', 'Weekly'),
+(49, 'Individual daily log and accomplishment report (IDLAR)', '', 82, '2021-12-30 22:04:16', '2022-01-02 22:03:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Weekly'),
+(50, 'Weekly Assesment', '', 82, '2022-01-06 22:39:41', '2022-01-16 22:39:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Weekly'),
+(51, 'Weekly home learning plan', '', 82, '2022-01-06 22:49:33', '2022-01-15 22:49:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Weekly'),
 (52, 'Idea lesson exemplar', '', 82, '2022-01-06 22:50:04', '2022-01-15 22:49:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', 'Pending Teachers', 'Weekly'),
 (53, 'Form 148 of the Daily Time record (DTR)', '', 82, '2022-01-06 22:51:36', '2022-01-29 22:51:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Monthly'),
 (54, 'Students’ grades', '', 82, '2022-01-06 22:52:00', '2022-01-23 22:51:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Quarterly'),
-(55, 'Number of enrollment and number of drop out', '', 82, '2022-01-06 23:26:14', '2022-03-05 23:25:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Quarterly');
+(55, 'Number of enrollment and number of drop out', '', 82, '2022-01-06 23:26:14', '2022-03-05 23:25:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Quarterly'),
+(60, 'test123', '', 93, '2022-02-02 23:34:53', '2022-02-06 23:34:00', 'test123', 'Pending Teachers', 'Monthly');
 
 -- --------------------------------------------------------
 
@@ -369,13 +362,14 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`ID`, `Email`, `Pass`, `FirstName`, `LastName`, `PhoneNumber`, `Position`, `DateCreated`, `profilePic`) VALUES
 (82, 'admin@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'admin1', 'account', '+639751160135', 1, '2021-11-18 08:36:42', '/static/uploads/ProfilePictures/82_2874.png'),
-(86, 'weconnect.thesis@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'Super', '2', '01234567890', 1, '2021-11-22 00:17:06', ''),
-(91, 'teacher@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher5', 'Account1', '01234567890', 4, '2021-12-21 10:27:00', '/static/uploads/ProfilePictures/91_18.jpg'),
-(93, 'principal@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Principal', 'User', '01234567890', 5, '2021-12-30 10:58:31', '/static/uploads/ProfilePictures/93_47.jpg'),
-(94, 'districtsupervisor@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'District', 'Supervisor', '01234567890', 2, '2021-12-30 10:59:02', '/static/uploads/ProfilePictures/94_52.jpg'),
-(95, 'teacher1@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher', 'One', '01234567890', 4, '2021-12-30 11:02:07', '/static/uploads/ProfilePictures/95_66.jpg'),
-(96, 'teacher2@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'two', '01234567890', 4, '2021-12-30 11:02:33', '/static/uploads/ProfilePictures/96_85.jpg'),
-(97, 'gradeChairman@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Grade', 'Chairman', '01234567890', 3, '2021-12-31 12:29:37', '/static/uploads/ProfilePictures/97_33.jpg');
+(86, 'weconnect.thesis@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Super', '2', '+639071882953', 1, '2021-11-22 00:17:06', '/static/uploads/ProfilePictures/86_18.jpg'),
+(91, 'teacher@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher5', 'Account1', '+639071882953', 4, '2021-12-21 10:27:00', '/static/uploads/ProfilePictures/91_18.jpg'),
+(93, 'principal@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Principal', 'User', '+639071882953', 5, '2021-12-30 10:58:31', '/static/uploads/ProfilePictures/93_47.jpg'),
+(94, 'districtsupervisor@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'District', 'Supervisor', '+639071882953', 2, '2021-12-30 10:59:02', '/static/uploads/ProfilePictures/94_52.jpg'),
+(95, 'teacher1@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher', 'One', '+639071882953', 4, '2021-12-30 11:02:07', '/static/uploads/ProfilePictures/95_66.jpg'),
+(96, 'teacher2@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'two', '+639071882953', 4, '2021-12-30 11:02:33', '/static/uploads/ProfilePictures/96_85.jpg'),
+(97, 'gradeChairman@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Grade', 'Chairman', '+639071882953', 3, '2021-12-31 12:29:37', '/static/uploads/ProfilePictures/97_33.jpg'),
+(99, 'cp.merene@mseuf.edu.ph', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Camille', 'Panaligan', '+6394633709', 2, '2022-02-05 16:09:22', '/static/uploads/ProfilePictures/99_85.jpg');
 
 --
 -- Indexes for dumped tables
@@ -426,7 +420,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
-  MODIFY `FileID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `FileID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT for table `position`
@@ -438,13 +432,13 @@ ALTER TABLE `position`
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `TaskID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `TaskID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

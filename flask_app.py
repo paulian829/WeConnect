@@ -75,11 +75,11 @@ def login():
         session["email"] = result[0][1]
         session["profilePic"] = result[0][8]
         session["phone"] = result[0][5]
-        # session['smsverify'] = random.randint(1000,9999)
-        session["smsverify"] = 1235
+        session['smsverify'] = random.randint(1000,9999)
+        # session["smsverify"] = 1235
         session['position'] = result[0][6]
         # Send to phone number
-        # sendMessage()
+        sendMessage()
         if result[0][6] == 1:
             session["admin"] = True
         else:
