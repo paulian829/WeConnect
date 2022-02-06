@@ -431,21 +431,19 @@ def getNumberOfFilesDeadline(id):
         mydb = connectDb()
         mycursor = mydb.cursor()
         status = 'Pending Teachers'
-        val = (id,status)
+        val = (status,)
         results = list
         count = 0
-        mycursor.callproc("getNumberOfFilesPassed", val)
+        today = datetime.today()
+        mycursor.callproc("getPendingTeachers",val)
         for result in mycursor.stored_results():
             results = result.fetchall()
             for result in results:
-                print(result[0])
-                taskID = result[0]
-                match = getMatch(id, taskID)
-                if (len(match) == 0):
-                    count = count + 1
-                    print(count)
-
-        # print(len(results))
+                if (result[5] < today):
+                    match = getMatch(id, result[0])
+                    if (len(match) == 0):
+                        count = count + 1
+                        print(count)
         return count
     finally:
         mydb.close()
@@ -459,19 +457,18 @@ def getNumberOfFilesNearDeadline(id):
         val = (status,)
         results = list
         count = 0
-        mycursor.callproc("getTaskByStatus", val)
+        today = datetime.today()
+        mycursor.callproc("getPendingTeachers",val)
         for result in mycursor.stored_results():
             results = result.fetchall()
-            # for result in results:
-            #     print(result[0])
-            #     taskID = result[0]
-            #     match = getMatch(id, taskID)
-            #     if (len(match) > 0):
-            #         count = count + 1
-            #         print(count)
-
-        # print(len(results))
-        return len(results)
+            print(results)
+            for result in results:
+                if (result[5] > today): 
+                    match = getMatch(id, result[0])
+                    print("match", id, result[0])
+                    if (len(match) == 0):
+                        count = count + 1
+        return count
     finally:
         mydb.close()
 
@@ -513,9 +510,10 @@ def getPending(status):
         for result in mycursor.stored_results():
             results = result.fetchall()
             for result in results:
+                print("results in Pending", result)
                 if(today < result[5]):
                     count = count + 1
-                    print(result[5], 'Passed Deadline')
+                    print(result[5], 'Inside Deadline')
         return count
     finally:
         mydb.close()
@@ -571,7 +569,8 @@ def getAllFilesUser(id,email,sort):
             mycursor.callproc("getAllFiles", val)
         elif sort == 'filetype':
             mycursor.callproc("getAllFilesType", val)
-
+        else:
+            mycursor.callproc("getAllFiles", val)
         for result in mycursor.stored_results():
             results = result.fetchall()
             # print(results)

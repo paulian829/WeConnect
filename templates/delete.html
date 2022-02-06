@@ -97,13 +97,13 @@
                     <thead>
                         <tr>
                             <th scope="col">Filename</th>
-                            <th scope='col'>File Content Type</th>
+                            <th scope='col'>File Type</th>
                             <th scope='col'>Date Uploaded</th>
                             <th scope="col">Action</th>
                         </tr>
                         <tr v-for='suggestion in allData' v-if='suggestion[12] == 4'>
                             <td>[[ suggestion[1] ]]</td>
-                            <td>[[ suggestion[4] ]]</td>
+                            <td>[[ suggestion[2] ]]</td>
                             <td>[[ suggestion[10] ]]</td>
                             <td><button class="btn btn-primary"><a :href="'/restore/' + suggestion[0] " onclick="return confirm('Do you want to Restore this file?')" style="color: white;">Restore</a></button></td>
                         </tr>
@@ -138,6 +138,7 @@
                     this.allData = response.body['getall']
                     console.log(this.allData)
                     console.log(this.suggestions)
+
                 })
             },
             selectFile(key) {

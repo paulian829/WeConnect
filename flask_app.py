@@ -48,7 +48,8 @@ app.config.update(
 def add_security_headers(resp):
     # resp.headers['Content-Security-Policy']='default-src \'self\''
     resp.headers["X-Content-Type-Options"] = "nosniff"
-    resp.set_cookie("username", "flask", secure=True, httponly=True, samesite="Lax")
+    resp.set_cookie("username", "flask", secure=True,
+                    httponly=True, samesite="Lax")
     resp.headers["X-XSS-Protection"] = "1; mode=block"
     resp.headers["X-Frame-Options"] = "SAMEORIGIN"
     return resp
@@ -75,11 +76,11 @@ def login():
         session["email"] = result[0][1]
         session["profilePic"] = result[0][8]
         session["phone"] = result[0][5]
-        session['smsverify'] = random.randint(1000,9999)
-        # session["smsverify"] = 1235
+        # session['smsverify'] = random.randint(1000,9999)
+        session["smsverify"] = 1235
         session['position'] = result[0][6]
         # Send to phone number
-        sendMessage()
+        # sendMessage()
         if result[0][6] == 1:
             session["admin"] = True
         else:
@@ -97,14 +98,14 @@ def verify():
     if request.method == "POST":
         code = request.form.get("code")
         print(code, session["smsverify"])
-            
+
         if code == str(session["smsverify"]):
             session["logged_in"] = True
             if session["admin"] == True:
                 return redirect(url_for("admin"))
-            
+
             return redirect(url_for("dashboard"))
-    return render_template("verify.html")
+    return render_template("verify.html", result='')
 
 
 def sendMessage():
@@ -118,7 +119,8 @@ def sendMessage():
         "to": "+" + str(phone),
         "sender_id": "SMSto",
     }
-    headers = {"Content-Type": "application/json", "Authorization": "Bearer " + api_key}
+    headers = {"Content-Type": "application/json",
+               "Authorization": "Bearer " + api_key}
     conn.request("POST", "/sms/send", json.dumps(payload), headers)
     res = conn.getresponse()
     data = res.read()
@@ -193,7 +195,8 @@ def reset():
         # The body and the attachments for the mail
         message.attach(MIMEText(content, "plain"))
         # Create SMTP session for sending the mail
-        sessionEmail = smtplib.SMTP("smtp.gmail.com", 587)  # use gmail with port
+        sessionEmail = smtplib.SMTP(
+            "smtp.gmail.com", 587)  # use gmail with port
         sessionEmail.starttls()  # enable security
         sessionEmail.login(
             sender_address, sender_pass
@@ -219,23 +222,24 @@ def resetPass(id):
     return render_template("reset.html", id=id, result=result)
 
 
-@app.route("/resetpassword/<id>/update", methods = ['POST'])
+@app.route("/resetpassword/<id>/update", methods=['POST'])
 def submitResetPass(id):
     user = getUserData(id)
     result = ''
     print(user[0][1])
     if session["resetPassword"] != user[0][1]:
         return redirect(url_for("forbidden"))
-        
+
     if request.method == "POST":
         password = request.form.get("pass")
         rePass = request.form.get("Repass")
         if password != rePass:
-            return redirect(url_for("resetPass", result="Error",id=id))
+            return redirect(url_for("resetPass", result="Error", id=id))
         result = resetPassword(password, id)
         return redirect(url_for("login"))
 
-    return redirect(url_for("resetPass",id=id, result= result))
+    return redirect(url_for("resetPass", id=id, result=result))
+
 
 @app.route("/test")
 def test():
@@ -250,7 +254,7 @@ def test():
         number_of_files_passed = getNumberOfFilesPassed(id)
         number_of_files_deadline = getNumberOfFilesDeadline(id)
         number_of_files_nearing_Deadline = getNumberOfFilesNearDeadline(id)
-        
+
     elif session['position'] == 3:
         number_of_files_uploaded = getNumberOfFilesUploaded(id)
         number_of_files_passed = getPassed('Pending Grade Chairman')
@@ -267,17 +271,17 @@ def test():
         number_of_files_uploaded = getNumberOfFilesUploaded(id)
         number_of_files_passed = getPassed('Pending District Supervisor')
         number_of_files_deadline = getFailed('Pending District Supervisor')
-        number_of_files_nearing_Deadline = getPending('Pending District Supervisor')
-
+        number_of_files_nearing_Deadline = getPending(
+            'Pending District Supervisor')
 
     five_files = getNFiles(id, 5, email)
     dict = {
-            "number_of_files": number_of_files_uploaded,
-            "number_of_files_passed": number_of_files_passed,
-            "number_of_files_deadline": number_of_files_deadline,
-            "number_of_files_nearing_Deadline": number_of_files_nearing_Deadline,
-            "five_files": five_files,
-        }
+        "number_of_files": number_of_files_uploaded,
+        "number_of_files_passed": number_of_files_passed,
+        "number_of_files_deadline": number_of_files_deadline,
+        "number_of_files_nearing_Deadline": number_of_files_nearing_Deadline,
+        "five_files": five_files,
+    }
 
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
 
@@ -290,8 +294,8 @@ def getmyfiles():
     email = session['email']
     getSixFiles = getNFiles(id, 5, email)
     sort = request.args.get('sort')
-    getAll = getAllFilesUser(id,email,sort)
-
+    getAll = getAllFilesUser(id, email, sort)
+    print(getAll)
     dict = {"six_files": getSixFiles, "getall": getAll}
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
 
@@ -375,7 +379,7 @@ def adminComments():
     title = "ADMIN"
     results = getAllComments()
     users = getAllUsers()
-    return render_template("admin-comments.html", title=title, results=results,users=users)
+    return render_template("admin-comments.html", title=title, results=results, users=users)
 
 
 @app.route("/admin/password")
@@ -439,8 +443,6 @@ def schedule():
     return render_template("Schedule.html", title=title, results=results)
 
 
-
-
 @app.route("/schedule/get/<id>")
 def getSchedule(id):
     if not session["logged_in"]:
@@ -450,12 +452,14 @@ def getSchedule(id):
     id = session["userID"]
     return render_template("singletask.html", title=title, results=results, id=id)
 
+
 @app.route('/admin/tasks/<sched>')
 def getTasks(sched):
     # if not session["admin"]:
     #     return redirect(url_for("forbidden"))
     results = getTasksDB(sched)
     return render_template("singletaskadmin.html", title='ADMIN', results=results)
+
 
 @app.route('/admin/tasks/edit/<id>')
 def getTaskForEdit(id):
@@ -464,6 +468,7 @@ def getTaskForEdit(id):
     result = getOneTask(id)
     dict = {"result": result}
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
+
 
 @app.route("/updatetask/<status>/<taskID>")
 def updateTask(status, taskID):
@@ -507,7 +512,7 @@ def editSchedule():
         return redirect(url_for("forbidden"))
     if request.method == "POST":
         taskID = request.form.get('taskID')
-        print("Task ID",taskID)
+        print("Task ID", taskID)
         taskName = request.form.get("taskName")
         # imageBlob = request.files['taskImage'].file.name
         deadline = request.form.get("Deadline")
@@ -517,7 +522,8 @@ def editSchedule():
         description = request.form.get("description")
         taskCreatedBy = session["userID"]
         status = request.form.get('Status')
-        result = updateTaskDB(taskID,taskName,"imageBlob",taskCreatedBy,deadline_datetime,description,schedule,status)
+        result = updateTaskDB(taskID, taskName, "imageBlob", taskCreatedBy,
+                              deadline_datetime, description, schedule, status)
         if result:
             if session['admin']:
                 return redirect(url_for("getTasks", sched='Weekly'))
@@ -525,6 +531,7 @@ def editSchedule():
                 return redirect(url_for("schedule"))
         else:
             return "error"
+
 
 @app.route("/checkifuseruploaded/<userID>/<taskID>")
 def checkifuseruploaded(userID, taskID):
@@ -534,6 +541,7 @@ def checkifuseruploaded(userID, taskID):
     dict = {"result": result}
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
 
+
 @app.route('/admin/deleteTask/<id>')
 def deleteTask(id):
     result = deleteTaskDb(id)
@@ -541,7 +549,6 @@ def deleteTask(id):
         return redirect(url_for("getTasks", sched='Weekly'))
     else:
         return redirect(url_for("schedule"))
-    
 
 
 @app.route("/settings")
@@ -564,7 +571,8 @@ def updateUser():
         lastName = request.form.get("lastName")
         phoneNumber = request.form.get("PhoneNumber")
         position = request.form.get("Position")
-    result = updateUserDB(id, email, firstName, lastName, phoneNumber, position)
+    result = updateUserDB(id, email, firstName, lastName,
+                          phoneNumber, position)
     if result == True and requesttype == "profile":
         return redirect(url_for("profile"))
 
@@ -593,11 +601,25 @@ def admin(result=""):
                 users=users,
             )
         email = request.form.get("Email")
+        if '.' not in email:
+            print("Found!")
+            users = getAllUsers()
+            result = "email error"
+            return render_template(
+                "admin.html", title=title, positions=positions, result=result, users=users
+            )
         password = request.form.get("Password")
         repeatPass = request.form.get("RepeatPass")
         firstName = request.form.get("FirstName")
         lastName = request.form.get("LastName")
-        phoneNumber = request.form.get("PhoneNumber")
+        phoneNumber = str(request.form.get("PhoneNumber"))
+        if len(phoneNumber) < 10:
+            users = getAllUsers()
+            result = "phone error"
+            return render_template(
+                "admin.html", title=title, positions=positions, result=result, users=users
+            )
+        phoneNumber = "+63" + phoneNumber
         position = request.form.get("Position")
         result = registerNewUser(
             email, password, repeatPass, firstName, lastName, phoneNumber, position
@@ -649,7 +671,8 @@ def profile():
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def sendEmail(receiver_email,sender_ID):
+
+def sendEmail(receiver_email, sender_ID):
     print(receiver_email)
     sender_address = "weconnect.thesis@gmail.com"
     sender_pass = "eplnssqbajzfqonw"
@@ -660,11 +683,11 @@ def sendEmail(receiver_email,sender_ID):
         print("error")
         return redirect(url_for("forgotpassword", result="Error"))
     userID = result[0][1]  # ignore ERrors
-    print("UserID",userID)
+    print("UserID", userID)
 
     # get the User ID
 
-    content = f"User {userID} had Tagged you in file check it now at www.weconnect.sbs" 
+    content = f"User {userID} had Tagged you in file check it now at www.weconnect.sbs"
     message = MIMEMultipart()
     message["From"] = sender_address
     message["To"] = receiver_email
@@ -700,9 +723,10 @@ def uploadFile():
             share_to_group = request.form.get("Position")
             share_to_user = request.form.get("targetUser")
             uploaded_by = session["userID"]
-            if share_to_user != "None":
-                print('++++++++++++++')
-                sendEmail(share_to_user,uploaded_by)
+            if request.form.get("targetUser"):
+                if share_to_user != "None":
+                    print('++++++++++++++')
+                    sendEmail(share_to_user, uploaded_by)
             deadline = request.form.get("Deadline")
             revision = 1
             FilePathName = str(uploaded_by) + filename
@@ -745,9 +769,10 @@ def uploadFile():
         share_to_group = 1
         uploaded_by = session["userID"]
         share_to_user = request.form.get("targetUser")
-        if share_to_user != "None":
+        if request.form.get("targetUser"):
+            if share_to_user != "None":
                 print('++++++++++++++')
-                sendEmail(share_to_user,uploaded_by)
+                sendEmail(share_to_user, uploaded_by)
         deadline = request.form.get("Deadline")
         revision = 1
         FilePathName = str(uploaded_by) + filename
@@ -770,7 +795,8 @@ def uploadFile():
         )
 
         file.save(
-            os.path.join(app.root_path, app.config["UPLOAD_FOLDER"], FilePathName)
+            os.path.join(
+                app.root_path, app.config["UPLOAD_FOLDER"], FilePathName)
         )
         # print(lastID[0][0])
         if request.form.get("taskID"):
@@ -791,7 +817,8 @@ def uploadprofilepic():
         FilePathName = f"{id}_{file.filename}"
         pathToDb = f"/{app.config['PROFILE_IMAGES']}/{FilePathName}"
         file.save(
-            os.path.join(app.root_path, app.config["PROFILE_IMAGES"], FilePathName)
+            os.path.join(
+                app.root_path, app.config["PROFILE_IMAGES"], FilePathName)
         )
         session["profilePic"] = pathToDb
         addProfilePicDB(pathToDb, id)
@@ -826,7 +853,7 @@ def file(id):
     user = user[0]
     userName = user[3] + ' ' + user[4]
     print(userName)
-    return render_template("file.html", title=title, result=result, deadline = deadline, userName = userName)
+    return render_template("file.html", title=title, result=result, deadline=deadline, userName=userName)
 
 
 @app.route("/logout")
@@ -928,7 +955,7 @@ def deletefileTask(id):
 def addComment(userID, fileID, comment):
     Timetoday = time.time()
     print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(Timetoday)))
-    result = newComment(userID, fileID,comment,Timetoday)
+    result = newComment(userID, fileID, comment, Timetoday)
     dict = {"result": 'result'}
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
 
@@ -936,20 +963,22 @@ def addComment(userID, fileID, comment):
 @app.route('/comments/<fileID>')
 def getComments(fileID):
     result = getCommentsDB(fileID)
-    dict = {'data':result}
+    dict = {'data': result}
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
+
 
 @app.route('/comment/delete/<commentID>')
 def deleteComment(commentID):
     result = deleteCommentDB(commentID)
-    dict = {'data':result}
+    dict = {'data': result}
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
+
 
 @app.errorhandler(404)
 def not_found(e):
     print(e)
     return render_template("404.html")
-    
+
 
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=True)

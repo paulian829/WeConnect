@@ -100,13 +100,13 @@
           <thead>
             <tr>
               <th scope="col">Filename</th>
-              <th scope='col'>File Content Type</th>
+              <th scope='col'>File Type</th>
               <th scope='col'>Date Uploaded</th>
               <th scope="col">Action</th>
             </tr>
             <tr v-for='suggestion in allData' v-if='suggestion[13] == 1'>
               <td>[[ suggestion[1] ]]</td>
-              <td>[[ suggestion[4] ]]</td>
+              <td>[[ suggestion[2] ]]</td>
               <td>[[ suggestion[10] ]]</td>
               <td><button class="btn btn-primary"><a :href="'/file/' + suggestion[0] "
                     

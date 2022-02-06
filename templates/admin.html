@@ -32,6 +32,14 @@
         <div class="alert alert-success" role="alert">
           Successfully added a new user.
         </div>
+        {% elif "phone error" in result %}
+        <div class="alert alert-danger" role="alert">
+          Phone Number is invalid.
+        </div>
+        {% elif "email error" in result %}
+        <div class="alert alert-danger" role="alert">
+          Email is invalid.
+        </div>
         {% elif "Delete" in result %}
         <div class="alert alert-warning" role="alert">
           Successfully Deleted a user.
@@ -71,8 +79,10 @@
             {% endif %}
             <td>{{user[5]}}</td>
             <td>{{user[7]}}</td>
-            <td><a href="/admin/edit/{{user[0]}}"><button type="submit" type="button" class="btn btn-primary"><i class="fas fa-edit"></i>Edit</button></a> <a href="/admin/deleteuser/{{user[0]}}" onclick="return confirm('Are you sure you want to Delete User?')"
-              ><button type="submit" type="button" class="btn btn-danger" style="margin-left: 20px;"><i class="fas fa-trash"></i>Delete</button></a></td>
+            <td><a href="/admin/edit/{{user[0]}}"><button type="submit" type="button" class="btn btn-primary"><i
+                    class="fas fa-edit"></i>Edit</button></a> <a href="/admin/deleteuser/{{user[0]}}"
+                onclick="return confirm('Are you sure you want to Delete User?')"><button type="submit" type="button"
+                  class="btn btn-danger" style="margin-left: 20px;"><i class="fas fa-trash"></i>Delete</button></a></td>
 
             <!-- <form action="/admin/edit/{{user[0]}}" method='POST'>
               <td><button type="submit" type="button" class="btn btn-primary">Edit</button></td>
@@ -116,10 +126,10 @@
                 <input id="LastName" type="text" class="form-control" name="LastName" aria-label="Last name">
               </div>
             </div>
-            <br>
-            <div class="mb-3">
-              <label for="PhoneNumber" class="form-label">Phone Number</label>
-              <input type="text" required class="form-control" name="PhoneNumber" id="PhoneNumber">
+            <label for="Phone" class="form-label">Phone Number</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon3">+63</span>
+              <input type="number" class="form-control" id="Phone" aria-describedby="basic-addon3"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" name="PhoneNumber" maxlength="10" minlength="10">
             </div>
             <div class="mb-3">
               <label for="Password" class="form-label">Password </label>
@@ -206,6 +216,18 @@
   .buttonDisabled {
     pointer-events: none;
     opacity: 0.5;
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type=number] {
+    -moz-appearance: textfield;
   }
 </style>
 {% endblock %}

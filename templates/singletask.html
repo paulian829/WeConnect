@@ -6,7 +6,9 @@
         <h2>{{result[1]}}</h2>
         <p>{{result[6]}}</p>
         <p><strong>Created By: </strong>[[Uploader]]</p>
-        <p><strong>Status: </strong>{{result[7]}}</p>
+        <p v-if='done'><strong>Status: </strong>Done</p>
+        <p v-else><strong>Status: </strong>Pending</p>
+
         <p><strong>Date Created: </strong>{{result[4]}}</p>
         <p><strong>Date Deadline: </strong>{{result[5]}}</p>
         <div v-if='userPosition === 4'>
@@ -45,7 +47,7 @@
                 </li>
             </ul>
             <br>
-            <a href="/updatetask/Pending Grade Chairman/{{result[0]}}" v-if="userPosition == 3 "><button type="submit"
+            <a href="/updatetask/Pending Principal/{{result[0]}}" v-if="userPosition == 3 "><button type="submit"
                     class="btn btn-primary">Forward to Principal</button></a>
 
             {% elif 'Pending Grade Chairman' in result[7] %}
@@ -57,8 +59,8 @@
                 </li>
             </ul>
             <br>
-            <a href="/updatetask/Pending Principal/{{result[0]}}" v-if="userPosition == 3 "><button type="submit"
-                    class="btn btn-primary">Forward to Principal</button></a>
+            <!-- <a href="/updatetask/Pending Principal/{{result[0]}}" v-if="userPosition == 3 "><button type="submit"
+                    class="btn btn-primary">Forward to Principal</button></a> -->
 
             {% elif 'Pending Principal' in result[7] %}
             <ul class="list-group" style="width: 20rem;">
@@ -247,12 +249,16 @@
                     this.userPosition = user[0][6]
                 })
             },
-            checkIfDone: function (userID, taskID) {
+            checkIfDone: function (userID, taskID,taskStatus) {
                 this.$http.get('/checkifuseruploaded/' + userID + '/' + taskID).then(response => {
                     result = response.body.result
                     if (result.length !== 0) {
                         this.uploadedDetails = result[0]
-
+                        console.log('1')
+                        this.done = true
+                    }
+                    if (this.userPosition === 3 && taskStatus !== 'Pending Teachers'  ){
+                        console.log('2')
                         this.done = true
                     }
                 })
@@ -303,9 +309,7 @@
 
                 }
                 return false
-
             },
-
             getFileUrl(id) {
                 let array = this.isDone
                 for (let i = 0; i < array.length; i++) {
@@ -315,7 +319,6 @@
                             return TaskResult[0][0]
                         }
                     }
-
                 }
                 return false
             },
@@ -346,9 +349,9 @@
             },
         },
         created() {
-            this.getTeachers()
-            this.checkIfDone("{{id}}", "{{result[0]}}")
             this.getUserData("{{id}}")
+            this.getTeachers()
+            this.checkIfDone("{{id}}", "{{result[0]}}", "{{result[7]}}")
             this.getUploaderData("{{result[3]}}")
         }
     }
