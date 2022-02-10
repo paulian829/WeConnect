@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 05, 2022 at 09:13 AM
+-- Generation Time: Feb 10, 2022 at 02:57 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -38,7 +38,7 @@ INSERT INTO tasks (TaskName, TaskCreatedBy, TaskDateCreated, TaskDeadline, TaskD
 SELECT last_insert_id();
 END$$
 
-CREATE  PROCEDURE `addUser` (IN `uEmail` VARCHAR(50), IN `uPassword` VARCHAR(100), IN `uFirstName` VARCHAR(50), IN `uLastName` VARCHAR(50), IN `uPhoneNumber` VARCHAR(11), IN `uPosition` INT(1))  BEGIN
+CREATE  PROCEDURE `addUser` (IN `uEmail` VARCHAR(50), IN `uPassword` VARCHAR(100), IN `uFirstName` VARCHAR(50), IN `uLastName` VARCHAR(50), IN `uPhoneNumber` VARCHAR(15), IN `uPosition` INT(1))  BEGIN
 INSERT INTO users (Email, Pass, FirstName, LastName, PhoneNumber, Position) VALUES (uEmail, uPassword, uFirstName, uLastName, uPhoneNumber, uPosition);
 END$$
 
@@ -115,7 +115,7 @@ SELECT * FROM files WHERE (UploadedByID = uid OR Share_to_user = uemail)AND stat
 END$$
 
 CREATE  PROCEDURE `getNumberOfFilesPassed` (IN `uid` INT, IN `estatus` VARCHAR(100))  BEGIN
-	SELECT * FROM tasks WHERE NOT TaskStatus = estatus;
+	SELECT * FROM tasks;
 END$$
 
 CREATE  PROCEDURE `getNumberOfFilesUploaded` (IN `uid` INT)  BEGIN
@@ -132,6 +132,10 @@ END$$
 
 CREATE  PROCEDURE `getPending` (IN `uStatus` VARCHAR(100))  BEGIN
 	SELECT * FROM tasks WHERE TaskStatus = uStatus ;
+END$$
+
+CREATE  PROCEDURE `getPendingTeachers` (IN `estatus` VARCHAR(100))  BEGIN
+	SELECT * FROM tasks WHERE TaskStatus = estatus;
 END$$
 
 CREATE  PROCEDURE `getTaskByStatus` (IN `statusText` VARCHAR(100))  BEGIN
@@ -283,6 +287,18 @@ CREATE TABLE `files` (
   `FilePathName` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `files`
+--
+
+INSERT INTO `files` (`FileID`, `FileName`, `FileType`, `FileSize`, `FileContentType`, `UploadedByID`, `Share_to_user`, `Share_to_group`, `DeadLine`, `Revision`, `DateUploaded`, `block_doc_json`, `status`, `pinned`, `taskID`, `FilePathName`) VALUES
+(111, 'comments-Copy.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 91, NULL, 1, NULL, 1, '2022-02-06 10:05:05', NULL, 0, 0, 49, '91comments-Copy.docx'),
+(112, 'weconnect (3).sql', 'sql', 1, 'application/octet-stream', 91, 'paulian829@gmail.com', 1, NULL, 1, '2022-02-06 10:05:23', NULL, 0, 0, 0, '91weconnect (3).sql'),
+(120, 'comments-Copy.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 95, NULL, 1, NULL, 1, '2022-02-06 23:37:19', NULL, 0, 0, 49, '95comments-Copy.docx'),
+(121, 'comments-Copy.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 95, NULL, 1, NULL, 1, '2022-02-06 23:40:50', NULL, 0, 0, 50, '95comments-Copy.docx'),
+(122, 'winrar-x64-610.exe', 'exe', 1, 'application/x-msdownload', 93, 'paulian829@gmail.com', 1, NULL, 1, '2022-02-07 08:04:46', NULL, 0, 0, 0, '93winrar-x64-610.exe'),
+(123, 'comments-Copy.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 95, NULL, 1, NULL, 1, '2022-02-07 23:30:37', NULL, 0, 0, 51, '95comments-Copy.docx');
+
 -- --------------------------------------------------------
 
 --
@@ -303,8 +319,7 @@ INSERT INTO `position` (`id`, `position_name`) VALUES
 (2, 'District Supervisor'),
 (3, 'Grade Chairman'),
 (4, 'Teacher'),
-(5, 'Principal'),
-(38, 'test');
+(5, 'Principal');
 
 -- --------------------------------------------------------
 
@@ -329,8 +344,8 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`TaskID`, `TaskName`, `TaskImage`, `TaskCreatedBy`, `TaskDateCreated`, `TaskDeadline`, `TaskDescription`, `TaskStatus`, `TaskSchedule`) VALUES
-(49, 'Individual daily log and accomplishment report (IDLAR)', '', 82, '2021-12-30 22:04:16', '2022-01-02 22:03:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Weekly'),
-(50, 'Weekly Assesment', '', 82, '2022-01-06 22:39:41', '2022-01-16 22:39:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Weekly'),
+(49, 'Individual daily log and accomplishment report (IDLAR)', '', 82, '2021-12-30 22:04:16', '2022-02-12 22:03:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Principal', 'Weekly'),
+(50, 'Weekly Assesment', '', 82, '2022-01-06 22:39:41', '2022-02-12 22:39:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Principal', 'Weekly'),
 (51, 'Weekly home learning plan', '', 82, '2022-01-06 22:49:33', '2022-01-15 22:49:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Weekly'),
 (52, 'Idea lesson exemplar', '', 82, '2022-01-06 22:50:04', '2022-01-15 22:49:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', 'Pending Teachers', 'Weekly'),
 (53, 'Form 148 of the Daily Time record (DTR)', '', 82, '2022-01-06 22:51:36', '2022-01-29 22:51:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Monthly'),
@@ -369,7 +384,7 @@ INSERT INTO `users` (`ID`, `Email`, `Pass`, `FirstName`, `LastName`, `PhoneNumbe
 (95, 'teacher1@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher', 'One', '+639071882953', 4, '2021-12-30 11:02:07', '/static/uploads/ProfilePictures/95_66.jpg'),
 (96, 'teacher2@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'two', '+639071882953', 4, '2021-12-30 11:02:33', '/static/uploads/ProfilePictures/96_85.jpg'),
 (97, 'gradeChairman@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Grade', 'Chairman', '+639071882953', 3, '2021-12-31 12:29:37', '/static/uploads/ProfilePictures/97_33.jpg'),
-(99, 'cp.merene@mseuf.edu.ph', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Camille', 'Panaligan', '+6394633709', 2, '2022-02-05 16:09:22', '/static/uploads/ProfilePictures/99_85.jpg');
+(99, 'cp.merene@mseuf.edu.ph', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Camille', 'Panaligan', '+639463370901', 2, '2022-02-05 16:09:22', '/static/uploads/ProfilePictures/99_85.jpg');
 
 --
 -- Indexes for dumped tables
@@ -420,7 +435,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
-  MODIFY `FileID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+  MODIFY `FileID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
 
 --
 -- AUTO_INCREMENT for table `position`
@@ -438,7 +453,7 @@ ALTER TABLE `tasks`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
