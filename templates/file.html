@@ -216,7 +216,7 @@
                     this.$http.get(`/comment/delete/${commentID}`).then(response => {
                         this.getComments("{{ result[0] }}")
                     }).catch((e) => console.log(e))
-                }else{
+                } else {
                     return
                 }
 

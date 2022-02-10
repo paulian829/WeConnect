@@ -1,3 +1,4 @@
+from array import array
 from calendar import timegm
 from typing import final
 import mysql.connector
@@ -399,14 +400,10 @@ def getNumberOfFilesPassed(id):
             results = result.fetchall()
             mydb.close()
             for result in results:
-                print(result[0])
                 taskID = result[0]
                 match = getMatch(id, taskID)
                 if (len(match) > 0):
                     count = count + 1
-                    print(count)
-
-        # print(len(results))
         return count
     finally:
         mydb.close()
@@ -472,7 +469,7 @@ def getNumberOfFilesNearDeadline(id):
     finally:
         mydb.close()
 
-def getPassed(status):
+def getPassed(status, view):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
@@ -481,7 +478,13 @@ def getPassed(status):
             mycursor.callproc('getPassedForGradeChairman')
             for result in mycursor.stored_results():
                 results = result.fetchall()
-            return len(results)
+            print("View", view)
+            if view == True:
+                print("test1")
+                return results
+            else:
+                print("test2")
+                return len(results)
         if status == 'Pending Principal':
             mycursor.callproc('getPassedForPrincipal')
             for result in mycursor.stored_results():
@@ -886,6 +889,65 @@ def getAllComments():
     finally:
         mydb.close()
 
+
+def getNumberOfFilesPassedList(id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        status = 'Pending Teachers'
+        val = (id,status)
+        results = list
+        result_list = list()
+        count = 0
+        mycursor.callproc("getNumberOfFilesPassed", val)
+        i = 0
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+
+            mydb.close()
+            for result in results:
+                taskID = result[0]
+                match = getMatch(id, taskID)
+                if (len(match) != 0):
+                    print("DELETE THIS",i,taskID)
+                    result_list.append(result)
+                i = i + 1
+                
+                    
+        return result_list
+    finally:
+        mydb.close()
+
+def getPendingTeachersList(id,endpoint_status):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        status = 'Pending Teachers'
+        val = (id,status)
+        results = list
+        result_list = list()
+        count = 0
+        today = datetime.now()
+        mycursor.callproc("getNumberOfFilesPassed", val)
+        i = 0
+        for result in mycursor.stored_results():
+            results = result.fetchall()
+
+            mydb.close()
+            for result in results:
+                taskID = result[0]
+                match = getMatch(id, taskID)
+                if (len(match) == 0):
+                    if endpoint_status == 'pending':
+                        if today <= result[5] and result[7] == 'Pending Teachers':
+                            result_list.append(result)
+                    if endpoint_status == 'failed':
+                        if today > result[5]:
+                            result_list.append(result)
+                i = i + 1
+        return result_list
+    finally:
+        mydb.close()
 # ==========================================
 # TESTING FUNCTIONS
 
@@ -917,5 +979,3 @@ def getAllComments():
 # print(getusers())
 # print(deleteUserDB(85))
 # print(newPosition('test'))
-
-print(getPassed('Pending Grade Chairman'))

@@ -2,28 +2,28 @@
 {% block content %}
 <div id="app">
   <div class="cards-container">
-    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem; width: 100%;">
+    <div class="card text-white bg-secondary mb-3 pointer" style="max-width: 18rem; width: 100%;" @click='window.location.href = "/myfiles";'>
       <div class="card-header">Info</div>
       <div class="card-body">
         <h5 class="card-title">Files Uploaded</h5>
         <p class="card-text big-number-text">[[number_of_files]]</p>
       </div>
     </div>
-    <div class="card text-white bg-success mb-3" style="max-width: 18rem; width: 100%;">
+    <div class="card text-white bg-success mb-3 pointer" style="max-width: 18rem; width: 100%;" @click='window.location.href = "/finished";'>
       <div class="card-header">Success</div>
       <div class="card-body">
         <h5 class="card-title">Finished</h5>
         <p class="card-text big-number-text">[[number_of_files_uploaded]]</p>
       </div>
     </div>
-    <div class="card text-dark bg-warning mb-3 " style="max-width: 18rem; width: 100%;">
+    <div class="card text-dark bg-warning mb-3 pointer" style="max-width: 18rem; width: 100%;"  @click='window.location.href = "/pending";'>
       <div class="card-header">Warning</div>
       <div class="card-body">
         <h5 class="card-title">Pending</h5>
         <p class="card-text big-number-text">[[number_of_files_nearing_Deadline]]</p>
       </div>
     </div>
-    <div class="card text-white bg-danger mb-3" style="max-width: 18rem; width: 100%;">
+    <div class="card text-white bg-danger mb-3 pointer" style="max-width: 18rem; width: 100%;"  @click='window.location.href = "/failed";'>
       <div class="card-header">Failed</div>
       <div class="card-body">
         <h5 class="card-title">Failed Deadline</h5>
@@ -131,6 +131,9 @@
   #app>div:nth-child(2)>div>div>div:nth-child(2)>div {
     min-height: 500px;
     margin-bottom: 50px
+  }
+  .pointer{
+    cursor: pointer;
   }
 </style>
 

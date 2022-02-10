@@ -257,19 +257,19 @@ def test():
 
     elif session['position'] == 3:
         number_of_files_uploaded = getNumberOfFilesUploaded(id)
-        number_of_files_passed = getPassed('Pending Grade Chairman')
+        number_of_files_passed = getPassed('Pending Grade Chairman',False)
         number_of_files_deadline = getFailed('Pending Grade Chairman')
         number_of_files_nearing_Deadline = getPending('Pending Grade Chairman')
 
     elif session['position'] == 5:
         number_of_files_uploaded = getNumberOfFilesUploaded(id)
-        number_of_files_passed = getPassed('Pending Principal')
+        number_of_files_passed = getPassed('Pending Principal',False)
         number_of_files_deadline = getFailed('Pending Principal')
         number_of_files_nearing_Deadline = getPending('Pending Principal')
 
     elif session['position'] == 2:
         number_of_files_uploaded = getNumberOfFilesUploaded(id)
-        number_of_files_passed = getPassed('Pending District Supervisor')
+        number_of_files_passed = getPassed('Pending District Supervisor',False)
         number_of_files_deadline = getFailed('Pending District Supervisor')
         number_of_files_nearing_Deadline = getPending(
             'Pending District Supervisor')
@@ -972,6 +972,45 @@ def deleteComment(commentID):
     result = deleteCommentDB(commentID)
     dict = {'data': result}
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
+
+
+@app.route('/finished')
+def finished():
+    title = "Finished Tasks"
+    position = session['position']
+    userID = session['userID']
+    result =''
+    if position == 4:
+        result = getNumberOfFilesPassedList(userID)
+        print("RESULTS", result)
+    if position == 3:
+        result = getPassed(userID,True)
+        print("RESULTS", result)
+    return render_template("dashboard-status.html", title=title, results= result)
+    
+@app.route('/pending')
+def pending():
+    title = "Pending Tasks"
+    position = session['position']
+    userID = session['userID']
+    result = ''
+    if position == 4:
+        result = getPendingTeachersList(userID,'pending')
+    if position == 5:
+        result = getPassed('Pending Grade Chairman',True)
+    return render_template("dashboard-status.html", title=title, results =result)
+
+@app.route('/failed')
+def failed():
+    title = "Failed Tasks"
+    position = session['position']
+    userID = session['userID']
+    result =''
+    if position == 4:
+        result = getPendingTeachersList(userID,'failed')
+        print("RESULT", result)
+    return render_template("dashboard-status.html", title=title, results = result)
+
 
 
 @app.errorhandler(404)
