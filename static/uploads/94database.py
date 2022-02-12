@@ -314,12 +314,12 @@ def saveFiletoDb(
         mydb.commit()
         for result in mycursor.stored_results():
             results = result.fetchall()
-            print("test",results[0][0])
-            fileID = results[0][0]
+            print(results[0][0])
+            fileID = result[0][0]
             if share_to_user != "None":
                 user = getUserViaEmail(share_to_user)
                 print(user)
-                createEvent(uploaded_by,fileID,today,user[0][0], )
+                # createEvent(uploaded_by,fileID,today,user[0][0], )
             return results
     except Exception as e:
         mycursor.close()
@@ -338,19 +338,6 @@ def createEvent(uploaded_by,file_ID,date_uploaded, share_to_user ):
         mycursor.callproc("createEvent", val)
         mycursor.lastrowid
         mydb.commit()
-    finally:
-        mydb.close()
-
-def getEvent(userID):
-    try:
-        mydb = connectDb()
-        mycursor = mydb.cursor()
-        val = (userID,)
-        results = list
-        mycursor.callproc("getEvent", val)
-        for result in mycursor.stored_results():
-            results = result.fetchall()
-        return results
     finally:
         mydb.close()
 

@@ -370,7 +370,7 @@ def myFiles():
         return redirect(url_for("forbidden"))
     positions = getAll("position")
     title = "MY FILES"
-    return render_template("myFiles.html", title=title, positions=positions,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("myFiles.html", title=title, positions=positions)
 
 
 @app.route("/admin/comments")
@@ -391,32 +391,13 @@ def adminPassword():
     return render_template("admin-password.html", title=title)
 
 
-
 @app.route("/dashboard")
 def dashboard():
     if not session["logged_in"]:
         return redirect(url_for("forbidden"))
-    
     positions = getAll("position")
     title = "DASHBOARD"
-    return render_template("dashboard.html", title=title, positions=positions,events=getEvent(session["userID"]), UserList = getEventFromDB())
-
-def getEventFromDB():
-    events = getEvent(session["userID"])
-    UserList = list()
-    for event in events:
-        userIDresult = getUserData(event[1])
-        for userDetails in userIDresult:
-            name = userDetails[3] + " " + userDetails[4]
-            id = userDetails[0]
-            email = userDetails[1]
-            profilepic = userDetails[8]
-        uploaderDetails = (event[0],id,name, email,profilepic)
-        UserList.append(uploaderDetails)
-
-    print("UserList",UserList)
-    return UserList
-
+    return render_template("dashboard.html", title=title, positions=positions)
 
 
 @app.route("/pinned")
@@ -424,7 +405,7 @@ def pinned():
     if not session["logged_in"]:
         return redirect(url_for("forbidden"))
     title = "PINNED"
-    return render_template("pinned.html", title=title,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("pinned.html", title=title)
 
 
 @app.route("/shared")
@@ -440,7 +421,7 @@ def deleted():
     if not session["logged_in"]:
         return redirect(url_for("forbidden"))
     title = "DELETE"
-    return render_template("delete.html", title=title,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("delete.html", title=title)
 
 
 @app.route("/users")
@@ -449,7 +430,7 @@ def users():
         return redirect(url_for("forbidden"))
     title = "USERS"
     users = getAllUsers()
-    return render_template("users.html", title=title, users=users,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("users.html", title=title, users=users)
 
 
 @app.route("/schedule/")
@@ -524,7 +505,7 @@ def schedule():
             status_list.append(status)
             
     print(status_list)
-    return render_template("Schedule.html", title=title, results=results,status_list=status_list,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("Schedule.html", title=title, results=results,status_list=status_list)
 
 
 @app.route("/schedule/get/<id>")
@@ -534,7 +515,7 @@ def getSchedule(id):
     title = "TASKS"
     results = getOneTask(id)
     id = session["userID"]
-    return render_template("singletask.html", title=title, results=results, id=id,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("singletask.html", title=title, results=results, id=id)
 
 
 @app.route('/admin/tasks/<sched>')
@@ -748,7 +729,7 @@ def profile():
         title=title,
         result=result,
         position=positions,
-        positions=positions,events=getEvent(session["userID"]), UserList = getEventFromDB()
+        positions=positions,
     )
 
 
@@ -937,7 +918,7 @@ def file(id):
     user = user[0]
     userName = user[3] + ' ' + user[4]
     print(userName)
-    return render_template("file.html", title=title, result=result, deadline=deadline, userName=userName,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("file.html", title=title, result=result, deadline=deadline, userName=userName)
 
 
 @app.route("/logout")
@@ -1095,7 +1076,7 @@ def finished():
         for result in results:
             status = (result[0], 'Done')
             status_list.append(status)
-    return render_template("dashboard-status.html", title=title, results= results,status_list=status_list,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("dashboard-status.html", title=title, results= results,status_list=status_list)
     
 @app.route('/pending')
 def pending():
@@ -1134,7 +1115,7 @@ def pending():
         for result in results:
             status = (result[0], 'Pending')
             status_list.append(status)
-    return render_template("dashboard-status.html", title=title, results =results,status_list=status_list,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("dashboard-status.html", title=title, results =results,status_list=status_list)
 
 @app.route('/failed')
 def failed():
@@ -1173,7 +1154,7 @@ def failed():
         for result in results:
             status = (result[0], 'Passed Deadline')
             status_list.append(status)
-    return render_template("dashboard-status.html", title=title, results = results,status_list=status_list,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("dashboard-status.html", title=title, results = results,status_list=status_list)
 
 
 

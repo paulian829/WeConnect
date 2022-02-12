@@ -21,7 +21,7 @@
 <body>
     <div class="container" id="appmain">
         {% if session['admin'] is not true %}
-        <div class="aside" id='aside-toggle' >
+        <div class="aside" id='aside-toggle'>
             <div class="logo">
                 <a href={{url_for('dashboard')}}> <img
                         src="{{url_for('static', filename='images/weconnectlogo.png' ) }}" alt=""></a>
@@ -68,7 +68,7 @@
                     </li> -->
                     {% if session['admin'] is not true %}
                     <li>
-                        <a {% if title == 'USERS' %} class='active' {% endif %} href={{url_for('users')}}>
+                        <a {% if title=='USERS' %} class='active' {% endif %} href={{url_for('users')}}>
                             <i class="fas fa-users" style="width: 14px;"></i>
                             <span>Users</span>
                         </a>
@@ -111,20 +111,22 @@
                 <div class="header-content">
                     <div class="row1">
                         <div class="title-header">
-                            {%  if session['admin'] is not true %}
+                            {% if session['admin'] is not true %}
                             <span><i class="fas fa-bars"></i></span>
                             <h2>{{title}}</h2>
                             {% else %}
-
                             <h2><a href="{{url_for('admin')}}">ADMIN DASHBOARD</a></h2>
                             {% endif %}
 
                         </div>
                         <div class="profile-container">
+                            {% if session['admin'] is not true %}
+                            <i class="fas fa-exclamation-circle" data-bs-toggle="modal"
+                                data-bs-target="#eventModal"></i>
+                            {% endif %}
                             <a href={{url_for('profile')}}>
                                 <div class="profile-img">
-                                    <img src="{{ session['profilePic'] }}"
-                                        alt="">
+                                    <img src="{{ session['profilePic'] }}" alt="">
                                 </div>
                                 <div>
                                     <h3>{{session['name']}}</h3>
@@ -136,6 +138,49 @@
             </div>
             <div class='data-container'>
                 {% block content %}{% endblock %}
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Notifications</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="event-container">
+                            <!-- Loops start -->
+                            {% for event in events %}
+                                {% for user in UserList %}
+                                    {% if user[1] == event[1] %}
+                                    <a href="/file/{{event[2]}}">
+                                        <div class="event">
+                                            <div class="event-image-container">
+                                                <img class='event-image'
+                                                    src="{{user[4]}}"
+                                                    alt="">
+                                            </div>
+                                            <div class="event-text-container">
+                                                <p class="event-text">{{ user[2] }} ({{user[3]}} ) Had Tagged you in a File</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </a>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+
+                            <!-- Loops ends -->
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -157,41 +202,86 @@
         width: 240px;
         transition: 0.3s;
         overflow: hidden;
-        
+
     }
+
     .toggle {
         width: 0 !important;
     }
-    .fa-bars{
+
+    .fa-bars {
         cursor: pointer;
+    }
+
+    .profile-container {
+        display: flex;
+        align-items: center;
+    }
+
+    i.fas.fa-exclamation-circle {
+        font-size: 40px;
+        margin-right: 0;
+    }
+
+    .event {
+        display: flex;
+        align-items: center;
+    }
+
+    img.event-image {
+        max-width: 80px;
+        border-radius: 999px;
+    }
+
+    .event-text-container {
+        padding-left: 20px;
+        color: black;
     }
 </style>
 
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"
-  integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
-  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    integrity="sha512-wGKmIfDWUJSUvxUfUayQPJj7ADCD60La3up0VCbq+MTFcOUQ2hlH2McnYFafHgLTsOrGwOdiHKX4p1v0BerCyQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-  var app = new Vue({
-    el: '#appmain',
-    delimiters: ['[[', ']]'],
-    data: {
-        togglestatus: false
-    },
-    methods: {
-        switchToggle(){
-            console.log('test')
-        }
-      
-    },
-  }
-  )
+    var app = new Vue({
+        el: '#appmain',
+        delimiters: ['[[', ']]'],
+        data: {
+            Selected:'Weekly',
+            Weekly:true,
+            Monthly:false,
+            Quarterly:false,
+        },
+        methods: {
+            changeTime(Schedule) {
+                this.Selected = Schedule
+                if(Schedule === 'Weekly'){
+                    this.Weekly = true
+                    this.Monthly = false
+                    this.Quarterly = false
+                }else if(Schedule === 'Monthly'){
+                    this.Weekly = false
+                    this.Monthly = true
+                    this.Quarterly = false
+                }else if(Schedule === 'Quarterly'){
+                    this.Weekly = false
+                    this.Monthly = false
+                    this.Quarterly = true
+                }
+            },
+        },
+        mounted() {
+            
+        },
+    }
+    )
 </script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-$(document).ready(function(){
-  $(".fa-bars").click(function(){
-    $("#aside-toggle").toggleClass("toggle");
-  });
-});
+    $(document).ready(function () {
+        $(".fa-bars").click(function () {
+            $("#aside-toggle").toggleClass("toggle");
+        });
+    });
 </script>

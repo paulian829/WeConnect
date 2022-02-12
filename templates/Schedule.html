@@ -24,6 +24,22 @@
                                 <h5 class="card-title">{{result[1]}}</h5>
                                 <p class="card-text">Deadline:</p>
                                 <h6 class="card-title">{{result[5]}}</h6>
+                                <p class="card-text">Status:</p>
+                                {% for status in status_list %}
+                                    {% if result[0] == status[0] %}
+                                        {% if status[1] == 'Done' %}
+                                        <h6 class="card-title text-success">{{status[1]}}</h6>
+                                        {% elif status[1] == 'Pending' %}
+                                        <h6 class="card-title text-warning">{{status[1]}}</h6>
+                                        {% elif status[1] == 'Passed Deadline' %}
+                                        <h6 class="card-title text-danger">{{status[1]}}</h6>
+                                        {% elif status[1] == 'Failed' %}
+                                        <h6 class="card-title text-danger">{{status[1]}}</h6>
+                                        {% else %}
+                                        <h6 class="card-title text-danger">{{status[1]}}</h6>
+                                        {% endif %}
+                                    {% endif %}
+                                {%  endfor %}
                             </div>
                         </div>    
                     </a>
@@ -43,6 +59,22 @@
                                 <h5 class="card-title">{{result[1]}}</h5>
                                 <p class="card-text">Deadline:</p>
                                 <h6 class="card-title">{{result[5]}}</h6>
+                                <p class="card-text">Status:</p>
+                                {% for status in status_list %}
+                                    {% if result[0] == status[0] %}
+                                        {% if status[1] == 'Done' %}
+                                        <h6 class="card-title text-success">{{status[1]}}</h6>
+                                        {% elif status[1] == 'Pending' %}
+                                        <h6 class="card-title text-warning">{{status[1]}}</h6>
+                                        {% elif status[1] == 'Passed Deadline' %}
+                                        <h6 class="card-title text-danger">{{status[1]}}</h6>
+                                        {% elif status[1] == 'Failed' %}
+                                        <h6 class="card-title text-danger">{{status[1]}}</h6>
+                                        {% else %}
+                                        <h6 class="card-title text-danger">{{status[1]}}</h6>
+                                        {% endif %}
+                                    {% endif %}
+                                {%  endfor %}
                             </div>
                         </div>    
                     </a>
@@ -62,6 +94,22 @@
                                 <h5 class="card-title">{{result[1]}}</h5>
                                 <p class="card-text">Deadline:</p>
                                 <h6 class="card-title">{{result[5]}}</h6>
+                                <p class="card-text">Status:</p>
+                                {% for status in status_list %}
+                                    {% if result[0] == status[0] %}
+                                        {% if status[1] == 'Done' %}
+                                        <h6 class="card-title text-success">{{status[1]}}</h6>
+                                        {% elif status[1] == 'Pending' %}
+                                        <h6 class="card-title text-warning">{{status[1]}}</h6>
+                                        {% elif status[1] == 'Passed Deadline' %}
+                                        <h6 class="card-title text-danger">{{status[1]}}</h6>
+                                        {% elif status[1] == 'Failed' %}
+                                        <h6 class="card-title text-danger">{{status[1]}}</h6>
+                                        {% else %}
+                                        <h6 class="card-title text-danger">{{status[1]}}</h6>
+                                        {% endif %}
+                                    {% endif %}
+                                {%  endfor %}
                             </div>
                         </div>    
                     </a>
@@ -75,7 +123,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add new Scheduled Task</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add new Schedul ed Task</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="/schedule/add" method='POST' enctype="multipart/form-data">

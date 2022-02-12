@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 10, 2022 at 02:57 AM
+-- Generation Time: Feb 12, 2022 at 03:13 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -44,6 +44,10 @@ END$$
 
 CREATE  PROCEDURE `checkUserUpload` (IN `userID` INT, IN `TtaskID` INT)  BEGIN
 	SELECT * FROM files WHERE (UploadedByID = userID AND taskID = TtaskID);
+END$$
+
+CREATE  PROCEDURE `createEvent` (IN `uploaded_by` INT(11), IN `file_ID` INT(11), IN `date_uploaded` DATETIME, IN `share_to_user` INT(11), IN `seen` INT(11), IN `event_type` VARCHAR(100))  BEGIN
+	INSERT INTO event (Uploader,FileID,DateUploaded,TargetUserID,Seen,EventType) VALUES (uploaded_by,file_ID,date_uploaded,share_to_user,seen,event_type);
 END$$
 
 CREATE  PROCEDURE `deleteCommentDB` (IN `uid` INT)  BEGIN
@@ -100,6 +104,10 @@ END$$
 
 CREATE  PROCEDURE `getDone` ()  BEGIN
 	SELECT * FROM tasks WHERE TaskStatus = 'Done' ;
+END$$
+
+CREATE  PROCEDURE `getEvent` (IN `user` INT)  BEGIN
+	SELECT * FROM event WHERE TargetUserID = user;
 END$$
 
 CREATE  PROCEDURE `getFile` (IN `uid` INT(11))  BEGIN
@@ -265,6 +273,31 @@ CREATE TABLE `comments` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `event`
+--
+
+CREATE TABLE `event` (
+  `EventID` int(11) NOT NULL,
+  `Uploader` int(11) NOT NULL,
+  `FileID` int(11) NOT NULL,
+  `DateUploaded` datetime NOT NULL,
+  `TargetUserID` int(11) NOT NULL,
+  `Seen` int(11) NOT NULL,
+  `EventType` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `event`
+--
+
+INSERT INTO `event` (`EventID`, `Uploader`, `FileID`, `DateUploaded`, `TargetUserID`, `Seen`, `EventType`) VALUES
+(1, 94, 137, '2022-02-12 19:25:00', 95, 0, 'File'),
+(2, 93, 138, '2022-02-12 20:34:06', 95, 0, 'File'),
+(3, 95, 139, '2022-02-12 20:59:59', 93, 0, 'File');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `files`
 --
 
@@ -297,7 +330,23 @@ INSERT INTO `files` (`FileID`, `FileName`, `FileType`, `FileSize`, `FileContentT
 (120, 'comments-Copy.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 95, NULL, 1, NULL, 1, '2022-02-06 23:37:19', NULL, 0, 0, 49, '95comments-Copy.docx'),
 (121, 'comments-Copy.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 95, NULL, 1, NULL, 1, '2022-02-06 23:40:50', NULL, 0, 0, 50, '95comments-Copy.docx'),
 (122, 'winrar-x64-610.exe', 'exe', 1, 'application/x-msdownload', 93, 'paulian829@gmail.com', 1, NULL, 1, '2022-02-07 08:04:46', NULL, 0, 0, 0, '93winrar-x64-610.exe'),
-(123, 'comments-Copy.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 95, NULL, 1, NULL, 1, '2022-02-07 23:30:37', NULL, 0, 0, 51, '95comments-Copy.docx');
+(123, 'comments-Copy.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 95, NULL, 1, NULL, 1, '2022-02-07 23:30:37', NULL, 0, 0, 51, '95comments-Copy.docx'),
+(124, 'database.py', 'py', 1, 'text/plain', 94, 'username@paul', 1, NULL, 1, '2022-02-12 18:53:36', NULL, 0, 0, 0, '94database.py'),
+(125, 'package-lock.json', 'json', 1, 'application/json', 94, 'username@paul', 1, NULL, 1, '2022-02-12 18:55:08', NULL, 0, 0, 0, '94package-lock.json'),
+(126, 'package.json', 'json', 1, 'application/json', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:15:05', NULL, 0, 0, 0, '94package.json'),
+(127, 'package.json', 'json', 1, 'application/json', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:15:59', NULL, 0, 0, 0, '94package.json'),
+(128, '.gitignore', 'gitignore', 1, 'text/plain', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:16:19', NULL, 0, 0, 0, '94.gitignore'),
+(129, '.gitignore', 'gitignore', 1, 'text/plain', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:19:21', NULL, 0, 0, 0, '94.gitignore'),
+(130, '.gitignore', 'gitignore', 1, 'text/plain', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:19:44', NULL, 0, 0, 0, '94.gitignore'),
+(131, 'database.py', 'py', 1, 'text/plain', 94, 'teacher@gmail.com', 1, NULL, 1, '2022-02-12 19:20:53', NULL, 0, 0, 0, '94database.py'),
+(132, '.gitignore', 'gitignore', 1, 'text/plain', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:22:10', NULL, 0, 0, 0, '94.gitignore'),
+(133, 'package.json', 'json', 1, 'application/json', 94, 'username@paul', 1, NULL, 1, '2022-02-12 19:22:57', NULL, 0, 0, 0, '94package.json'),
+(134, 'package.json', 'json', 1, 'application/json', 94, 'username@paul', 1, NULL, 1, '2022-02-12 19:23:19', NULL, 0, 0, 0, '94package.json'),
+(135, 'package-lock.json', 'json', 1, 'application/json', 94, 'paulian829@gmail.com', 1, NULL, 1, '2022-02-12 19:23:57', NULL, 0, 0, 0, '94package-lock.json'),
+(136, 'package-lock.json', 'json', 1, 'application/json', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:24:29', NULL, 0, 0, 0, '94package-lock.json'),
+(137, 'flask_app.py', 'py', 1, 'text/plain', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:25:00', NULL, 0, 0, 0, '94flask_app.py'),
+(138, 'pyvenv.cfg', 'cfg', 1, 'application/octet-stream', 93, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 20:34:06', NULL, 0, 0, 0, '93pyvenv.cfg'),
+(139, 'flask.exe', 'exe', 1, 'application/x-msdownload', 95, 'principal@gmail.com', 1, NULL, 1, '2022-02-12 20:59:59', NULL, 0, 0, 0, '95flask.exe');
 
 -- --------------------------------------------------------
 
@@ -345,13 +394,13 @@ CREATE TABLE `tasks` (
 
 INSERT INTO `tasks` (`TaskID`, `TaskName`, `TaskImage`, `TaskCreatedBy`, `TaskDateCreated`, `TaskDeadline`, `TaskDescription`, `TaskStatus`, `TaskSchedule`) VALUES
 (49, 'Individual daily log and accomplishment report (IDLAR)', '', 82, '2021-12-30 22:04:16', '2022-02-12 22:03:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Principal', 'Weekly'),
-(50, 'Weekly Assesment', '', 82, '2022-01-06 22:39:41', '2022-02-12 22:39:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Principal', 'Weekly'),
-(51, 'Weekly home learning plan', '', 82, '2022-01-06 22:49:33', '2022-01-15 22:49:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Weekly'),
+(50, 'Weekly Assesment', '', 82, '2022-01-06 22:39:41', '2022-02-19 22:39:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Principal', 'Weekly'),
+(51, 'Weekly home learning plan', '', 82, '2022-01-06 22:49:33', '2022-01-15 22:49:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Principal', 'Weekly'),
 (52, 'Idea lesson exemplar', '', 82, '2022-01-06 22:50:04', '2022-01-15 22:49:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', 'Pending Teachers', 'Weekly'),
 (53, 'Form 148 of the Daily Time record (DTR)', '', 82, '2022-01-06 22:51:36', '2022-01-29 22:51:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Monthly'),
-(54, 'Students’ grades', '', 82, '2022-01-06 22:52:00', '2022-01-23 22:51:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Quarterly'),
-(55, 'Number of enrollment and number of drop out', '', 82, '2022-01-06 23:26:14', '2022-03-05 23:25:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Quarterly'),
-(60, 'test123', '', 93, '2022-02-02 23:34:53', '2022-02-06 23:34:00', 'test123', 'Pending Teachers', 'Monthly');
+(54, 'Students’ grades', '', 82, '2022-01-06 22:52:00', '2022-01-23 22:51:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending District Supervisor', 'Quarterly'),
+(55, 'Number of enrollment and number of drop out', '', 82, '2022-01-06 23:26:14', '2022-03-05 23:25:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending District Supervisor', 'Quarterly'),
+(60, 'test123', '', 93, '2022-02-02 23:34:53', '2022-02-06 23:34:00', 'test123', 'Done', 'Monthly');
 
 -- --------------------------------------------------------
 
@@ -397,6 +446,12 @@ ALTER TABLE `comments`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indexes for table `event`
+--
+ALTER TABLE `event`
+  ADD PRIMARY KEY (`EventID`);
+
+--
 -- Indexes for table `files`
 --
 ALTER TABLE `files`
@@ -432,10 +487,16 @@ ALTER TABLE `comments`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
+-- AUTO_INCREMENT for table `event`
+--
+ALTER TABLE `event`
+  MODIFY `EventID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
-  MODIFY `FileID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
+  MODIFY `FileID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
 
 --
 -- AUTO_INCREMENT for table `position`
