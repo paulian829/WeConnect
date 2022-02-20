@@ -11,17 +11,17 @@ def connectDb():
     Function used to connecto to database
     """
     #for localhost
-    # mydb = mysql.connector.connect(
-    #     host="localhost", user="root", password="", database="weconnect"
-    # )
+    mydb = mysql.connector.connect(
+        host="localhost", user="root", password="", database="weconnect"
+    )
     
     # for pythonanywhere
-    mydb = mysql.connector.connect(
-        host="WeConnect.mysql.pythonanywhere-services.com",
-        user="WeConnect",
-        password="Shokugeki2021!",
-        database='WeConnect$weconnect'
-    )
+    # mydb = mysql.connector.connect(
+    #     host="WeConnect.mysql.pythonanywhere-services.com",
+    #     user="WeConnect",
+    #     password="Shokugeki2021!",
+    #     database='WeConnect$weconnect'
+    # )
     print("Connect")
     return mydb
 
@@ -986,34 +986,18 @@ def getPendingTeachersList(id,endpoint_status):
         return result_list
     finally:
         mydb.close()
-# ==========================================
-# TESTING FUNCTIONS
 
+def updateTaskFileDB(fileID, filetype, filename,filePathName):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        val = (fileID,filetype,filename,filePathName)
+        mycursor.callproc("updateTaskFileDB", val)
+        mydb.commit()
+        if mycursor.rowcount > 0:
+            return True
 
-# def hashtest(password, password2):
-#     hash_object = hashlib.sha256(password)
-#     hex_dig = hash_object.hexdigest()
+        return False
 
-#     a = hashlib.sha1(password2)
-#     ahex = a.hexdigest()
-
-#     print(ahex == hex_dig)
-
-
-# hashtest(b'pass1', b'pass1')
-
-
-# def getusers():
-#     mydb = connectDb()
-#     mycursor = mydb.cursor()
-#     mycursor.callproc("selectUser", ['admin@gmail.com', ])
-#     for result in mycursor.stored_results():
-#         result = (result.fetchall())
-
-#     print(result)
-
-
-# print(registerNewUser('test3','test1','test1','test1','test','test',1))
-# print(getusers())
-# print(deleteUserDB(85))
-# print(newPosition('test'))
+    finally:
+        mydb.close()    

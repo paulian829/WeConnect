@@ -339,8 +339,6 @@ def home():
         {"message": "Bar.pdf", "key": 8},
         {"message": "Bar.pdf", "key": 9},
     ]
-    # print(session['userID'])
-    # print(session['name'])
     print(session)
     if session["logged_in"] is False:
         return redirect(url_for("login"))
@@ -1020,9 +1018,6 @@ def deleteUser(id):
 
 @app.route("/admin/deletefile/<id>")
 def deletefile(id):
-
-    if session["admin"] == False:
-        return redirect(url_for("forbidden"))
     result = deleteFileDB(id)
     return redirect(url_for("adminFiles"))
 
@@ -1032,6 +1027,38 @@ def deletefileTask(id):
     if not session["logged_in"]:
         return redirect(url_for("forbidden"))
     result = deleteFileDB(id)
+    return redirect(url_for("schedule"))
+
+
+@app.route("/task/update/file")
+def updateFileTask(id):
+    if not session["logged_in"]:
+        return redirect(url_for("forbidden"))
+
+    file = request.files["file"]
+    fileID = request.args.get('FileID')
+        # If the user does not select a file, the browser submits an
+        # empty file without a filename.
+    if file.filename == "":
+            return redirect(request.url)
+
+    print(file.filename)
+    # filesize
+    filename = file.filename
+    # filesize = len(file.read())
+    filetype = filename.split(".")[-1]
+    FilePathName = filename
+    file.save(
+            os.path.join(
+                app.root_path, app.config["UPLOAD_FOLDER"], FilePathName)
+        )
+    
+    result = updateTaskFileDB(fileID,filetype,filename,FilePathName)
+    if result == True:
+        file.save(
+            os.path.join(
+                app.root_path, app.config["UPLOAD_FOLDER"], FilePathName)
+        )
     return redirect(url_for("schedule"))
 
 

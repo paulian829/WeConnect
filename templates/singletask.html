@@ -28,12 +28,15 @@
                 <span><strong>[[ uploadedDetails[1] ]]</strong></span>
                 <span style="margin-left: 2rem;">[[ uploadedDetails[10] ]]</span>
                 <div>
-                    <span style="margin-right:15px;"><a :href="'/file/' + [[ uploadedDetails[0] ]]"><button
+                    <span style="margin-right:10px;"><a :href="'/file/' + [[ uploadedDetails[0] ]]"><button
                                 type="submit" class="btn btn-primary">View</button></a></span>
-                    <span><a :href="'/task/delete/' + [[ uploadedDetails[0] ]]"><button type="submit"
-                                class="btn btn-primary">Delete</button></a></span>
+                    <span style="margin-right:10px;"><a :href="'/task/delete/' + [[ uploadedDetails[0] ]]"><button
+                                type="submit" class="btn btn-primary">Delete</button></a></span>
+                    <span><button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#fileUpdate">
+                            File Update
+                        </button></span>
                 </div>
-
             </div>
         </div>
         <br>
@@ -119,93 +122,124 @@
             <div class="task-buttons-section"></div>
             {% endif %}
             {% if '5' == session['position'] %}
-            <button type="button" class="btn btn-danger margin-right"><i class="fas fa-trash-alt margin-right"></i><a class='button-link' href="/admin/deleteTask/{{result[0]}}">Delete Task</a></button>
-            <td class="actions"><button type="submit" type="button" class="btn btn-primary"
-                data-bs-toggle="modal" data-bs-target="#EditModal" @click=getTaskData({{result[0]}})><i
-                    class="fas fa-edit margin-right"></i>Edit</button>
-            {% endif %}
-            <br>
-            <table class="table task">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Date Uploaded</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for='(teacher,index) in teachers' v-if='teacher[6] === 4'>
-                        <th scope="row">[[ teacher[3] ]] [[ teacher[4] ]]</th>
-                        <td>[[ checkStatus(teacher[0]) ]]</td>
-                        <td>[[ getDateUploaded(teacher[0]) ]]</td>
-                        <td><a :href="'/file/' + getFileUrl(teacher[0])" v-if='allowViewing(teacher[0])'><button
-                                    class="btn btn-primary">view</button></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <button type="button" class="btn btn-danger margin-right"><i class="fas fa-trash-alt margin-right"></i><a
+                    class='button-link' href="/admin/deleteTask/{{result[0]}}">Delete Task</a></button>
+            <td class="actions"><button type="submit" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#EditModal" @click=getTaskData({{result[0]}})><i
+                        class="fas fa-edit margin-right"></i>Edit</button>
+                {% endif %}
+                <br>
+                <table class="table task">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Date Uploaded</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for='(teacher,index) in teachers' v-if='teacher[6] === 4'>
+                            <th scope="row">[[ teacher[3] ]] [[ teacher[4] ]]</th>
+                            <td>[[ checkStatus(teacher[0]) ]]</td>
+                            <td>[[ getDateUploaded(teacher[0]) ]]</td>
+                            <td><a :href="'/file/' + getFileUrl(teacher[0])" v-if='allowViewing(teacher[0])'><button
+                                        class="btn btn-primary">view</button></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
         </div>
         <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-        data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Scheduled Task</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="/schedule/edit" method='POST' enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <input type="hidden" class="form-control" id="taskID" name="taskID" v-model='taskID'>
-                        <div class="mb-3">
-                            <label for="taskName" class="form-label">Task Name</label>
-                            <input type="text" class="form-control" id="taskName" name="taskName" required v-model='taskName'>
-                        </div>
-                        <!-- <div class="mb-3">
+            data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Scheduled Task</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/schedule/edit" method='POST' enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <input type="hidden" class="form-control" id="taskID" name="taskID" v-model='taskID'>
+                            <div class="mb-3">
+                                <label for="taskName" class="form-label">Task Name</label>
+                                <input type="text" class="form-control" id="taskName" name="taskName" required
+                                    v-model='taskName'>
+                            </div>
+                            <!-- <div class="mb-3">
                             <label for="taskImage" class="form-label">Upload Image</label>
                             <input type="file" class="form-control" name="taskImage" id="taskImage"
                                 aria-describedby="taskImage" required>
                         </div> -->
-                        <div class="mb-3">
-                            <label for="Deadline" class="form-label">Deadline</label>
-                            <input type="datetime-local" class="form-control" name="Deadline" id="Deadline" required v-model='deadLine'>
-                        </div>
-                        <div class="mb-3">
-                            <label for="Schedule" class="form-label">Schedule</label>
-                            <select class="form-select" aria-label="Default select example" name='Schedule'
-                                id='Schedule' v-model='schedule'>
-                                <option selected value="" disabled >Select Scheduled</option>
-                                <option value="Weekly">Weekly</option>
-                                <option value="Monthly">Monthly</option>
-                                <option value="Quarterly">Quarterly</option>
+                            <div class="mb-3">
+                                <label for="Deadline" class="form-label">Deadline</label>
+                                <input type="datetime-local" class="form-control" name="Deadline" id="Deadline" required
+                                    v-model='deadLine'>
+                            </div>
+                            <div class="mb-3">
+                                <label for="Schedule" class="form-label">Schedule</label>
+                                <select class="form-select" aria-label="Default select example" name='Schedule'
+                                    id='Schedule' v-model='schedule'>
+                                    <option selected value="" disabled>Select Scheduled</option>
+                                    <option value="Weekly">Weekly</option>
+                                    <option value="Monthly">Monthly</option>
+                                    <option value="Quarterly">Quarterly</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" rows="3" name=description
+                                    v-model='description'></textarea>
+                            </div>
+                            <label for="Status" class="form-label">Status</label>
+                            <select class="form-select" aria-label="Default select example" name='Status' id='Status'
+                                v-model='status'>
+                                <option selected value="" disabled>Select Status</option>
+                                <option value="Pending Teachers">Pending Teachers</option>
+                                <option value="Pending Grade Chairman">Pending Grade Chairman</option>
+                                <option value="Pending Principal">Pending Principal</option>
+                                <option value="Pending District Supervisor">Pending District Supervisor</option>
+
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control" id="description" rows="3" name=description v-model='description'></textarea>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" value="submit" class="btn btn-primary">Add</button>
                         </div>
-                        <label for="Status" class="form-label">Status</label>
-                        <select class="form-select" aria-label="Default select example" name='Status' id='Status' v-model='status'>
-                            <option selected value="" disabled>Select Status</option>
-                            <option value="Pending Teachers">Pending Teachers</option>
-                            <option value="Pending Grade Chairman">Pending Grade Chairman</option>
-                            <option value="Pending Principal">Pending Principal</option>
-                            <option value="Pending District Supervisor">Pending District Supervisor</option>
+                </div>
 
-                        </select>
+
+
+                </form>
+
+            </div>
+        </div>
+        <div class="modal fade" id="fileUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/task/update/file">
+                            <div class="mb-3">
+                                <input type="hidden" :value=uploadedDetails[0] name="FileID">
+                                <input type="hidden" :value='taskID'  name="taskID">
+                                <label for="file" class="form-label">File</label>
+                                <input type="file" class="form-control" name="file" id="file" aria-describedby="file"
+                                    required>
+                            </div>
+                        </form>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" value="submit" class="btn btn-primary">Add</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
+                </div>
             </div>
-
-
-
-            </form>
-
         </div>
-    </div>
     </div>
 </div>
 
@@ -229,11 +263,11 @@
             teachers: [],
             key: 0,
             isDone: [],
-            taskID:'',
-            taskName:'',
-            deadLine:'',
-            schedule:'',
-            description:''
+            taskID: '',
+            taskName: '',
+            deadLine: '',
+            schedule: '',
+            description: ''
         },
         methods: {
             getUploaderData: function (id) {
@@ -249,7 +283,7 @@
                     this.userPosition = user[0][6]
                 })
             },
-            checkIfDone: function (userID, taskID,taskStatus) {
+            checkIfDone: function (userID, taskID, taskStatus) {
                 this.$http.get('/checkifuseruploaded/' + userID + '/' + taskID).then(response => {
                     result = response.body.result
                     if (result.length !== 0) {
@@ -257,7 +291,7 @@
                         console.log('1')
                         this.done = true
                     }
-                    if (this.userPosition === 3 && taskStatus !== 'Pending Teachers'  ){
+                    if (this.userPosition === 3 && taskStatus !== 'Pending Teachers') {
                         console.log('2')
                         this.done = true
                     }
@@ -279,7 +313,7 @@
                 console.log('start')
                 this.$http.get(`/checkifuseruploaded/${id}/${taskID}`).then((result) => {
                     array.push(result)
-                    console.log("end",array)
+                    console.log("end", array)
                     this.isDone = array
                 })
             },
@@ -288,7 +322,7 @@
                 for (let i = 0; i < array.length; i++) {
                     TaskResult = array[i].body.result
                     if (TaskResult.length > 0) {
-                        console.log("taskResult",TaskResult)
+                        console.log("taskResult", TaskResult)
                         if (TaskResult[0][5] == id) {
                             return 'Done'
                         }
@@ -378,13 +412,16 @@
     .task td {
         line-height: 50px;
     }
-    .margin-right{
+
+    .margin-right {
         margin-right: 10px;
     }
-    .button-link{
+
+    .button-link {
         color: white;
     }
-    .button-link:hover{
+
+    .button-link:hover {
         color: white;
     }
 </style>
