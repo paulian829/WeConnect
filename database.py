@@ -11,17 +11,17 @@ def connectDb():
     Function used to connecto to database
     """
     #for localhost
-    # mydb = mysql.connector.connect(
-    #     host="localhost", user="root", password="", database="weconnect"
-    # )
+    mydb = mysql.connector.connect(
+        host="localhost", user="root", password="", database="weconnect"
+    )
     
     # for pythonanywhere
-    mydb = mysql.connector.connect(
-        host="WeConnect.mysql.pythonanywhere-services.com",
-        user="WeConnect",
-        password="Shokugeki2021!",
-        database='WeConnect$weconnect'
-    )
+    # mydb = mysql.connector.connect(
+    #     host="WeConnect.mysql.pythonanywhere-services.com",
+    #     user="WeConnect",
+    #     password="Shokugeki2021!",
+    #     database='WeConnect$weconnect'
+    # )
     print("Connect")
     return mydb
 
@@ -31,7 +31,7 @@ def getAll(table):
     Get All positions Used for displayingg the list of positions on registration forms
     """
     try:
-        mydb = connectDb()
+        mydb = connectDb()  
         mycursor = mydb.cursor()
         mycursor.callproc("SelectAllPostions")
         results = list
@@ -398,6 +398,20 @@ def moveFileToThrash(fileid):
     finally:
         mydb.close()
 
+def checkEvent(id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        sql = f"UPDATE event SET Seen = 1 WHERE EventId = {id}"
+        mycursor.execute(sql)
+        mydb.commit()
+        if mycursor.rowcount > 0:
+            return True
+
+        return False
+
+    finally:
+        mydb.close()    
 
 def getNumberOfFilesUploaded(id):
     try:

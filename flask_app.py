@@ -1,3 +1,4 @@
+from collections import UserList
 from datetime import time, timedelta
 from enum import unique
 from getpass import getpass
@@ -258,22 +259,26 @@ def test():
 
     elif session['position'] == 3:
         number_of_files_uploaded = getNumberOfFilesUploaded(id)
-        number_of_files_passed = getPassed('Pending Grade Chairman',False)
-        number_of_files_deadline = getFailed('Pending Teachers',False)
-        number_of_files_nearing_Deadline = getPending('Pending Teachers',False)
+        number_of_files_passed = getPassed('Pending Grade Chairman', False)
+        number_of_files_deadline = getFailed('Pending Teachers', False)
+        number_of_files_nearing_Deadline = getPending(
+            'Pending Teachers', False)
 
     elif session['position'] == 5:
         number_of_files_uploaded = getNumberOfFilesUploaded(id)
-        number_of_files_passed = getPassed('Pending Principal',False)
-        number_of_files_deadline = getFailed('Pending Principal',False)
-        number_of_files_nearing_Deadline = getPending('Pending Principal',False)
+        number_of_files_passed = getPassed('Pending Principal', False)
+        number_of_files_deadline = getFailed('Pending Principal', False)
+        number_of_files_nearing_Deadline = getPending(
+            'Pending Principal', False)
 
     elif session['position'] == 2:
         number_of_files_uploaded = getNumberOfFilesUploaded(id)
-        number_of_files_passed = getPassed('Pending District Supervisor',False)
-        number_of_files_deadline = getFailed('Pending District Supervisor',False)
+        number_of_files_passed = getPassed(
+            'Pending District Supervisor', False)
+        number_of_files_deadline = getFailed(
+            'Pending District Supervisor', False)
         number_of_files_nearing_Deadline = getPending(
-            'Pending District Supervisor',False)
+            'Pending District Supervisor', False)
 
     five_files = getNFiles(id, 5, email)
     dict = {
@@ -370,7 +375,7 @@ def myFiles():
         return redirect(url_for("forbidden"))
     positions = getAll("position")
     title = "MY FILES"
-    return render_template("myFiles.html", title=title, positions=positions,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("myFiles.html", title=title, positions=positions, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
 
 
 @app.route("/admin/comments")
@@ -391,15 +396,26 @@ def adminPassword():
     return render_template("admin-password.html", title=title)
 
 
-
 @app.route("/dashboard")
 def dashboard():
     if not session["logged_in"]:
         return redirect(url_for("forbidden"))
-    
+
     positions = getAll("position")
     title = "DASHBOARD"
-    return render_template("dashboard.html", title=title, positions=positions,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    checkIfHaveNotifications()
+    return render_template("dashboard.html", title=title, positions=positions, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
+
+
+def checkIfHaveNotifications():
+    UserList = getEventFromDB()
+    unseen = 0
+    for events in UserList:
+        if events[-1] == 0:
+            unseen = unseen + 1
+    print("Unseen", unseen)
+    return unseen
+
 
 def getEventFromDB():
     events = getEvent(session["userID"])
@@ -411,12 +427,12 @@ def getEventFromDB():
             id = userDetails[0]
             email = userDetails[1]
             profilepic = userDetails[8]
-        uploaderDetails = (event[0],id,name, email,profilepic)
+            seen = event[5]
+        uploaderDetails = (event[0], id, name, email, profilepic, seen)
         UserList.append(uploaderDetails)
 
-    print("UserList",UserList)
+    print("UserList", UserList)
     return UserList
-
 
 
 @app.route("/pinned")
@@ -424,7 +440,7 @@ def pinned():
     if not session["logged_in"]:
         return redirect(url_for("forbidden"))
     title = "PINNED"
-    return render_template("pinned.html", title=title,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("pinned.html", title=title, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
 
 
 @app.route("/shared")
@@ -440,7 +456,7 @@ def deleted():
     if not session["logged_in"]:
         return redirect(url_for("forbidden"))
     title = "DELETE"
-    return render_template("delete.html", title=title,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("delete.html", title=title, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
 
 
 @app.route("/users")
@@ -449,7 +465,7 @@ def users():
         return redirect(url_for("forbidden"))
     title = "USERS"
     users = getAllUsers()
-    return render_template("users.html", title=title, users=users,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("users.html", title=title, users=users, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
 
 
 @app.route("/schedule/")
@@ -465,7 +481,7 @@ def schedule():
     if session['position'] == 4:
         for result in results:
             print((result[5]))
-            Match = getMatch(userID,result[0])
+            Match = getMatch(userID, result[0])
             if Match:
                 status = (result[0], "Done")
             elif today > result[5]:
@@ -522,9 +538,9 @@ def schedule():
             else:
                 status = (result[0], 'Pending')
             status_list.append(status)
-            
+
     print(status_list)
-    return render_template("Schedule.html", title=title, results=results,status_list=status_list,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("Schedule.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
 
 
 @app.route("/schedule/get/<id>")
@@ -534,7 +550,7 @@ def getSchedule(id):
     title = "TASKS"
     results = getOneTask(id)
     id = session["userID"]
-    return render_template("singletask.html", title=title, results=results, id=id,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("singletask.html", title=title, results=results, id=id, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
 
 
 @app.route('/admin/tasks/<sched>')
@@ -748,7 +764,7 @@ def profile():
         title=title,
         result=result,
         position=positions,
-        positions=positions,events=getEvent(session["userID"]), UserList = getEventFromDB()
+        positions=positions, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications()
     )
 
 
@@ -921,7 +937,13 @@ def download(filename="FILENAME.png"):
 @app.route("/file/<id>")
 def file(id):
     if not session["logged_in"]:
-        return redirect(url_for("forbidden"))
+        return redirect(url_for("unsee"))
+
+    notif = request.args.get("notif")
+    if notif:
+        print("PLEASE UNSEE")
+        result = checkEvent(notif)
+
     result = getFileDb(id)
     result = result[0]
     title = "File"
@@ -937,7 +959,7 @@ def file(id):
     user = user[0]
     userName = user[3] + ' ' + user[4]
     print(userName)
-    return render_template("file.html", title=title, result=result, deadline=deadline, userName=userName,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("file.html", title=title, result=result, deadline=deadline, userName=userName, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
 
 
 @app.route("/logout")
@@ -1063,14 +1085,14 @@ def finished():
     title = "Finished Tasks"
     position = session['position']
     userID = session['userID']
-    result =''
+    result = ''
     status_list = list()
     today = datetime.today()
     if position == 4:
         results = getNumberOfFilesPassedList(userID)
         for result in results:
             print((result[5]))
-            Match = getMatch(userID,result[0])
+            Match = getMatch(userID, result[0])
             if Match:
                 status = (result[0], "Done")
             elif today > result[5]:
@@ -1080,7 +1102,7 @@ def finished():
             status_list.append(status)
         print("RESULTS", result)
     if position == 3:
-        results = getPassed("Pending Grade Chairman",True)
+        results = getPassed("Pending Grade Chairman", True)
         for result in results:
             status = (result[0], "Done")
             status_list.append(status)
@@ -1089,14 +1111,15 @@ def finished():
         for result in results:
             status = (result[0], 'Done')
             status_list.append(status)
-    
+
     if position == 2:
         results = getPassed("Pending District Supervisor", True)
         for result in results:
             status = (result[0], 'Done')
             status_list.append(status)
-    return render_template("dashboard-status.html", title=title, results= results,status_list=status_list,events=getEvent(session["userID"]), UserList = getEventFromDB())
-    
+    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB())
+
+
 @app.route('/pending')
 def pending():
     title = "Pending Tasks"
@@ -1106,11 +1129,11 @@ def pending():
     status_list = list()
     today = datetime.today()
     if position == 4:
-        results = getPendingTeachersList(userID,'pending')
+        results = getPendingTeachersList(userID, 'pending')
         print(results)
         for result in results:
             print((result[5]))
-            Match = getMatch(userID,result[0])
+            Match = getMatch(userID, result[0])
             if Match:
                 status = (result[0], "Done")
             elif today > result[5]:
@@ -1119,37 +1142,38 @@ def pending():
                 status = (result[0], 'Pending')
             status_list.append(status)
     if position == 3:
-        results = getPending('Pending Teachers',True)
+        results = getPending('Pending Teachers', True)
         for result in results:
             status = (result[0], 'Pending')
             status_list.append(status)
     if position == 5:
-        results = getPending('Pending Principal',True)
+        results = getPending('Pending Principal', True)
         for result in results:
             status = (result[0], 'Pending')
             status_list.append(status)
 
     if position == 2:
-        results = getPending('Pending District Supervisor',True)
+        results = getPending('Pending District Supervisor', True)
         for result in results:
             status = (result[0], 'Pending')
             status_list.append(status)
-    return render_template("dashboard-status.html", title=title, results =results,status_list=status_list,events=getEvent(session["userID"]), UserList = getEventFromDB())
+    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB())
+
 
 @app.route('/failed')
 def failed():
     title = "Failed Tasks"
     position = session['position']
     userID = session['userID']
-    results =''
+    results = ''
     status_list = list()
     today = datetime.today()
     if position == 4:
-        results = getPendingTeachersList(userID,'failed')
+        results = getPendingTeachersList(userID, 'failed')
         print("RESULT", results)
         for result in results:
             print((result[5]))
-            Match = getMatch(userID,result[0])
+            Match = getMatch(userID, result[0])
             if Match:
                 status = (result[0], "Done")
             elif today > result[5]:
@@ -1158,7 +1182,7 @@ def failed():
                 status = (result[0], 'Pending')
             status_list.append(status)
     if position == 3:
-        results =  getFailed('Pending Teachers',True)
+        results = getFailed('Pending Teachers', True)
         for result in results:
             status = (result[0], 'Passed Deadline')
             status_list.append(status)
@@ -1169,12 +1193,11 @@ def failed():
             status = (result[0], 'Passed Deadline')
             status_list.append(status)
     if position == 2:
-        results = getFailed('Pending District Supervisor',True)
+        results = getFailed('Pending District Supervisor', True)
         for result in results:
             status = (result[0], 'Passed Deadline')
             status_list.append(status)
-    return render_template("dashboard-status.html", title=title, results = results,status_list=status_list,events=getEvent(session["userID"]), UserList = getEventFromDB())
-
+    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB())
 
 
 @app.errorhandler(404)
