@@ -1117,7 +1117,7 @@ def finished():
         for result in results:
             status = (result[0], 'Done')
             status_list.append(status)
-    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB())
+    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
 
 
 @app.route('/pending')
@@ -1157,7 +1157,7 @@ def pending():
         for result in results:
             status = (result[0], 'Pending')
             status_list.append(status)
-    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB())
+    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
 
 
 @app.route('/failed')
@@ -1197,7 +1197,7 @@ def failed():
         for result in results:
             status = (result[0], 'Passed Deadline')
             status_list.append(status)
-    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB())
+    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
 
 
 @app.errorhandler(404)
