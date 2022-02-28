@@ -409,11 +409,20 @@ def dashboard():
 
 def checkIfHaveNotifications():
     UserList = getEventFromDB1()
+    print(UserList)
     unseen = 0
     for events in UserList:
         if events[1] != session['userID']:
             if events[-1] == 0:
                 unseen = unseen + 1
+    eventsDB = getEvent(session["userID"])
+    for event in eventsDB:
+        if event[1] == session['userID']:
+            if event[6] == 'Task':
+                if event[5] == 0:
+                    unseen = unseen + 1
+
+    
     return unseen
 
 
@@ -574,6 +583,12 @@ def schedule():
 def getSchedule(id):
     if not session["logged_in"]:
         return redirect(url_for("forbidden"))
+
+    notif = request.args.get("notif")
+    if notif:
+        print("PLEASE UNSEE")
+        result = checkEvent(notif)
+        
     title = "TASKS"
     results = getOneTask(id)
     id = session["userID"]

@@ -10,18 +10,18 @@ def connectDb():
     """
     Function used to connecto to database
     """
-    #for localhost
-    mydb = mysql.connector.connect(
-        host="localhost", user="root", password="", database="weconnect"
-    )
+    # #for localhost
+    # mydb = mysql.connector.connect(
+    #     host="localhost", user="root", password="", database="weconnect"
+    # )
     
     # for pythonanywhere
-    # mydb = mysql.connector.connect(
-    #     host="WeConnect.mysql.pythonanywhere-services.com",
-    #     user="WeConnect",
-    #     password="Shokugeki2021!",
-    #     database='WeConnect$weconnect'
-    # )
+    mydb = mysql.connector.connect(
+        host="WeConnect.mysql.pythonanywhere-services.com",
+        user="WeConnect",
+        password="Shokugeki2021!",
+        database='WeConnect$weconnect'
+    )
     print("Connect")
     return mydb
 
