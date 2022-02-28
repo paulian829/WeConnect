@@ -408,13 +408,31 @@ def dashboard():
 
 
 def checkIfHaveNotifications():
-    UserList = getEventFromDB()
+    UserList = getEventFromDB1()
     unseen = 0
     for events in UserList:
-        if events[-1] == 0:
-            unseen = unseen + 1
-    print("Unseen", unseen)
+        if events[1] != session['userID']:
+            if events[-1] == 0:
+                unseen = unseen + 1
     return unseen
+
+
+def getEventFromDB1():
+    events = getEvent(session["userID"])
+    UserList = list()
+    for event in events:
+        userIDresult = getUserData(event[1])
+        for userDetails in userIDresult:
+            name = userDetails[3] + " " + userDetails[4]
+            id = userDetails[0]
+            email = userDetails[1]
+            profilepic = userDetails[8]
+            seen = event[5]
+        uploaderDetails = (1, id, name, email, profilepic, seen)
+        UserList.append(uploaderDetails)
+    UserList = list(dict.fromkeys(UserList))
+    
+    return UserList
 
 
 def getEventFromDB():
@@ -428,10 +446,19 @@ def getEventFromDB():
             email = userDetails[1]
             profilepic = userDetails[8]
             seen = event[5]
-        uploaderDetails = (event[0], id, name, email, profilepic, seen)
+            eventID = event[0]
+            eventUploader = event[1]
+            eventFileID = event[2]
+            eventDateUploaded = event[3]
+            eventTarget = event[4]
+            eventType = event[6]
+
+
+        uploaderDetails = (1, id, name, email, profilepic, seen,eventID,eventUploader,eventFileID,eventDateUploaded,eventTarget,eventType)
         UserList.append(uploaderDetails)
 
-    print("UserList", UserList)
+    # UserList = list(dict.fromkeys(UserList))
+    print("USERS", UserList)
     return UserList
 
 
@@ -1062,8 +1089,19 @@ def addComment(userID, fileID, comment):
     Timetoday = time.time()
     print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(Timetoday)))
     result = newComment(userID, fileID, comment, Timetoday)
-    dict = {"result": 'result'}
-    return json.dumps(dict, indent=4, sort_keys=True, default=str)
+    #Get list of username
+    #get commenter
+    list_of_users = get_list_of_users(fileID)
+    list_of_users.append(get_owner_of_file(fileID))
+    list_of_users.append(get_tagged_user(fileID))
+    list_of_users = list(dict.fromkeys(list_of_users))
+    print(list_of_users)
+    today = datetime.today()
+    for users in list_of_users:
+        if users is not None:
+            createEvent(userID,fileID,today,users,"Comment")
+    dictOne = {"result": 'result'}
+    return json.dumps(dictOne, indent=4, sort_keys=True, default=str)
 
 
 @app.route('/comments/<fileID>')
@@ -1117,7 +1155,7 @@ def finished():
         for result in results:
             status = (result[0], 'Done')
             status_list.append(status)
-    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB())
+    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
 
 
 @app.route('/pending')
@@ -1157,7 +1195,7 @@ def pending():
         for result in results:
             status = (result[0], 'Pending')
             status_list.append(status)
-    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB())
+    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
 
 
 @app.route('/failed')
@@ -1197,7 +1235,7 @@ def failed():
         for result in results:
             status = (result[0], 'Passed Deadline')
             status_list.append(status)
-    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB())
+    return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
 
 
 @app.errorhandler(404)

@@ -11,17 +11,17 @@ def connectDb():
     Function used to connecto to database
     """
     #for localhost
-    # mydb = mysql.connector.connect(
-    #     host="localhost", user="root", password="", database="weconnect"
-    # )
+    mydb = mysql.connector.connect(
+        host="localhost", user="root", password="", database="weconnect"
+    )
     
     # for pythonanywhere
-    mydb = mysql.connector.connect(
-        host="WeConnect.mysql.pythonanywhere-services.com",
-        user="WeConnect",
-        password="Shokugeki2021!",
-        database='WeConnect$weconnect'
-    )
+    # mydb = mysql.connector.connect(
+    #     host="WeConnect.mysql.pythonanywhere-services.com",
+    #     user="WeConnect",
+    #     password="Shokugeki2021!",
+    #     database='WeConnect$weconnect'
+    # )
     print("Connect")
     return mydb
 
@@ -319,7 +319,7 @@ def saveFiletoDb(
             if share_to_user != "None":
                 user = getUserViaEmail(share_to_user)
                 print(user)
-                createEvent(uploaded_by,fileID,today,user[0][0], )
+                createEvent(uploaded_by,fileID,today,user[0][0],'File' )
             return results
     except Exception as e:
         mycursor.close()
@@ -328,12 +328,11 @@ def saveFiletoDb(
     finally:
         mydb.close()
 
-def createEvent(uploaded_by,file_ID,date_uploaded, share_to_user ):
+def createEvent(uploaded_by,file_ID,date_uploaded, share_to_user,event_type ):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
         seen = 0
-        event_type = 'File'
         val = (uploaded_by,file_ID,date_uploaded, share_to_user,seen,event_type)
         mycursor.callproc("createEvent", val)
         mycursor.lastrowid
@@ -1000,34 +999,57 @@ def getPendingTeachersList(id,endpoint_status):
         return result_list
     finally:
         mydb.close()
-# ==========================================
-# TESTING FUNCTIONS
 
 
-# def hashtest(password, password2):
-#     hash_object = hashlib.sha256(password)
-#     hex_dig = hash_object.hexdigest()
+def get_list_of_users(fileID):
 
-#     a = hashlib.sha1(password2)
-#     ahex = a.hexdigest()
-
-#     print(ahex == hex_dig)
-
-
-# hashtest(b'pass1', b'pass1')
-
-
-# def getusers():
-#     mydb = connectDb()
-#     mycursor = mydb.cursor()
-#     mycursor.callproc("selectUser", ['admin@gmail.com', ])
-#     for result in mycursor.stored_results():
-#         result = (result.fetchall())
-
-#     print(result)
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        sql = f"SELECT UserID FROM comments WHERE FileID = {fileID};"
+        mycursor.execute(sql)
+        result = mycursor.fetchall()
+        resultList = []
+        for x in result:
+            resultList.append(x[0])
+        resultList = list(dict.fromkeys(resultList))
+        return(resultList)
+    finally:
+        mydb.close()
 
 
-# print(registerNewUser('test3','test1','test1','test1','test','test',1))
-# print(getusers())
-# print(deleteUserDB(85))
-# print(newPosition('test'))
+def get_owner_of_file(fileID):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        sql = f"SELECT UploadedByID FROM files WHERE FileID = {fileID};"
+        mycursor.execute(sql)
+        result = mycursor.fetchall()
+        return(result[0][0])
+    finally:
+        mydb.close()
+
+
+def get_tagged_user(fileID):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        sql = f"SELECT Share_to_user FROM files WHERE FileID = {fileID};"
+        mycursor.execute(sql)
+        result = mycursor.fetchall()
+        userID = getUserViaEmail(result[0][0])
+        return(userID[0][0])
+    finally:
+        mydb.close()
+
+
+def get_User_view_position(positionID):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        sql = f"SELECT * FROM users WHERE Position = {positionID};"
+        mycursor.execute(sql)
+        result = mycursor.fetchall()
+        return result
+    finally:
+        mydb.close()

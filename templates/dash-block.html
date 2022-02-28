@@ -158,29 +158,37 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-
                         <div class="event-container">
                             <!-- Loops start -->
-                            {% for event in events %}
-                            {% for user in UserList %}
-                            {% if user[1] == event[1] %}
-                            <a href="/file/{{event[2]}}?notif={{event[0]}}">
-                                <div class="event">
-                                    <div class="event-image-container">
-                                        <img class='event-image' src="{{user[4]}}" alt="">
-                                    </div>
-                                    <div class="event-text-container">
-                                        <p class="event-text">{{ user[2] }} ({{user[3]}} ) Had Tagged you in a File 
-                                            {% if event[5] == 0 %}
-                                            <i class="fas fa-exclamation "></i></p>
-                                            {% endif %}
-                                    </div>
-                                </div>
-                                <hr>
-                            </a>
-                            {% endif %}
-                            {% endfor %}
-                            {% endfor %}
+                                {% for user in UserList %}
+                                    {% if user[1] == user[7] %}
+                                        {% if user[7] != session['userID'] %}
+                                            <a href="/file/{{user[8]}}?notif={{user[6]}}">
+                                                <div class="event">
+                                                    <div class="event-image-container">
+                                                        <img class='event-image' src="{{user[4]}}" alt="">
+                                                    </div>
+                                                    {% if user[-1] == 'File' %}
+                                                    <div class="event-text-container">
+                                                        <p class="event-text">{{ user[2] }} ({{user[3]}} ) Had Tagged you in a File 
+                                                            {% if user[5] == 0 %}
+                                                            <i class="fas fa-exclamation "></i></p>
+                                                            {% endif %}
+                                                    </div>
+                                                    {% elif user[-1] == 'Comment' %}
+                                                        <div class="event-text-container">
+                                                            <p class="event-text">{{ user[2] }} ({{user[3]}} ) Had Commented in a File 
+                                                                {% if user[5] == 0 %}
+                                                                <i class="fas fa-exclamation "></i></p>
+                                                                {% endif %}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                                <hr>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
 
                             <!-- Loops ends -->
                         </div>
