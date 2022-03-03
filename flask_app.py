@@ -251,10 +251,9 @@ def test():
     email = session['email']
     number_of_files_uploaded = 0
     if session['position'] == 4:
-        print('test')
         number_of_files_uploaded = getNumberOfFilesUploaded(id)
         number_of_files_passed = getNumberOfFilesPassed(id)
-        number_of_files_deadline = getNumberOfFilesDeadline(id)
+        number_of_files_deadline = len(getPendingTeachersList(id, 'failed'))
         number_of_files_nearing_Deadline = getNumberOfFilesNearDeadline(id)
 
     elif session['position'] == 3:
@@ -1223,7 +1222,7 @@ def failed():
     today = datetime.today()
     if position == 4:
         results = getPendingTeachersList(userID, 'failed')
-        print("RESULT", results)
+        print("RESULT", len(results))
         for result in results:
             print((result[5]))
             Match = getMatch(userID, result[0])
