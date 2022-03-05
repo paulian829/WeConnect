@@ -58,19 +58,22 @@
             </tbody>
         </table>
         {% if not session['admin'] %}
-        <div>
-            <a href="{{'/thrash/' + result[0]|string}}" onclick="return confirm('Are you sure?')"><button type="button"
-                    class="btn btn-danger"><i class="fas fa-trash"></i>TRASH</button></a>
-            {% if (1 == result[13]) %}
-            <a href="{{'/pin/' + result[0]|string + '/0'}}" onclick="return confirm('Are you sure?')"><button
-                    type="button" class="btn btn-info" style="margin-right: 30px;"><i class="fas fa-thumbtack"></i>
-                    UNPIN</button></a>
-            {% else %}
-            <a href="{{'/pin/' + result[0]|string + '/1'}}" onclick="return confirm('Are you sure?')"><button
-                    type="button" class="btn btn-info" style="margin-right: 30px;"><i class="fas fa-thumbtack"></i>
-                    PIN</button></a>
+            {% if session['userID'] == result[5]|int %}
+                <div>
+                    <a href="{{'/thrash/' + result[0]|string}}" onclick="return confirm('Are you sure?')"><button type="button"
+                            class="btn btn-danger"><i class="fas fa-trash"></i>TRASH</button></a>
+                    {% if (1 == result[13]) %}
+                    <a href="{{'/pin/' + result[0]|string + '/0'}}" onclick="return confirm('Are you sure?')"><button
+                            type="button" class="btn btn-info" style="margin-right: 30px;"><i class="fas fa-thumbtack"></i>
+                            UNPIN</button></a>
+                    {% else %}
+                    <a href="{{'/pin/' + result[0]|string + '/1'}}" onclick="return confirm('Are you sure?')"><button
+                            type="button" class="btn btn-info" style="margin-right: 30px;"><i class="fas fa-thumbtack"></i>
+                            PIN</button></a>
+                    {% endif %}
+                </div>
             {% endif %}
-        </div>
+
         {% endif %}
         <br>
         <div style="margin-top: 30px;">

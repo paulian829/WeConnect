@@ -11,6 +11,9 @@
 
         <p><strong>Date Created: </strong>{{result[4]}}</p>
         <p><strong>Date Deadline: </strong>{{result[5]}}</p>
+        <a href="/admin/deleteTask/{{result[0]}}" v-if="userPosition == 5"><button type="submit"
+            class="btn btn-danger" onclick="return confirm('Are you sure?')">DELETE TASK</button></a>
+        <br>
         <div v-if='userPosition === 4'>
             <div v-if='!done'>
                 <form action="/uploadfile" method='POST' enctype="multipart/form-data">

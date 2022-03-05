@@ -11,18 +11,18 @@ def connectDb():
     Function used to connecto to database
     """
     # #for localhost
-    # mydb = mysql.connector.connect(
-    #     host="localhost", user="root", password="", database="weconnect"
-    # )
+    mydb = mysql.connector.connect(
+        host="localhost", user="root", password="", database="weconnect"
+    )
     
     # for pythonanywhere
-    mydb = mysql.connector.connect(
-        host="WeConnect.mysql.pythonanywhere-services.com",
-        user="WeConnect",
-        password="Shokugeki2021!",
-        database='WeConnect$weconnect'
-    )
-    print("Connect")
+    # mydb = mysql.connector.connect(
+    #     host="WeConnect.mysql.pythonanywhere-services.com",
+    #     user="WeConnect",
+    #     password="Shokugeki2021!",
+    #     database='WeConnect$weconnect'
+    # )
+    # print("Connect")
     return mydb
 
 
@@ -344,12 +344,10 @@ def getEvent(userID):
     try:
         mydb = connectDb()
         mycursor = mydb.cursor()
-        val = (userID,)
-        results = list
-        mycursor.callproc("getEvent", val)
-        for result in mycursor.stored_results():
-            results = result.fetchall()
-        return results
+        sql = f"SELECT * FROM event WHERE TargetUserID = {userID} ORDER BY EventID DESC;"
+        mycursor.execute(sql)
+        result = mycursor.fetchall()
+        return result
     finally:
         mydb.close()
 
@@ -1038,7 +1036,8 @@ def get_tagged_user(fileID):
         mycursor.execute(sql)
         result = mycursor.fetchall()
         userID = getUserViaEmail(result[0][0])
-        return(userID[0][0])
+        if userID:
+            return(userID[0][0])
     finally:
         mydb.close()
 
@@ -1053,3 +1052,16 @@ def get_User_view_position(positionID):
         return result
     finally:
         mydb.close()
+
+def get_last_task():
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        sql = f"SELECT * FROM tasks ORDER BY TaskID DESC LIMIT 1;"
+        mycursor.execute(sql)
+        result = mycursor.fetchall()
+        return result[0]
+    finally:
+        mydb.close()
+
+print(get_last_task())

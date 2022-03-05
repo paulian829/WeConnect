@@ -430,14 +430,17 @@ def getEventFromDB1():
     UserList = list()
     for event in events:
         userIDresult = getUserData(event[1])
-        for userDetails in userIDresult:
-            name = userDetails[3] + " " + userDetails[4]
-            id = userDetails[0]
-            email = userDetails[1]
-            profilepic = userDetails[8]
-            seen = event[5]
-        uploaderDetails = (1, id, name, email, profilepic, seen)
-        UserList.append(uploaderDetails)
+        if userIDresult:
+            print(userIDresult)
+            for userDetails in userIDresult:
+                name = userDetails[3] + " " + userDetails[4]
+                id = userDetails[0]
+                email = userDetails[1]
+                profilepic = userDetails[8]
+                seen = event[5]
+
+                uploaderDetails = (1, id, name, email, profilepic, seen)
+                UserList.append(uploaderDetails)
     UserList = list(dict.fromkeys(UserList))
     
     return UserList
@@ -448,22 +451,23 @@ def getEventFromDB():
     UserList = list()
     for event in events:
         userIDresult = getUserData(event[1])
-        for userDetails in userIDresult:
-            name = userDetails[3] + " " + userDetails[4]
-            id = userDetails[0]
-            email = userDetails[1]
-            profilepic = userDetails[8]
-            seen = event[5]
-            eventID = event[0]
-            eventUploader = event[1]
-            eventFileID = event[2]
-            eventDateUploaded = event[3]
-            eventTarget = event[4]
-            eventType = event[6]
+        if userIDresult:
+            for userDetails in userIDresult:
+                name = userDetails[3] + " " + userDetails[4]
+                id = userDetails[0]
+                email = userDetails[1]
+                profilepic = userDetails[8]
+                seen = event[5]
+                eventID = event[0]
+                eventUploader = event[1]
+                eventFileID = event[2]
+                eventDateUploaded = event[3]
+                eventTarget = event[4]
+                eventType = event[6]
 
 
-        uploaderDetails = (1, id, name, email, profilepic, seen,eventID,eventUploader,eventFileID,eventDateUploaded,eventTarget,eventType)
-        UserList.append(uploaderDetails)
+                uploaderDetails = (1, id, name, email, profilepic, seen,eventID,eventUploader,eventFileID,eventDateUploaded,eventTarget,eventType)
+                UserList.append(uploaderDetails)
 
     # UserList = list(dict.fromkeys(UserList))
     print("USERS", UserList)
@@ -642,6 +646,11 @@ def addSchedule():
             schedule,
         )
         if result:
+            today = datetime.today()
+            teachers = get_User_view_position(4)
+            for teacher in teachers:
+                lastTask = get_last_task()
+                createEvent(taskCreatedBy, lastTask[0],today,teacher[0],'New Task')
             return redirect(url_for("schedule"))
         else:
             return "error"
@@ -686,10 +695,7 @@ def checkifuseruploaded(userID, taskID):
 @app.route('/admin/deleteTask/<id>')
 def deleteTask(id):
     result = deleteTaskDb(id)
-    if session['admin']:
-        return redirect(url_for("getTasks", sched='Weekly'))
-    else:
-        return redirect(url_for("schedule"))
+    return redirect(url_for("schedule"))
 
 
 @app.route("/settings")
@@ -917,8 +923,18 @@ def uploadFile():
         deadline = request.form.get("Deadline")
         revision = 1
         FilePathName = str(uploaded_by) + filename
+        today = datetime.today()
         if request.form.get("taskID"):
             taskID = request.form.get("taskID")
+            users = get_User_view_position(5)
+            for user in users:
+                print("test 123 ",user)
+                createEvent(session['userID'],taskID, today,user[0],'Task Upload')
+            users = get_User_view_position(3)
+            for user in users:
+                print("test 123 ",user)
+                createEvent(session['userID'],taskID, today,user[0],'Task Upload')
+            
         else:
             taskID = 0
         lastID = saveFiletoDb(
