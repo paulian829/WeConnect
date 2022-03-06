@@ -23,7 +23,7 @@
             <div class="col" v-for='suggestion in allData' v-if='suggestion[12] == 4'>
                 <a :href="'/restore/' + suggestion[0] " onclick="return confirm('Do you want to Restore this file?')">
                     <div class="card h-100" v-if='suggestion[4] === "image/jpeg" || suggestion[4] === "image/png" '>
-                        <img :src="'/static/uploads/' + suggestion[1] " class="card-img-top" alt="...">
+                        <img :src="'/static/uploads/' + suggestion[15] " class="card-img-top" alt="...">
                         <div class="card-body">
                             <h6 class="card-title">[[ suggestion[1] ]]</h6>
                         </div>

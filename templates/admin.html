@@ -129,8 +129,12 @@
             <label for="Phone" class="form-label">Phone Number</label>
             <div class="input-group mb-3">
               <span class="input-group-text" id="basic-addon3">+63</span>
-              <input type="number" class="form-control" id="Phone" aria-describedby="basic-addon3"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" name="PhoneNumber" maxlength="10" minlength="10">
+              <input type="number" class="form-control" id="Phone" aria-describedby="basic-addon3" v-model='phone'
+                v-on:keyup='testPhoneNumber()'
+                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                name="PhoneNumber" maxlength="10" minlength="10">
             </div>
+            <span v-if='phoneWarning' style="color: red;">Invalid Phone number</span>
             <div class="mb-3">
               <label for="Password" class="form-label">Password </label>
               <input type="password" required class="form-control" id="Password" name="Password" v-model='pass'
@@ -144,7 +148,7 @@
               <label for="rePassword" class="form-label">Repeat Password</label>
               <input type="password" required class="form-control" id="rePassword" name="RepeatPass"
                 v-model='RepeatPass' v-on:keyup='testRePassword()'>
-              <span v-if='RepassWarning' style="color: red;">Invalid Password</span>
+              <span v-if='RepassWarning' style="color: red;">Invalid Password or Not the Same</span>
             </div>
             <div class="mb-3">
               <label for="Position" class="form-label">Position</label>
@@ -157,7 +161,7 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="submit" value="REGISTER" class="btn btn-primary"
-                :class="{ buttonDisabled : passWarning }">Add
+                :class="{ buttonDisabled : passWarning || phoneWarning || RepassWarning}">Add
                 new User</button>
           </form>
 
@@ -179,10 +183,12 @@
     el: '#app',
     delimiters: ['[[', ']]'],
     data: {
+      phoneWarning: true,
       passWarning: true,
       RepassWarning: true,
       pass: '',
-      RepeatPass: ''
+      RepeatPass: '',
+      phone: ''
     },
     methods: {
       testPassword() {
@@ -201,6 +207,15 @@
         }
         if (!/\d/.test(this.RepeatPass)) {
           this.RepassWarning = true
+        }
+        if (RepeatPass !== pass) {
+          this.RepassWarning = true
+        }
+      },
+      testPhoneNumber() {
+        this.phoneWarning = false
+        if (this.phone.length != 10) {
+          this.phoneWarning = true
         }
       }
     },

@@ -9,8 +9,13 @@
                         <div class="account-settings">
                             <div class="user-profile">
                                 <div class="user-avatar">
-                                    <img src="https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
-                                        alt="Maxwell Admin">
+                                    {% if result[0][-1] %}
+                                    <img src="{{result[0][-1]}}"
+                                        >
+                                    {% else %}
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png"
+                                    >
+                                    {% endif %}
                                 </div>
                                 <h5 class="user-name">{{result[0][3]}} {{result[0][4]}}</h5>
                                 <h6 class="user-email">{{result[0][1]}}</h6>
@@ -54,14 +59,14 @@
                                 <div class="form-group">
                                     <label for="email">Email</label>
                                     <input type="text" class="form-control" id="email" placeholder="Enter email"
-                                        name="Email" value="{{result[0][1]}}">
+                                        name="Email" value="{{result[0][1]}}" readonly >
                                 </div>
                             </div>
 
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label for="website">position</label>
-                                    <select name="Position" class="form-select" aria-label="Default select example"
+                                    <select name="none" class="form-select" disabled aria-label="Default select example"
                                         id="Position">
                                         {% for position in positions %}
                                         {% if position[0] == result[0][6] %}
@@ -71,6 +76,8 @@
                                         {% endif %}
                                         {% endfor %}
                                     </select>
+                                    <input type="hidden" class="form-control" id="email" placeholder="Enter email"
+                                        name="Position" value="{{result[0][6]}}" readonly >
                                 </div>
                             </div>
                         </div>

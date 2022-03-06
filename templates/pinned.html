@@ -15,7 +15,7 @@
 
     </div>
     <div class='suggestion-cards-container row row-cols-1 row-cols-md-5 g-4' v-if='table'>
-      <div class="col" v-for='suggestion in allData' v-if='suggestion[13] == 1'>
+      <div class="col" v-for='suggestion in allData' v-if='suggestion[13] == 1 && suggestion[12] != 4'>
         <a :href="'/file/' + suggestion[0] ">
           <div class="card h-100" v-if='suggestion[4] === "image/jpeg" || suggestion[4] === "image/png" '>
             <img :src="'/static/uploads/' + suggestion[1] " class="card-img-top" alt="...">

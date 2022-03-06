@@ -42,18 +42,32 @@
                     <td><Strong>File Type:</Strong></td>
                     <td>{{result[4]}}</td>
                 </tr>
+                {% if userName%}
                 <tr>
                     <td><strong>Uploaded By Id:</strong></td>
                     <td>{{userName}}</td>
                 </tr>
+                {% else %}
                 <tr>
-                    <td><strong>Share to User:</strong></td>
-                    <td>{{result[6]}}</td>
+                    <td><strong>Uploaded By Id:</strong></td>
+                    <td>Deleted Account</td>
                 </tr>
+                {% endif %}
+
+                {% if result[6] %}
+                    {% if result[6] != 'None' %}
+                        <tr>
+                            <td><strong>Share to User:</strong></td>
+                            <td>{{result[6]}}</td>
+                        </tr>
+                    {% endif %}
+                {% endif %}
+                {% if deadline %}
                 <tr>
                     <td><strong>Deadline:</strong> </td>
                     <td>{{deadline}}</td>
                 </tr>
+                {% endif %}
                 <tr>
                     <td><strong>Date Upload:</strong> </td>
                     <td>{{result[10]}}</td>

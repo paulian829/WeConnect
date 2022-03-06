@@ -108,9 +108,6 @@
                         <td>[[ changeDate(data[2]) ]]</td>
                         <td>[[ changeDate(data[10]) ]]</td>
                         <td><a :href="'/file/' + data[0] "><button type="button" class="btn btn-success"><i class="far fa-file"></i>View</button></a></td>
-                        <!-- <td><span @click='moveToThrash(data[0])' style="cursor: pointer;">Move to Thrash</span></td> -->
-                        <!-- <td><a :href="'/thrash/' + data[0] ">Thrash</a></td> -->
-                        <td><a :href="'/thrash/' + data[0] " onclick="return confirm('Are you sure?')"><button type="button" class="btn btn-warning"><i class="far fa-trash"></i>Trash</button></a></td>
                     </tr>
                 </tbody>
             </table>

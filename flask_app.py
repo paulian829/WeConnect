@@ -156,9 +156,12 @@ def viewUser(id):
         return redirect(url_for("forbidden"))
     positions = getAll("position")
     result = getUserData(id)
-    return render_template(
-        "admin-view-profile.html", result=result, positions=positions, title="ADMIN"
-    )
+    if result:
+        return render_template(
+            "admin-view-profile.html", result=result, positions=positions, title="ADMIN"
+        )
+    else:
+        return render_template("404.html")
 
 
 @app.route("/forgotpassword")
@@ -421,7 +424,6 @@ def checkIfHaveNotifications():
                 if event[5] == 0:
                     unseen = unseen + 1
 
-    
     return unseen
 
 
@@ -442,7 +444,7 @@ def getEventFromDB1():
                 uploaderDetails = (1, id, name, email, profilepic, seen)
                 UserList.append(uploaderDetails)
     UserList = list(dict.fromkeys(UserList))
-    
+
     return UserList
 
 
@@ -465,8 +467,8 @@ def getEventFromDB():
                 eventTarget = event[4]
                 eventType = event[6]
 
-
-                uploaderDetails = (1, id, name, email, profilepic, seen,eventID,eventUploader,eventFileID,eventDateUploaded,eventTarget,eventType)
+                uploaderDetails = (1, id, name, email, profilepic, seen, eventID,
+                                   eventUploader, eventFileID, eventDateUploaded, eventTarget, eventType)
                 UserList.append(uploaderDetails)
 
     # UserList = list(dict.fromkeys(UserList))
@@ -591,7 +593,7 @@ def getSchedule(id):
     if notif:
         print("PLEASE UNSEE")
         result = checkEvent(notif)
-        
+
     title = "TASKS"
     results = getOneTask(id)
     id = session["userID"]
@@ -650,7 +652,8 @@ def addSchedule():
             teachers = get_User_view_position(4)
             for teacher in teachers:
                 lastTask = get_last_task()
-                createEvent(taskCreatedBy, lastTask[0],today,teacher[0],'New Task')
+                createEvent(taskCreatedBy,
+                            lastTask[0], today, teacher[0], 'New Task')
             return redirect(url_for("schedule"))
         else:
             return "error"
@@ -928,13 +931,15 @@ def uploadFile():
             taskID = request.form.get("taskID")
             users = get_User_view_position(5)
             for user in users:
-                print("test 123 ",user)
-                createEvent(session['userID'],taskID, today,user[0],'Task Upload')
+                print("test 123 ", user)
+                createEvent(session['userID'], taskID,
+                            today, user[0], 'Task Upload')
             users = get_User_view_position(3)
             for user in users:
-                print("test 123 ",user)
-                createEvent(session['userID'],taskID, today,user[0],'Task Upload')
-            
+                print("test 123 ", user)
+                createEvent(session['userID'], taskID,
+                            today, user[0], 'Task Upload')
+
         else:
             taskID = 0
         lastID = saveFiletoDb(
@@ -1002,20 +1007,22 @@ def file(id):
         result = checkEvent(notif)
 
     result = getFileDb(id)
+    print('test result', result)
     if result:
         title = "File"
-        task = getOneTask(result[14])
-        if not task:
-            deadline = 'N/A'
-        else:
-            deadline = task[0][5]
+        deadline = None
+        if result[0][14] > 0:
+            task = getOneTask(result[0][14])
+            if task:
+                deadline = task[0][5]
 
-        user = getUserData(result[5])
+        user = getUserData(result[0][5])
         userName = None
         if user:
             user = user[0]
             userName = user[3] + ' ' + user[4]
-        
+
+        result = result[0]
         return render_template("file.html", title=title, result=result, deadline=deadline, userName=userName, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
     else:
         title = "File"
@@ -1122,8 +1129,8 @@ def addComment(userID, fileID, comment):
     Timetoday = time.time()
     print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(Timetoday)))
     result = newComment(userID, fileID, comment, Timetoday)
-    #Get list of username
-    #get commenter
+    # Get list of username
+    # get commenter
     list_of_users = get_list_of_users(fileID)
     list_of_users.append(get_owner_of_file(fileID))
     list_of_users.append(get_tagged_user(fileID))
@@ -1132,7 +1139,7 @@ def addComment(userID, fileID, comment):
     today = datetime.today()
     for users in list_of_users:
         if users is not None:
-            createEvent(userID,fileID,today,users,"Comment")
+            createEvent(userID, fileID, today, users, "Comment")
     dictOne = {"result": 'result'}
     return json.dumps(dictOne, indent=4, sort_keys=True, default=str)
 
