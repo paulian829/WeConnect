@@ -135,7 +135,11 @@
                             {% endif %}
                             <a href={{url_for('profile')}}>
                                 <div class="profile-img">
+                                    {% if session['profilePic'] %}
                                     <img src="{{ session['profilePic'] }}" alt="">
+                                    {% else %}
+                                    <img src="https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" alt="">
+                                    {% endif %}
                                 </div>
                                 <div>
                                     <h3>{{session['name']}}</h3>
@@ -166,7 +170,11 @@
                                             <a href="/file/{{user[8]}}?notif={{user[6]}}">
                                                 <div class="event">
                                                     <div class="event-image-container">
-                                                        <img class='event-image' src="{{user[4]}}" alt="{{session['userID']}}">
+                                                        {% if user[4]%}
+                                                        <img class='event-image' src="{{user[4]}}" alt="{{session['userID']}}" >
+                                                        {% else %}
+                                                        <img class='event-image' src="https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" alt="{{session['userID']}}" >
+                                                        {% endif %}
                                                     </div>
                                                     {% if user[-1] == 'File' %}
                                                     <div class="event-text-container">
@@ -191,7 +199,11 @@
                                         <a href="/schedule/get/{{user[8]}}?notif={{user[6]}}">
                                             <div class="event">
                                                 <div class="event-image-container">
-                                                    <img class='event-image' src="{{user[4]}}" alt="">
+                                                    {% if user[4]%}
+                                                    <img class='event-image' src="{{user[4]}}" alt="{{session['userID']}}" >
+                                                    {% else %}
+                                                    <img class='event-image' src="https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" alt="{{session['userID']}}" >
+                                                    {% endif %}
                                                 </div>
                                                 <div class="event-text-container">
                                                     <p class="event-text">You have Task Nearing Deadline 
@@ -208,7 +220,11 @@
                                         <a href="/schedule/get/{{user[8]}}?notif={{user[6]}}">
                                             <div class="event">
                                                 <div class="event-image-container">
-                                                    <img class='event-image' src="{{user[4]}}" alt="">
+                                                    {% if user[4]%}
+                                                    <img class='event-image' src="{{user[4]}}" alt="{{session['userID']}}" >
+                                                    {% else %}
+                                                    <img class='event-image' src="https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" alt="{{session['userID']}}" >
+                                                    {% endif %}
                                                 </div>
                                                 <div class="event-text-container">
                                                     <p class="event-text">{{ user[2] }} ({{user[3]}} ) had Uploaded a File for a Task
@@ -224,7 +240,11 @@
                                         <a href="/schedule/get/{{user[8]}}?notif={{user[6]}}">
                                             <div class="event">
                                                 <div class="event-image-container">
-                                                    <img class='event-image' src="{{user[4]}}" alt="">
+                                                    {% if user[4]%}
+                                                    <img class='event-image' src="{{user[4]}}" alt="{{session['userID']}}" >
+                                                    {% else %}
+                                                    <img class='event-image' src="https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" alt="{{session['userID']}}" >
+                                                    {% endif %}
                                                 </div>
                                                 <div class="event-text-container">
                                                     <p class="event-text">{{ user[2] }} ({{user[3]}} ) had Created a new Task
@@ -240,7 +260,11 @@
                                         <a href="/schedule/get/{{user[8]}}?notif={{user[6]}}">
                                             <div class="event">
                                                 <div class="event-image-container">
-                                                    <img class='event-image' src="{{user[4]}}" alt="">
+                                                    {% if user[4]%}
+                                                    <img class='event-image' src="{{user[4]}}" alt="{{session['userID']}}" >
+                                                    {% else %}
+                                                    <img class='event-image' src="https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" alt="{{session['userID']}}" >
+                                                    {% endif %}
                                                 </div>
                                                 <div class="event-text-container">
                                                     <p class="event-text">{{ user[2] }} ({{user[3]}} ) had forwarded a Task for you
