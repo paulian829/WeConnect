@@ -1002,21 +1002,24 @@ def file(id):
         result = checkEvent(notif)
 
     result = getFileDb(id)
-    result = result[0]
-    title = "File"
-    if result[2] == "block doc":
-        return render_template("editor.html", title=title, result=result)
-    task = getOneTask(result[14])
-    if not task:
-        deadline = 'N/A'
-    else:
-        deadline = task[0][5]
+    if result:
+        title = "File"
+        task = getOneTask(result[14])
+        if not task:
+            deadline = 'N/A'
+        else:
+            deadline = task[0][5]
 
-    user = getUserData(result[5])
-    user = user[0]
-    userName = user[3] + ' ' + user[4]
-    print(userName)
-    return render_template("file.html", title=title, result=result, deadline=deadline, userName=userName, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
+        user = getUserData(result[5])
+        userName = None
+        if user:
+            user = user[0]
+            userName = user[3] + ' ' + user[4]
+        
+        return render_template("file.html", title=title, result=result, deadline=deadline, userName=userName, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
+    else:
+        title = "File"
+        return render_template("file-not-found.html", title=title, result=[], deadline=[], userName=[], events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
 
 
 @app.route("/logout")

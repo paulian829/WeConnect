@@ -2,6 +2,9 @@
 {% block content %}
 <div id="app">
     <div class="users-container task-container">
+        {% if results|length == 0 %}
+        <h1>Task Not Found</h1>
+        {% endif %}
         {% for result in results %}
         <h2>{{result[1]}}</h2>
         <p>{{result[6]}}</p>

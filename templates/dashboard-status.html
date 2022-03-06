@@ -3,8 +3,10 @@
 <div id="app">
     <div class="users-container">
         <br>
-        <br>
-        <div class="row row-cols-1 row-cols-md-5 g-6"> 
+        <div class="row row-cols-1 row-cols-md-5 g-6">
+            {% if results|length == 0 %}
+            <h2>No {{title}}</h2>
+            {% endif %}
             {% for result in results %}
                 <div class="col" >
                     <a href="/schedule/get/{{result[0]}}">

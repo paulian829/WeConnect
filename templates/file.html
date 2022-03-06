@@ -1,6 +1,9 @@
 {% extends "dash-block.html" %}
 {% block content %}
 <div class='file-container' id='app'>
+    {% if result is none%}
+    <h1>TEST</h1>
+    {% endif %}
     <div class="file-side">
         {% if "image/jpeg" in result[4] or "image/png" in result[4] %}
         <img class="file-image" src="{{url_for('static', filename='uploads/' + result[15])}}" />
