@@ -622,7 +622,18 @@ def updateTask(status, taskID):
     if not session["logged_in"]:
         return redirect(url_for("forbidden"))
     title = "TASKS"
+    today = datetime.today()
     result = updateTaskStatus(status, taskID)
+    print(status)
+    if (status == 'Pending Principal'):
+        principals = get_User_view_position(5)
+        for user in principals:
+            createEvent(session['userID'],taskID,today,user[0],'Task Forward')
+    if (status == 'Pending District Supervisor'):
+        users = get_User_view_position(2)
+        for user in users:
+            createEvent(session['userID'],taskID,today,user[0],'Task Forward')
+
     print(status)
     return redirect(url_for("getSchedule", id=taskID))
 

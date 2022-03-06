@@ -162,7 +162,7 @@
                             <!-- Loops start -->
                                 {% for user in UserList %}
                                     {% if user[1] == user[7] %}
-                                        {% if (not user[7]|int == session['userID']|int) and (not user[-1] == 'Task Upload') and (not user[-1] == 'New Task')%}
+                                        {% if (not user[7]|int == session['userID']|int) and (not user[-1] == 'Task Upload') and (not user[-1] == 'New Task') and (not user[-1] == 'Task Forward')%}
                                             <a href="/file/{{user[8]}}?notif={{user[6]}}">
                                                 <div class="event">
                                                     <div class="event-image-container">
@@ -228,6 +228,22 @@
                                                 </div>
                                                 <div class="event-text-container">
                                                     <p class="event-text">{{ user[2] }} ({{user[3]}} ) had Created a new Task
+                                                        {% if user[5] == 0 %}
+                                                        <i class="fas fa-exclamation "></i></p>
+                                                        {% endif %}
+                                                </div>
+                                            </div>
+                                            <hr>
+                                        </a>
+                                        {% endif %}
+                                        {% if user[-1] == 'Task Forward' %}
+                                        <a href="/schedule/get/{{user[8]}}?notif={{user[6]}}">
+                                            <div class="event">
+                                                <div class="event-image-container">
+                                                    <img class='event-image' src="{{user[4]}}" alt="">
+                                                </div>
+                                                <div class="event-text-container">
+                                                    <p class="event-text">{{ user[2] }} ({{user[3]}} ) had forwarded a Task for you
                                                         {% if user[5] == 0 %}
                                                         <i class="fas fa-exclamation "></i></p>
                                                         {% endif %}
