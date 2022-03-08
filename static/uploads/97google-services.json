@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "1016427529309",
+    "firebase_url": "https://safetrack-579c5-default-rtdb.firebaseio.com",
+    "project_id": "safetrack-579c5",
+    "storage_bucket": "safetrack-579c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016427529309:android:d36b5e715f258a93ce39b4",
+        "android_client_info": {
+          "package_name": "com.safetrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1016427529309-u48dr61u6ifated56haj9cqk0c1693kt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.safetrack",
+            "certificate_hash": "1edd9205f64b7dee535ad84f0146e6f5fa8cd492"
+          }
+        },
+        {
+          "client_id": "1016427529309-upkgpq20pqrjcsk8vp4brt6nks3v9f22.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.safetrack",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "1016427529309-mkufc642gef0e1tl9g1sl5t5st4b7t65.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrVrV0e5bEmwH27nio4R-6gMcjIyiGbak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1016427529309-mkufc642gef0e1tl9g1sl5t5st4b7t65.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
