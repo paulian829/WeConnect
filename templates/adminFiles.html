@@ -18,7 +18,7 @@
                 class="fas fa-caret-up"></i></a> </th>
           <th scope="col">Uploaded by User ID</th>
           <th scope="col">Date Uploaded</th>
-          <th scope="col">Status</th>
+          <th scope="col">Action</th>
           <!-- <th scope="col">Action</th> -->
         </tr>
       </thead>
@@ -31,14 +31,9 @@
           <td> <a href="/admin/edit/{{file[5]}}"><i class="fas fa-user"></i>UserID
               {{ file[5] }}</a></td>
           <td>{{ file[10] }}</td>
-          {% if file[12] == 4 %}
-          <td>Trash</td>
-          {% else %}
-          <td>Active</td>
-          {% endif %}
-          <!-- <td><a href="/file/{{file[0]}}" style="color: white;"><button type="button" class="btn btn-success"><i
-                  class="far fa-file"></i>View</button></a> <a href="/admin/deletefile/{{file[0]}}" onclick="return confirm('Are you sure?')"
-              style="color: white;"></td> -->
+          <td><a href="/admin/deletefile/{{file[0]}}" onclick="return confirm('Are you sure?')"
+            style="color: white;"><button type="button" class="btn btn-warning"><i
+                  class="far fa-file"></i>Delete</button></a> </td>
         </tr>
         {% endfor %}
       </tbody>
