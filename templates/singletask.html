@@ -260,11 +260,9 @@
                     result = response.body.result
                     if (result.length !== 0) {
                         this.uploadedDetails = result[0]
-                        console.log('1')
                         this.done = true
                     }
                     if (this.userPosition === 3 && taskStatus !== 'Pending Teachers'  ){
-                        console.log('2')
                         this.done = true
                     }
                 })
@@ -285,23 +283,27 @@
                 console.log('start')
                 this.$http.get(`/checkifuseruploaded/${id}/${taskID}`).then((result) => {
                     array.push(result)
-                    console.log("end",array)
                     this.isDone = array
                 })
             },
             checkStatus(id) {
                 let array = this.isDone
+                taskID = parseInt('{{ result[0] }}')
+                status =  'Pending'
                 for (let i = 0; i < array.length; i++) {
                     TaskResult = array[i].body.result
+                    console.log("test", TaskResult.length,i )
                     if (TaskResult.length > 0) {
-                        console.log("taskResult",TaskResult)
-                        if (TaskResult[0][5] == id) {
-                            return 'Done'
+                        if (TaskResult[0][5] === id) {
+                            status = 'Done'
+                            break
+                            
                         }
                     }
 
                 }
-                return 'Pending'
+                console.log(TaskResult)
+                return status
             },
             allowViewing(id) {
                 let array = this.isDone
@@ -343,7 +345,6 @@
             },
             getTaskData(id) {
                 this.$http.get(`/admin/tasks/edit/${id}`).then(response => {
-                    console.log(response)
                     let result = response.data.result
                     this.taskID = result[0][0]
                     this.taskName = result[0][1]

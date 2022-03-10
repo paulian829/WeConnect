@@ -545,7 +545,7 @@ def schedule():
                     status = (result[0], 'Pending')
             elif result[7] == "Pending Grade Chairmain":
                 status = (result[0], "Pending")
-            elif result[7] == "Pending Principal" or result[7] == "Pending District Supervisor":
+            elif result[7] == "Pending Principal" or result[7] == "Pending District Supervisor" or result[7] == 'Done':
                 status = (result[0], "Done")
             else:
                 status = (result[0], "Pending")
@@ -560,7 +560,7 @@ def schedule():
                     status = (result[0], 'Pending')
             elif result[7] == 'Pending Teachers' or result[7] == 'Pending Grade Chairman':
                 status = (result[0], 'Waiting')
-            elif result[7] == 'Pending District Supervisor':
+            elif result[7] == 'Pending District Supervisor' or result[7] == 'Done':
                 status = (result[0], 'Done')
             else:
                 status = (result[0], 'Pending')
@@ -1287,6 +1287,7 @@ def failed():
             status = (result[0], 'Passed Deadline')
             status_list.append(status)
     return render_template("dashboard-status.html", title=title, results=results, status_list=status_list, events=getEvent(session["userID"]), UserList=getEventFromDB(), notif=checkIfHaveNotifications())
+
 
 
 @app.errorhandler(404)
