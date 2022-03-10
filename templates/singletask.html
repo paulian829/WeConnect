@@ -10,7 +10,10 @@
         <p>{{result[6]}}</p>
         <p><strong>Created By: </strong>[[Uploader]]</p>
         <p v-if='done'><strong>Status: </strong>Done</p>
-        <p v-else><strong>Status: </strong>Pending</p>
+        <p v-else-if="pending"><strong>Status: </strong>Failed Deadline</p>
+        <p v-else><strong>Status: </strong>Pending/Waiting</p>
+
+
 
         <p><strong>Date Created: </strong>{{result[4]}}</p>
         <p><strong>Date Deadline: </strong>{{result[5]}}</p>
@@ -65,8 +68,8 @@
                 </li>
             </ul>
             <br>
-            <!-- <a href="/updatetask/Pending Principal/{{result[0]}}" v-if="userPosition == 3 "><button type="submit"
-                    class="btn btn-primary">Forward to Principal</button></a> -->
+            <a href="/updatetask/Pending Principal/{{result[0]}}" v-if="userPosition == 3 "><button type="submit"
+                    class="btn btn-primary">Forward to Principal</button></a>
 
             {% elif 'Pending Principal' in result[7] %}
             <ul class="list-group" style="width: 20rem;">
@@ -239,7 +242,8 @@
             taskName:'',
             deadLine:'',
             schedule:'',
-            description:''
+            description:'',
+            pending:false
         },
         methods: {
             getUploaderData: function (id) {
@@ -258,12 +262,41 @@
             checkIfDone: function (userID, taskID,taskStatus) {
                 this.$http.get('/checkifuseruploaded/' + userID + '/' + taskID).then(response => {
                     result = response.body.result
+                    const today = new Date
+                    const deadline = new Date(this.deadLine)
+
                     if (result.length !== 0) {
                         this.uploadedDetails = result[0]
                         this.done = true
+                        return
+
                     }
-                    if (this.userPosition === 3 && taskStatus !== 'Pending Teachers'  ){
+                    // if (this.userPosition === 3 && taskStatus !== 'Pending Teachers'  ){
+                    //     this.done = true
+                    //     return
+
+                    // }
+                    // Principal
+
+                    if (this.userPosition ===5 && taskStatus !== 'Pending Teachers' && taskStatus !== 'Pending Grade Chairman' && taskStatus !== 'Pending Principal') {
                         this.done = true
+                        return
+
+                    }
+                    // Grade Chairman
+                    if (this.userPosition === 3 && taskStatus !== 'Pending Teachers' && taskStatus !== 'Pending Grade Chairman') {
+                        this.done = true
+                        return
+
+                    }
+                    if (this.userPosition === 2 && taskStatus !== 'Pending Teachers' && taskStatus !== 'Pending Grade Chairman' && taskStatus !== 'Pending Principal' && taskStatus !== 'Pending District Supervisor') {
+                        this.done = true
+                        return
+
+                    }
+                    if (deadline < today){
+                        this.pending = true
+                        return
                     }
                 })
             },
@@ -360,6 +393,7 @@
             this.getTeachers()
             this.checkIfDone("{{id}}", "{{result[0]}}", "{{result[7]}}")
             this.getUploaderData("{{result[3]}}")
+            this.deadLine = '{{ result[5] }}'
         }
     }
     )

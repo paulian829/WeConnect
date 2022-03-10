@@ -526,25 +526,30 @@ def schedule():
             if Match:
                 status = (result[0], "Done")
             elif today > result[5]:
-                status = (result[0], 'Passed Deadline')
+                status = (result[0], 'Failed Deadline')
             else:
                 print(result[7])
                 if result[7] != 'Pending Teachers':
                     print('Failed')
-                    status = (result[0], 'Failed')
+                    status = (result[0], 'Pending')
                 else:
                     print('Pending')
                     status = (result[0], 'Pending')
             status_list.append(status)
     if session['position'] == 3:
         for result in results:
+            print('***********************')
+            print(result[7])
             if result[7] == "Pending Teachers":
                 if result[5] < today:
-                    status = (result[0], 'Passed Deadline')
+                    status = (result[0], 'Failed Deadline')
                 else:
                     status = (result[0], 'Pending')
-            elif result[7] == "Pending Grade Chairmain":
-                status = (result[0], "Pending")
+            elif result[7] == "Pending Grade Chairman":
+                if result[5] < today:
+                    status = (result[0], 'Failed Deadline')
+                else:
+                    status = (result[0], 'Pending')
             elif result[7] == "Pending Principal" or result[7] == "Pending District Supervisor" or result[7] == 'Done':
                 status = (result[0], "Done")
             else:
@@ -555,11 +560,14 @@ def schedule():
         for result in results:
             if result[7] == 'Pending Principal':
                 if result[5] < today:
-                    status = (result[0], 'Passed Deadline')
+                    status = (result[0], 'Failed Deadline')
                 else:
                     status = (result[0], 'Pending')
             elif result[7] == 'Pending Teachers' or result[7] == 'Pending Grade Chairman':
-                status = (result[0], 'Waiting')
+                if result[5] < today:
+                    status = (result[0], 'Failed Deadline')
+                else:
+                    status = (result[0], 'Waiting')
             elif result[7] == 'Pending District Supervisor' or result[7] == 'Done':
                 status = (result[0], 'Done')
             else:
@@ -569,13 +577,17 @@ def schedule():
         for result in results:
             if result[7] == 'Pending District Supervisor':
                 if result[5] < today:
-                    status = (result[0], 'Passed Deadline')
+                    status = (result[0], 'Failed Deadline')
                 else:
                     status = (result[0], 'Pending')
-            elif result[7] == 'Pending Teachers' or result[7] == 'Pending Grade Chairman' or result[7] == 'Pending Principal':
-                status = (result[0], 'Waiting')
             elif result[7] == 'Done':
                 status = (result[0], 'Done')
+            elif result[7] == 'Pending Teachers' or result[7] == 'Pending Grade Chairman' or result[7] == 'Pending Principal':
+                if result[5] < today:
+                    status = (result[0], 'Failed Deadline')
+                else:
+                    status = (result[0], 'Waiting')
+
             else:
                 status = (result[0], 'Pending')
             status_list.append(status)
