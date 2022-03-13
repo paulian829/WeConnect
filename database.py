@@ -22,7 +22,6 @@ def connectDb():
         password="Shokugeki2021!",
         database='WeConnect$weconnect'
     )
-    print("Connect")
     return mydb
 
 
@@ -1043,15 +1042,16 @@ def get_tagged_user(fileID):
 
 
 def get_User_view_position(positionID):
-    try:
-        mydb = connectDb()
-        mycursor = mydb.cursor()
-        sql = f"SELECT * FROM users WHERE Position = {positionID};"
-        mycursor.execute(sql)
-        result = mycursor.fetchall()
-        return result
-    finally:
-        mydb.close()
+    for position in positionID:
+        try:
+            mydb = connectDb()
+            mycursor = mydb.cursor()
+            sql = f"SELECT * FROM users WHERE Position = {position};"
+            mycursor.execute(sql)
+            result = mycursor.fetchall()
+            return result
+        finally:
+            mydb.close()
 
 def get_last_task():
     try:
@@ -1064,4 +1064,32 @@ def get_last_task():
     finally:
         mydb.close()
 
-print(get_last_task())
+def getGCstatus(taskID):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        sql = f"SELECT GC_Status FROM tasks where TaskID = {taskID};"
+        mycursor.execute(sql)
+        result = mycursor.fetchall()
+        return result[0][0]
+    except:
+        return None
+    finally:
+        mydb.close()
+
+
+def updateGCstatus(taskID,newStatus):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        sql = f"UPDATE tasks SET GC_Status = '{newStatus}' WHERE TaskID = {taskID}"
+        mycursor.execute(sql)
+        mydb.commit()
+        return True
+    except Exception as e:
+        print("**********************")
+
+        print(e)
+        return False
+    finally:
+        mydb.close

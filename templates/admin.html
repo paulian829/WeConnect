@@ -64,19 +64,11 @@
             <th scope="row">{{user[0]}}</th>
             <td>{{user[1]}}</td>
             <td>{{user[3]}} {{user[4]}}</td>
-            {% if user[6] == 1 %}
-            <td>Admin</td>
-            {% elif user[6] == 2 %}
-            <td>District Supervisor</td>
-            {% elif user[6] == 3 %}
-            <td>Grade Chairman</td>
-            {% elif user[6] == 4 %}
-            <td>Teacher</td>
-            {% elif user[6] == 5 %}
-            <td>Principal</td>
-            {% else %}
-            <td>None</td>
-            {% endif %}
+            {% for position in positions %}
+              {%if position[0] == user[6]%}
+              <td>{{position[1]}}</td>
+              {%endif%}
+            {% endfor %}
             <td>{{user[5]}}</td>
             <td>{{user[7]}}</td>
             <td><a href="/admin/edit/{{user[0]}}"><button type="submit" type="button" class="btn btn-primary"><i

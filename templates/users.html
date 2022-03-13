@@ -5,7 +5,7 @@
         <h3>Teachers</h3>
         <div class="row row-cols-1 row-cols-md-6 g-4" >
             {% for user in users %}
-            {% if user[6] == 4%}
+            {% if user[6] == 4 or user[6] == 39 or user[6] == 40 or user[6] == 41 or user[6] == 42 or user[6] == 43 or user[6] == 44 %}
             <div class="col" >
                 <div class="card h-100 text-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop" v-on:click='click( {{user[0]}} )'>
                     {% if user[8] %}
@@ -27,7 +27,7 @@
         <h3>Grade Chairman</h3>
         <div class="row row-cols-1 row-cols-md-6 g-4">
             {% for user in users %}
-            {% if user[6] == 3%}
+            {% if user[6] == 4 or user[6] == 45 or user[6] == 46 or user[6] == 47 or user[6] == 48 or user[6] == 49 or user[6] == 50 %}
             <div class="col">
                 <div class="card h-100 text-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop" v-on:click='click( {{user[0]}} )'>
                     {% if user[8] %}

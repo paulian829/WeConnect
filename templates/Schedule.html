@@ -4,7 +4,7 @@
     <div class="users-container">
         {% if 5 == session['position'] %}
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            <i class="fas fa-plus-circle"></i> Create new Task
+            <i class="fas fa-plus-circle"></i>Create new Task
         </button><br><br>
         {% endif %}
         <button type="button" class="btn" v-bind:class="{'btn-success': Weekly, 'btn-primary':!Weekly }"
@@ -38,6 +38,8 @@
                             <h6 class="card-title text-danger">{{status[1]}}</h6>
                             {% elif status[1] == 'Failed' %}
                             <h6 class="card-title text-danger">{{status[1]}}</h6>
+                            {% elif status[1] == 'Not yet Assigned' %}
+                            <h6 class="card-title text-warning">{{status[1]}}</h6>
                             {% else %}
                             <h6 class="card-title text-danger">{{status[1]}}</h6>
                             {% endif %}

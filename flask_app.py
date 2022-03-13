@@ -2,6 +2,7 @@ from collections import UserList
 from datetime import time, timedelta
 from enum import unique
 from getpass import getpass
+from turtle import position
 from flask import (
     Flask,
     render_template,
@@ -253,25 +254,43 @@ def test():
     id = session["userID"]
     email = session['email']
     number_of_files_uploaded = 0
-    if session['position'] == 4:
+    if session['position'] == 39 or session['position'] == 40 or session['position'] == 41 or session['position'] == 42 or session['position'] == 43 or session['position'] == 44:
         number_of_files_uploaded = getNumberOfFilesUploaded(id)
         number_of_files_passed = getNumberOfFilesPassed(id)
         number_of_files_deadline = len(getPendingTeachersList(id, 'failed'))
         number_of_files_nearing_Deadline = getNumberOfFilesNearDeadline(id)
 
-    elif session['position'] == 3:
+    elif session['position'] == 45 or session['position'] == 46 or session['position'] == 47 or session['position'] == 48 or session['position'] == 49 or session['position'] == 50:
         number_of_files_uploaded = getNumberOfFilesUploaded(id)
-        number_of_files_passed = getPassed('Pending Grade Chairman', False)
+
+        number_of_files_passed = 0
+        number_of_files_deadline = 0
+        number_of_files_nearing_Deadline = 0
+        tasks = getAllTask()
+        today = datetime.today()
+        for task in tasks:
+            gc_status = task[-1]
+            gc_status = gc_status.split(',')
+            print(gc_status)
+            if str(session['position']) in gc_status:
+                number_of_files_passed = number_of_files_passed + 1
+            elif task[7] == 'Pending Teachers' or task[7] == 'Pending Grade Chairman' :
+                if today > task[5]:
+                    number_of_files_deadline = number_of_files_deadline + 1
+                else:
+                    number_of_files_nearing_Deadline = number_of_files_nearing_Deadline + 1
+
+    elif session['position'] == 5:
+        number_of_files_uploaded = getNumberOfFilesUploaded(id)
+        number_of_files_passed = 0
         number_of_files_deadline = getFailed('Pending Teachers', False)
         number_of_files_nearing_Deadline = getPending(
             'Pending Teachers', False)
 
-    elif session['position'] == 5:
-        number_of_files_uploaded = getNumberOfFilesUploaded(id)
-        number_of_files_passed = getPassed('Pending Principal', False)
-        number_of_files_deadline = getFailed('Pending Principal', False)
-        number_of_files_nearing_Deadline = getPending(
-            'Pending Principal', False)
+        tasks = getAllTask()
+        for task in tasks:
+            if task[7] == 'Pending District Supervisor' or task[7] == 'Done':
+                number_of_files_passed = number_of_files_passed + 1
 
     elif session['position'] == 2:
         number_of_files_uploaded = getNumberOfFilesUploaded(id)
@@ -519,9 +538,9 @@ def schedule():
     status_list = list()
     today = datetime.today()
     print(today)
-    if session['position'] == 4:
+    if session['position'] == 39 or session['position'] == 40 or session['position'] == 41 or session['position'] == 42 or session['position'] == 43 or session['position'] == 44:
         for result in results:
-            print((result[5]))
+            print('******************')
             Match = getMatch(userID, result[0])
             if Match:
                 status = (result[0], "Done")
@@ -536,15 +555,20 @@ def schedule():
                     print('Pending')
                     status = (result[0], 'Pending')
             status_list.append(status)
-    if session['position'] == 3:
+    if session['position'] == 45 or session['position'] == 46 or session['position'] == 47 or session['position'] == 48 or session['position'] == 49 or session['position'] == 50:
         for result in results:
-            print('***********************')
-            print(result[7])
             if result[7] == "Pending Teachers":
-                if result[5] < today:
-                    status = (result[0], 'Failed Deadline')
+
+                gc_status = result[-1]
+                gc_status = gc_status.split(',')
+
+                if str(session['position']) in gc_status:
+                    status = (result[0], "Done")
                 else:
-                    status = (result[0], 'Pending')
+                    if result[5] < today:
+                        status = (result[0], 'Failed Deadline')
+                    else:
+                        status = (result[0], 'Pending')
             elif result[7] == "Pending Grade Chairman":
                 if result[5] < today:
                     status = (result[0], 'Failed Deadline')
@@ -567,7 +591,7 @@ def schedule():
                 if result[5] < today:
                     status = (result[0], 'Failed Deadline')
                 else:
-                    status = (result[0], 'Waiting')
+                    status = (result[0], 'Pending')
             elif result[7] == 'Pending District Supervisor' or result[7] == 'Done':
                 status = (result[0], 'Done')
             else:
@@ -586,7 +610,7 @@ def schedule():
                 if result[5] < today:
                     status = (result[0], 'Failed Deadline')
                 else:
-                    status = (result[0], 'Waiting')
+                    status = (result[0], 'Not yet Assigned')
 
             else:
                 status = (result[0], 'Pending')
@@ -635,16 +659,32 @@ def updateTask(status, taskID):
         return redirect(url_for("forbidden"))
     title = "TASKS"
     today = datetime.today()
-    result = updateTaskStatus(status, taskID)
     print(status)
     if (status == 'Pending Principal'):
-        principals = get_User_view_position(5)
-        for user in principals:
-            createEvent(session['userID'],taskID,today,user[0],'Task Forward')
+        #Get GC status:
+        gc_status = getGCstatus(taskID)
+        #Split the string
+        gc_status = gc_status.split(',')
+        if str(session['position']) not in gc_status:
+            gc_status.append(session['position'])
+    
+        gc_status = ','.join(str(e) for e in gc_status)
+        print("***************************")
+        print(gc_status)
+        result = updateGCstatus(taskID, gc_status)
+        print(result)
+        # principals = get_User_view_position([5])
+        # for user in principals:
+        #     createEvent(session['userID'],taskID,today,user[0],'Task Forward')
     if (status == 'Pending District Supervisor'):
-        users = get_User_view_position(2)
+        result = updateTaskStatus(status, taskID)
+
+        users = get_User_view_position([2])
         for user in users:
             createEvent(session['userID'],taskID,today,user[0],'Task Forward')
+    
+    if (status == 'Done'):
+        result = updateTaskStatus(status, taskID)
 
     print(status)
     return redirect(url_for("getSchedule", id=taskID))
@@ -672,7 +712,8 @@ def addSchedule():
         )
         if result:
             today = datetime.today()
-            teachers = get_User_view_position(4)
+            teacher_array = [39,40,41,42,43,44]
+            teachers = get_User_view_position(teacher_array)
             for teacher in teachers:
                 lastTask = get_last_task()
                 createEvent(taskCreatedBy,
@@ -716,6 +757,19 @@ def checkifuseruploaded(userID, taskID):
     result = checkIfUserUploadedDB(userID, taskID)
     dict = {"result": result}
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
+
+@app.route("/gc/status/<taskID>")
+def GCStatus(taskID):
+    gc_status = getGCstatus(int(taskID))
+    gc_status = gc_status.split(',')
+    result = None
+    if str(session['position']) in gc_status:
+        result = "Done"
+    dict = {"result": result,
+        "gc_list": gc_status
+    }
+    return json.dumps(dict, indent=4, sort_keys=True, default=str)
+
 
 
 @app.route('/admin/deleteTask/<id>')
@@ -952,16 +1006,49 @@ def uploadFile():
         today = datetime.today()
         if request.form.get("taskID"):
             taskID = request.form.get("taskID")
-            users = get_User_view_position(5)
+            principal = [5]
+            users = get_User_view_position(principal)
             for user in users:
                 print("test 123 ", user)
                 createEvent(session['userID'], taskID,
                             today, user[0], 'Task Upload')
-            users = get_User_view_position(3)
-            for user in users:
-                print("test 123 ", user)
-                createEvent(session['userID'], taskID,
-                            today, user[0], 'Task Upload')
+                            
+            if (session['position'] == 39):
+                users = get_User_view_position([45])
+                for user in users:
+                    print("test 123 ", user)
+                    createEvent(session['userID'], taskID,
+                                today, user[0], 'Task Upload')
+            elif session['position'] == 40:
+                users = get_User_view_position([46])
+                for user in users:
+                    print("test 123 ", user)
+                    createEvent(session['userID'], taskID,
+                                today, user[0], 'Task Upload')
+            elif session['position'] == 41:
+                users = get_User_view_position([47])
+                for user in users:
+                    print("test 123 ", user)
+                    createEvent(session['userID'], taskID,
+                                today, user[0], 'Task Upload')
+            elif session['position'] == 42:
+                users = get_User_view_position([48])
+                for user in users:
+                    print("test 123 ", user)
+                    createEvent(session['userID'], taskID,
+                                today, user[0], 'Task Upload')
+            elif session['position'] == 43:
+                users = get_User_view_position([49])
+                for user in users:
+                    print("test 123 ", user)
+                    createEvent(session['userID'], taskID,
+                                today, user[0], 'Task Upload')
+            elif session['position'] == 44:
+                users = get_User_view_position([50])
+                for user in users:
+                    print("test 123 ", user)
+                    createEvent(session['userID'], taskID,
+                                today, user[0], 'Task Upload')
 
         else:
             taskID = 0
@@ -1008,6 +1095,9 @@ def uploadprofilepic():
         session["profilePic"] = pathToDb
         addProfilePicDB(pathToDb, id)
         return redirect(url_for("profile"))
+
+
+
 
 
 @app.route("/uploads", methods=["GET", "POST"])
@@ -1167,6 +1257,38 @@ def addComment(userID, fileID, comment):
     return json.dumps(dictOne, indent=4, sort_keys=True, default=str)
 
 
+@app.route("/check/all/uploaded")
+def checkTeachersGroup():
+    position = session['position']
+    users = getAllUsers()
+    userlist = []
+    for user in users:
+        if position == 45:
+            if user[6] == 39:
+                userlist.append(user)
+        if position == 46:
+            if user[6] == 40:
+                userlist.append(user)
+        if position == 47:
+            if user[6] == 41:
+                userlist.append(user)
+        if position == 48:
+            if user[6] == 42:
+                userlist.append(user)
+        if position == 49:
+            if user[6] == 43:
+                userlist.append(user)
+        if position == 50:
+            if user[6] == 44:
+                userlist.append(user)
+    # result = True
+    # # for teacher in userlist:
+    # #     if (teacher)
+
+    dict = {"result": userlist}
+    return json.dumps(dict, indent=4, sort_keys=True, default=str)
+
+
 @app.route('/comments/<fileID>')
 def getComments(fileID):
     result = getCommentsDB(fileID)
@@ -1189,7 +1311,7 @@ def finished():
     result = ''
     status_list = list()
     today = datetime.today()
-    if position == 4:
+    if position == 39 or position == 40 or position == 41 or position == 42 or position == 43 or position == 44:
         results = getNumberOfFilesPassedList(userID)
         for result in results:
             print((result[5]))
@@ -1202,11 +1324,22 @@ def finished():
                 status = (result[0], 'Pending')
             status_list.append(status)
         print("RESULTS", result)
-    if position == 3:
-        results = getPassed("Pending Grade Chairman", True)
-        for result in results:
-            status = (result[0], "Done")
-            status_list.append(status)
+    if position == 45 or position == 46 or position == 47 or position == 48 or position == 49 or position == 50:
+        number_of_files_passed = 0
+        tasks = getAllTask()
+        today = datetime.today()
+        results = []
+        for task in tasks:
+            gc_status = task[-1]
+            gc_status = gc_status.split(',')
+            print(gc_status)
+            if str(session['position']) in gc_status:
+                number_of_files_passed = number_of_files_passed + 1
+                status = (task[0], 'Done')
+                status_list.append(status)
+                results.append(task)
+        
+
     if position == 5:
         results = getPassed("Pending Principal", True)
         for result in results:
@@ -1229,7 +1362,7 @@ def pending():
     results = ''
     status_list = list()
     today = datetime.today()
-    if position == 4:
+    if session['position'] == 39 or session['position'] == 40 or session['position'] == 41 or session['position'] == 42 or session['position'] == 43 or session['position'] == 44:
         results = getPendingTeachersList(userID, 'pending')
         print(results)
         for result in results:
@@ -1242,13 +1375,28 @@ def pending():
             else:
                 status = (result[0], 'Pending')
             status_list.append(status)
-    if position == 3:
-        results = getPending('Pending Teachers', True)
-        for result in results:
-            status = (result[0], 'Pending')
-            status_list.append(status)
+    if position == 45 or position == 46 or position == 47 or position == 48 or position == 49 or position == 50:
+
+        number_of_files_passed = 0
+        number_of_files_deadline = 0
+        tasks = getAllTask()
+        today = datetime.today()
+        results = []
+        for task in tasks:
+            gc_status = task[-1]
+            gc_status = gc_status.split(',')
+            print(gc_status)
+            if str(session['position']) in gc_status:
+                number_of_files_passed = number_of_files_passed + 1
+            elif task[7] == 'Pending Teachers' or task[7] == 'Pending Grade Chairman' :
+                if today > task[5]:
+                    number_of_files_deadline = number_of_files_deadline + 1
+                else:
+                    status = (task[0], 'Pending')
+                    status_list.append(status)
+                    results.append(task)
     if position == 5:
-        results = getPending('Pending Principal', True)
+        results = getPending('Pending Teachers', True)
         for result in results:
             status = (result[0], 'Pending')
             status_list.append(status)
@@ -1269,7 +1417,7 @@ def failed():
     results = ''
     status_list = list()
     today = datetime.today()
-    if position == 4:
+    if session['position'] == 39 or session['position'] == 40 or session['position'] == 41 or session['position'] == 42 or session['position'] == 43 or session['position'] == 44:
         results = getPendingTeachersList(userID, 'failed')
         print("RESULT", len(results))
         for result in results:
@@ -1282,14 +1430,29 @@ def failed():
             else:
                 status = (result[0], 'Pending')
             status_list.append(status)
-    if position == 3:
-        results = getFailed('Pending Teachers', True)
-        for result in results:
-            status = (result[0], 'Passed Deadline')
-            status_list.append(status)
+    if position == 45 or position == 46 or position == 47 or position == 48 or position == 49 or position == 50:
+        number_of_files_passed = 0
+        number_of_files_deadline = 0
+        tasks = getAllTask()
+        today = datetime.today()
+        results = []
+        for task in tasks:
+            gc_status = task[-1]
+            gc_status = gc_status.split(',')
+            print(gc_status)
+            if str(session['position']) in gc_status:
+                number_of_files_passed = number_of_files_passed + 1
+            elif task[7] == 'Pending Teachers' or task[7] == 'Pending Grade Chairman' :
+                if today > task[5]:
+                    number_of_files_deadline = number_of_files_deadline + 1
+                    status = (task[0], 'Passed Deadline')
+                    status_list.append(status)
+                    results.append(task)
+                
+
 
     if position == 5:
-        results = getFailed("Pending Principal", True)
+        results = getFailed("Pending Teachers", True)
         for result in results:
             status = (result[0], 'Passed Deadline')
             status_list.append(status)
