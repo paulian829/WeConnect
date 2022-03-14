@@ -813,7 +813,10 @@ def checkIfUserUploadedDB(userID, taskID):
         mycursor.callproc("checkUserUpload", val)
         for result in mycursor.stored_results():
             results = result.fetchall()
+
         return results
+    except:
+        mydb.close()
     finally:
         mydb.close()
 
@@ -1093,3 +1096,25 @@ def updateGCstatus(taskID,newStatus):
         return False
     finally:
         mydb.close
+
+def getTeachersCount(position_id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        sql = f"SELECT * FROM users where Position = {position_id};"
+        mycursor.execute(sql)
+        result = mycursor.fetchall()
+        return result
+    finally:
+        mydb.close
+
+def getTeachersUploaded(userID, taskID):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        sql = f"SELECT * FROM files where UploadedByID = {userID} AND taskID = {taskID};"
+        mycursor.execute(sql)
+        result = mycursor.fetchall()
+        return result
+    finally:
+        mydb.close   

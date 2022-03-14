@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 12, 2022 at 03:13 PM
+-- Generation Time: Mar 13, 2022 at 05:24 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -291,9 +291,35 @@ CREATE TABLE `event` (
 --
 
 INSERT INTO `event` (`EventID`, `Uploader`, `FileID`, `DateUploaded`, `TargetUserID`, `Seen`, `EventType`) VALUES
-(1, 94, 137, '2022-02-12 19:25:00', 95, 0, 'File'),
-(2, 93, 138, '2022-02-12 20:34:06', 95, 0, 'File'),
-(3, 95, 139, '2022-02-12 20:59:59', 93, 0, 'File');
+(60, 97, 53, '2022-03-10 01:17:57', 93, 1, 'Task Forward'),
+(61, 129, 69, '2022-03-12 17:22:01', 127, 1, 'New Task'),
+(62, 127, 67, '2022-03-12 17:41:14', 129, 1, 'Task Upload'),
+(63, 127, 67, '2022-03-12 17:41:59', 129, 1, 'Task Upload'),
+(64, 127, 67, '2022-03-12 17:41:59', 128, 1, 'Task Upload'),
+(65, 133, 67, '2022-03-12 18:14:24', 129, 1, 'Task Upload'),
+(66, 133, 67, '2022-03-12 18:14:24', 134, 1, 'Task Upload'),
+(67, 127, 69, '2022-03-12 19:40:45', 129, 1, 'Task Upload'),
+(68, 127, 69, '2022-03-12 19:40:45', 128, 1, 'Task Upload'),
+(69, 127, 67, '2022-03-12 19:42:03', 129, 1, 'Task Upload'),
+(70, 127, 67, '2022-03-12 19:42:03', 128, 1, 'Task Upload'),
+(71, 136, 67, '2022-03-13 10:42:16', 129, 1, 'Task Upload'),
+(72, 136, 67, '2022-03-13 10:42:16', 128, 1, 'Task Upload'),
+(74, 128, 67, '2022-03-13 13:05:40', 129, 1, 'Task Forward'),
+(75, 129, 70, '2022-03-13 21:13:41', 127, 1, 'New Task'),
+(76, 129, 70, '2022-03-13 21:13:41', 135, 0, 'New Task'),
+(77, 129, 70, '2022-03-13 21:13:41', 136, 0, 'New Task'),
+(78, 127, 70, '2022-03-13 21:14:34', 129, 1, 'Task Upload'),
+(79, 127, 70, '2022-03-13 21:14:34', 128, 1, 'Task Upload'),
+(80, 133, 70, '2022-03-13 21:16:17', 129, 1, 'Task Upload'),
+(81, 133, 70, '2022-03-13 21:16:17', 134, 1, 'Task Upload'),
+(82, 127, 69, '2022-03-13 21:40:52', 129, 1, 'Task Upload'),
+(83, 127, 69, '2022-03-13 21:40:52', 128, 1, 'Task Upload'),
+(84, 129, 71, '2022-03-13 23:45:58', 127, 1, 'New Task'),
+(85, 129, 71, '2022-03-13 23:45:58', 135, 0, 'New Task'),
+(86, 129, 71, '2022-03-13 23:45:58', 136, 0, 'New Task'),
+(87, 127, 71, '2022-03-13 23:47:06', 129, 1, 'Task Upload'),
+(88, 127, 71, '2022-03-13 23:47:06', 128, 1, 'Task Upload'),
+(89, 129, 71, '2022-03-13 23:50:52', 155, 1, 'Task Forward');
 
 -- --------------------------------------------------------
 
@@ -325,28 +351,13 @@ CREATE TABLE `files` (
 --
 
 INSERT INTO `files` (`FileID`, `FileName`, `FileType`, `FileSize`, `FileContentType`, `UploadedByID`, `Share_to_user`, `Share_to_group`, `DeadLine`, `Revision`, `DateUploaded`, `block_doc_json`, `status`, `pinned`, `taskID`, `FilePathName`) VALUES
-(111, 'comments-Copy.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 91, NULL, 1, NULL, 1, '2022-02-06 10:05:05', NULL, 0, 0, 49, '91comments-Copy.docx'),
-(112, 'weconnect (3).sql', 'sql', 1, 'application/octet-stream', 91, 'paulian829@gmail.com', 1, NULL, 1, '2022-02-06 10:05:23', NULL, 0, 0, 0, '91weconnect (3).sql'),
-(120, 'comments-Copy.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 95, NULL, 1, NULL, 1, '2022-02-06 23:37:19', NULL, 0, 0, 49, '95comments-Copy.docx'),
-(121, 'comments-Copy.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 95, NULL, 1, NULL, 1, '2022-02-06 23:40:50', NULL, 0, 0, 50, '95comments-Copy.docx'),
-(122, 'winrar-x64-610.exe', 'exe', 1, 'application/x-msdownload', 93, 'paulian829@gmail.com', 1, NULL, 1, '2022-02-07 08:04:46', NULL, 0, 0, 0, '93winrar-x64-610.exe'),
-(123, 'comments-Copy.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 95, NULL, 1, NULL, 1, '2022-02-07 23:30:37', NULL, 0, 0, 51, '95comments-Copy.docx'),
-(124, 'database.py', 'py', 1, 'text/plain', 94, 'username@paul', 1, NULL, 1, '2022-02-12 18:53:36', NULL, 0, 0, 0, '94database.py'),
-(125, 'package-lock.json', 'json', 1, 'application/json', 94, 'username@paul', 1, NULL, 1, '2022-02-12 18:55:08', NULL, 0, 0, 0, '94package-lock.json'),
-(126, 'package.json', 'json', 1, 'application/json', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:15:05', NULL, 0, 0, 0, '94package.json'),
-(127, 'package.json', 'json', 1, 'application/json', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:15:59', NULL, 0, 0, 0, '94package.json'),
-(128, '.gitignore', 'gitignore', 1, 'text/plain', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:16:19', NULL, 0, 0, 0, '94.gitignore'),
-(129, '.gitignore', 'gitignore', 1, 'text/plain', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:19:21', NULL, 0, 0, 0, '94.gitignore'),
-(130, '.gitignore', 'gitignore', 1, 'text/plain', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:19:44', NULL, 0, 0, 0, '94.gitignore'),
-(131, 'database.py', 'py', 1, 'text/plain', 94, 'teacher@gmail.com', 1, NULL, 1, '2022-02-12 19:20:53', NULL, 0, 0, 0, '94database.py'),
-(132, '.gitignore', 'gitignore', 1, 'text/plain', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:22:10', NULL, 0, 0, 0, '94.gitignore'),
-(133, 'package.json', 'json', 1, 'application/json', 94, 'username@paul', 1, NULL, 1, '2022-02-12 19:22:57', NULL, 0, 0, 0, '94package.json'),
-(134, 'package.json', 'json', 1, 'application/json', 94, 'username@paul', 1, NULL, 1, '2022-02-12 19:23:19', NULL, 0, 0, 0, '94package.json'),
-(135, 'package-lock.json', 'json', 1, 'application/json', 94, 'paulian829@gmail.com', 1, NULL, 1, '2022-02-12 19:23:57', NULL, 0, 0, 0, '94package-lock.json'),
-(136, 'package-lock.json', 'json', 1, 'application/json', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:24:29', NULL, 0, 0, 0, '94package-lock.json'),
-(137, 'flask_app.py', 'py', 1, 'text/plain', 94, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 19:25:00', NULL, 0, 0, 0, '94flask_app.py'),
-(138, 'pyvenv.cfg', 'cfg', 1, 'application/octet-stream', 93, 'teacher1@gmail.com', 1, NULL, 1, '2022-02-12 20:34:06', NULL, 0, 0, 0, '93pyvenv.cfg'),
-(139, 'flask.exe', 'exe', 1, 'application/x-msdownload', 95, 'principal@gmail.com', 1, NULL, 1, '2022-02-12 20:59:59', NULL, 0, 0, 0, '95flask.exe');
+(158, 'vaccination_certificate.pdf', 'pdf', 1, 'application/pdf', 133, NULL, 1, NULL, 1, '2022-03-12 18:14:24', NULL, 0, 0, 67, '133vaccination_certificate.pdf'),
+(160, '121121CCMS_Indorsement-Capstone-Thesis.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 127, NULL, 1, NULL, 1, '2022-03-12 19:42:03', NULL, 0, 0, 67, '127121121CCMS_Indorsement-Capstone-Thesis.docx'),
+(161, '121121CCMS_Indorsement-Capstone-Thesis.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 136, NULL, 1, NULL, 1, '2022-03-13 10:42:16', NULL, 0, 0, 67, '136121121CCMS_Indorsement-Capstone-Thesis.docx'),
+(162, '121121CCMS_Indorsement-Capstone-Thesis.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 127, NULL, 1, NULL, 1, '2022-03-13 21:14:34', NULL, 0, 0, 70, '127121121CCMS_Indorsement-Capstone-Thesis.docx'),
+(163, 'APPLICATION FORM.DOCX', 'DOCX', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 133, NULL, 1, NULL, 1, '2022-03-13 21:16:17', NULL, 0, 0, 70, '133APPLICATION FORM.DOCX'),
+(164, 'APPLICATION FORM.DOCX', 'DOCX', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 127, NULL, 1, NULL, 1, '2022-03-13 21:40:52', NULL, 0, 0, 69, '127APPLICATION FORM.DOCX'),
+(165, '121121CCMS_Indorsement-Capstone-Thesis.docx', 'docx', 1, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 127, NULL, 1, NULL, 1, '2022-03-13 23:47:06', NULL, 0, 0, 71, '127121121CCMS_Indorsement-Capstone-Thesis.docx');
 
 -- --------------------------------------------------------
 
@@ -364,11 +375,21 @@ CREATE TABLE `position` (
 --
 
 INSERT INTO `position` (`id`, `position_name`) VALUES
-(1, 'admin'),
+(1, 'Admin'),
 (2, 'District Supervisor'),
-(3, 'Grade Chairman'),
-(4, 'Teacher'),
-(5, 'Principal');
+(5, 'Principal'),
+(39, 'Teacher 1'),
+(40, 'Teacher 2'),
+(41, 'Teacher 3'),
+(42, 'Teacher 4'),
+(43, 'Teacher 5'),
+(44, 'Teacher 6'),
+(45, 'Grade Chairman 1'),
+(46, 'Grade Chairman 2'),
+(47, 'Grade Chairman 3'),
+(48, 'Grade Chairman 4'),
+(49, 'Grade Chairman 5'),
+(50, 'Grade Chairman 6');
 
 -- --------------------------------------------------------
 
@@ -385,22 +406,19 @@ CREATE TABLE `tasks` (
   `TaskDeadline` datetime NOT NULL,
   `TaskDescription` text NOT NULL,
   `TaskStatus` varchar(100) NOT NULL,
-  `TaskSchedule` varchar(50) NOT NULL
+  `TaskSchedule` varchar(50) NOT NULL,
+  `GC_Status` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tasks`
 --
 
-INSERT INTO `tasks` (`TaskID`, `TaskName`, `TaskImage`, `TaskCreatedBy`, `TaskDateCreated`, `TaskDeadline`, `TaskDescription`, `TaskStatus`, `TaskSchedule`) VALUES
-(49, 'Individual daily log and accomplishment report (IDLAR)', '', 82, '2021-12-30 22:04:16', '2022-02-12 22:03:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Principal', 'Weekly'),
-(50, 'Weekly Assesment', '', 82, '2022-01-06 22:39:41', '2022-02-19 22:39:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Principal', 'Weekly'),
-(51, 'Weekly home learning plan', '', 82, '2022-01-06 22:49:33', '2022-01-15 22:49:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Principal', 'Weekly'),
-(52, 'Idea lesson exemplar', '', 82, '2022-01-06 22:50:04', '2022-01-15 22:49:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', 'Pending Teachers', 'Weekly'),
-(53, 'Form 148 of the Daily Time record (DTR)', '', 82, '2022-01-06 22:51:36', '2022-01-29 22:51:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending Teachers', 'Monthly'),
-(54, 'Students’ grades', '', 82, '2022-01-06 22:52:00', '2022-01-23 22:51:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending District Supervisor', 'Quarterly'),
-(55, 'Number of enrollment and number of drop out', '', 82, '2022-01-06 23:26:14', '2022-03-05 23:25:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Pending District Supervisor', 'Quarterly'),
-(60, 'test123', '', 93, '2022-02-02 23:34:53', '2022-02-06 23:34:00', 'test123', 'Done', 'Monthly');
+INSERT INTO `tasks` (`TaskID`, `TaskName`, `TaskImage`, `TaskCreatedBy`, `TaskDateCreated`, `TaskDeadline`, `TaskDescription`, `TaskStatus`, `TaskSchedule`, `GC_Status`) VALUES
+(67, 'test', '', 129, '2022-03-12 17:15:49', '2022-03-08 17:15:00', 'test', 'Pending Teachers', 'Weekly', ''),
+(69, 'test123', '', 129, '2022-03-12 17:22:01', '2022-03-16 17:21:00', 'test123', 'Pending Teachers', 'Weekly', ''),
+(70, 'asdasd', '', 129, '2022-03-13 21:13:41', '2022-03-20 21:13:00', 'test 123123123123', 'Pending Teachers', 'Weekly', ''),
+(71, 'Test Task', '', 129, '2022-03-13 23:45:58', '2022-03-20 23:45:00', 'test 123', 'Pending Teachers', 'Weekly', '');
 
 -- --------------------------------------------------------
 
@@ -425,15 +443,33 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`ID`, `Email`, `Pass`, `FirstName`, `LastName`, `PhoneNumber`, `Position`, `DateCreated`, `profilePic`) VALUES
-(82, 'admin@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'admin1', 'account', '+639751160135', 1, '2021-11-18 08:36:42', '/static/uploads/ProfilePictures/82_2874.png'),
-(86, 'weconnect.thesis@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Super', '2', '+639071882953', 1, '2021-11-22 00:17:06', '/static/uploads/ProfilePictures/86_18.jpg'),
-(91, 'teacher@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher5', 'Account1', '+639071882953', 4, '2021-12-21 10:27:00', '/static/uploads/ProfilePictures/91_18.jpg'),
-(93, 'principal@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Principal', 'User', '+639071882953', 5, '2021-12-30 10:58:31', '/static/uploads/ProfilePictures/93_47.jpg'),
-(94, 'districtsupervisor@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'District', 'Supervisor', '+639071882953', 2, '2021-12-30 10:59:02', '/static/uploads/ProfilePictures/94_52.jpg'),
-(95, 'teacher1@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher', 'One', '+639071882953', 4, '2021-12-30 11:02:07', '/static/uploads/ProfilePictures/95_66.jpg'),
-(96, 'teacher2@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'two', '+639071882953', 4, '2021-12-30 11:02:33', '/static/uploads/ProfilePictures/96_85.jpg'),
-(97, 'gradeChairman@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Grade', 'Chairman', '+639071882953', 3, '2021-12-31 12:29:37', '/static/uploads/ProfilePictures/97_33.jpg'),
-(99, 'cp.merene@mseuf.edu.ph', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Camille', 'Panaligan', '+639463370901', 2, '2022-02-05 16:09:22', '/static/uploads/ProfilePictures/99_85.jpg');
+(82, 'admin@gmail.com', '89805776bf3dbcf0bad0bce14704d89eccde55cef2cd7cf6f068010d2ceb9480', 'Paul Ian', 'Masendo', '+639751160135', 1, '2021-11-18 08:36:42', '/static/uploads/ProfilePictures/82_47.jpg'),
+(127, 'teacher1@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher', 'One', '+631234567890', 39, '2022-03-12 16:40:06', ''),
+(128, 'gradeChairmanOne@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Grade', 'Chairman', '+631234567890', 45, '2022-03-12 16:40:28', '/static/uploads/ProfilePictures/128_85.jpg'),
+(129, 'principal@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Principal', 'User', '+631234567890', 5, '2022-03-12 16:40:47', ''),
+(133, 'teacher2@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'two', '+631234567890', 40, '2022-03-12 18:12:47', ''),
+(134, 'gradeChairman2@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Grade', 'Chairman', '+631234567890', 46, '2022-03-12 18:13:01', ''),
+(135, 'teacher1-2@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher', 'Account', '+631234567890', 39, '2022-03-12 23:34:05', ''),
+(136, 'teacher1-3@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher', 'One three', '+631234567890', 39, '2022-03-12 23:34:18', ''),
+(137, 'teacher2-2@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Teacher', 'Account', '+631234567890', 40, '2022-03-12 23:34:34', ''),
+(138, 'teacher2-3@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'two', '+631234567890', 40, '2022-03-12 23:34:49', ''),
+(139, 'teacher3-2@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher three', 'two', '+631234567890', 41, '2022-03-12 23:36:23', ''),
+(140, 'teacher3-1@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher Three', 'One', '+631234567890', 41, '2022-03-12 23:37:12', ''),
+(141, 'teacher3-3@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'three three', '+631234567890', 41, '2022-03-13 10:21:36', ''),
+(142, 'teacher4-1@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'four-one', '+631234567890', 42, '2022-03-13 10:22:29', ''),
+(143, 'teacher4-2@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'four-two', '+631234567890', 42, '2022-03-13 10:22:57', ''),
+(144, 'teacher4-3@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'four-three', '+631234567890', 42, '2022-03-13 10:28:30', ''),
+(145, 'teacher5-1@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'five-one', '+631234567890', 43, '2022-03-13 10:30:40', ''),
+(146, 'teacher5-2@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'five-two', '+631234567890', 43, '2022-03-13 10:31:05', ''),
+(147, 'teacher5-3@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'five-two', '+631234567890', 43, '2022-03-13 10:31:55', ''),
+(148, 'teacher6-1@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'six-one', '+631234567890', 44, '2022-03-13 10:32:20', ''),
+(149, 'teacher6-2@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'six-two', '+631234567890', 44, '2022-03-13 10:36:14', ''),
+(150, 'teacher6-3@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'teacher', 'six-three', '+631234567890', 44, '2022-03-13 10:37:16', ''),
+(151, 'gradeChairman3@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Grade', 'Chairman 3', '+631234567890', 47, '2022-03-13 10:37:40', ''),
+(152, 'gradeChairman4@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Grade', 'Chairman4', '+631234567890', 48, '2022-03-13 10:37:57', ''),
+(153, 'gradeChairman5@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Grade', 'Chairman5', '+631234567890', 49, '2022-03-13 10:40:19', ''),
+(154, 'gradeChairman6@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'Grade', 'Chairman6', '+631234567890', 50, '2022-03-13 10:40:55', ''),
+(155, 'districtSupervisor@gmail.com', 'cbdc324449652371c3ee4253adc7fc2c0403185a8f824d31e545a3a58db1935b', 'District', 'Supervisor', '+631234567890', 2, '2022-03-13 21:34:54', '');
 
 --
 -- Indexes for dumped tables
@@ -484,37 +520,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `EventID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `EventID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
-  MODIFY `FileID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
+  MODIFY `FileID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
 
 --
 -- AUTO_INCREMENT for table `position`
 --
 ALTER TABLE `position`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `TaskID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `TaskID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -9,12 +9,12 @@
         <h2>{{result[1]}}</h2>
         <p>{{result[6]}}</p>
         <p><strong>Created By: </strong>[[Uploader]]</p>
-        <p v-if='done'><strong>Status: </strong><span
-            style="color: green; font-weight: bold;">Done</span></p>
+        <p v-if='done'><strong>Status: </strong><span style="color: green; font-weight: bold;">Done</span></p>
         <p v-else-if="GCStatus === 'Done' "><strong>Status: </strong><span
                 style="color: green; font-weight: bold;">Done</span></p>
         <p v-else-if="pending"><strong>Status: </strong>Failed Deadline</p>
-        <p v-else><strong>Status: </strong> <span class="text-warning" style="font-weight: bold;"> Pending / Not yet Assigned</span></p>
+        <p v-else><strong>Status: </strong> <span class="text-warning" style="font-weight: bold;"> Pending / Not yet
+                Assigned</span></p>
 
 
 
@@ -59,13 +59,21 @@
                 </li>
             </ul>
             <br>
-            <a href="/updatetask/Pending Principal/{{result[0]}}"
-                v-if="  GCStatus !=='Done' && (userPosition == 45 ||  userPosition== 46 || userPosition == 47 || userPosition == 48 || userPosition == 49 || userPosition == 50)"><button
-                    type="submit" class="btn btn-primary">Forward to Principal</button></a>
-                <div v-if="userPosition == 5">
-                    <button type="submit"  :disabled="!GCStatus_list.includes('45') || !GCStatus_list.includes('46') || !GCStatus_list.includes('47') || !GCStatus_list.includes('48') || !GCStatus_list.includes('49') || !GCStatus_list.includes('50')" class="btn btn-primary"><a href="/updatetask/Pending District Supervisor/{{result[0]}}" style="color: white;">Forward to District Supervisor</a></a></button>
-                    <p style="margin-top: 10px;">All Grade Chairman Users must submit the tasks before forwarding to District Supervisor</p>
-                </div>
+            <div
+                v-if="  GCStatus !=='Done' && (userPosition == 45 ||  userPosition== 46 || userPosition == 47 || userPosition == 48 || userPosition == 49 || userPosition == 50)">
+                <button type="submit" class="btn btn-primary" :disabled="!allowedPrincipal"><a style="color:white" 
+                        href="/updatetask/Pending Principal/{{result[0]}}">Forward to Principal </a></button>
+                        <p style="margin-top: 10px;">All Teacher must submit the Files tasks before forwarding to
+                            Principal</p>
+            </div>
+            <div v-if="userPosition == 5">
+                <button type="submit"
+                    :disabled="!GCStatus_list.includes('45') || !GCStatus_list.includes('46') || !GCStatus_list.includes('47') || !GCStatus_list.includes('48') || !GCStatus_list.includes('49') || !GCStatus_list.includes('50')"
+                    class="btn btn-primary"><a href="/updatetask/Pending District Supervisor/{{result[0]}}"
+                        style="color: white;">Forward to District Supervisor</a></a></button>
+                <p style="margin-top: 10px;">All Grade Chairman Users must submit the tasks before forwarding to
+                    District Supervisor</p>
+            </div>
 
 
             {% elif 'Pending Grade Chairman' in result[7] %}
@@ -113,8 +121,8 @@
             </ul>
             <div v-if="userPosition ==2">
                 <br>
-                <a href="/updatetask/Done/{{result[0]}}" ><button type="submit"
-                    class="btn btn-primary">Mark Task as Complete</button></a>
+                <a href="/updatetask/Done/{{result[0]}}"><button type="submit" class="btn btn-primary">Mark Task as
+                        Complete</button></a>
             </div>
             {% elif 'Done' in result[7] %}
             <ul class="list-group" style="width: 20rem;">
@@ -369,7 +377,7 @@
                                 v-if='teacher[6] === 44 && (userPosition === 5 || userPosition === 2)'>
 
                                 <th scope="row">[[ teacher[3] ]] [[ teacher[4] ]]</th>
-                                <td>{[[ checkStatus(teacher[0]) ]]}</td>
+                                <td>[[ checkStatus(teacher[0]) ]]</td>
                                 <td>[[ getDateUploaded(teacher[0]) ]]</td>
                                 <td><a :href="'/file/' + getFileUrl(teacher[0])" v-if='allowViewing(teacher[0])'><button
                                             class="btn btn-primary">view</button></a>
@@ -474,7 +482,7 @@
             pending: false,
             GCStatus: '',
             GCStatus_list: [],
-            allowedPrincipal: false
+            allowedPrincipal: false,
         },
         methods: {
             getUploaderData: function (id) {
@@ -488,7 +496,17 @@
                     let user = response.data.userData
                     this.userID = user[0][0]
                     this.userPosition = user[0][6]
+                    if (user[0][6] >= 45) {
+                        this.checkIFTeachersUploaded()
+                    }
                     this.getGCStatus("{{result[0]}}")
+                })
+            },
+            checkIFTeachersUploaded: function (userPosition) {
+                this.$http.get('/gc/check/{{result[0]}}').then(response => {
+                    let r = response.data.result
+
+                    this.allowedPrincipal = r
                 })
             },
             checkIfDone: function (userID, taskID, taskStatus) {
@@ -629,9 +647,9 @@
                 console.log('test123')
                 status = this.GCStatus
                 arrTrue = ['45', '46', '47', '48', '49', '50']
-                if (this.containsAny(status,[arrTrue])) {
+                if (this.containsAny(status, [arrTrue])) {
                     console.log('test')
-                }else{
+                } else {
                     console.log('none')
                 }
             },
@@ -695,6 +713,10 @@
 
     .button-link:hover {
         color: white;
+    }
+
+    .task th {
+        width: 35%;
     }
 </style>
 

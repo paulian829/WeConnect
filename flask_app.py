@@ -336,7 +336,71 @@ def getUserDetails(id):
     dict = {"userData": user}
     return json.dumps(dict, indent=4, sort_keys=True, default=str)
 
-    # return json.dumps(dict)
+@app.route("/gc/check/<task_id>")
+def checkGCStatus(task_id):
+    print(task_id)
+    position = session['position']
+    final_result = True
+    if position == 45:
+        teachers_count = getTeachersCount(39)
+        print(teachers_count)
+        for teacher in teachers_count:
+            print("**************************")
+            result = getTeachersUploaded(teacher[0], task_id)
+            print(result, teacher[0])
+            if len(result) == 0:
+                final_result = False
+    elif position == 46:
+        teachers_count = getTeachersCount(40)
+        print(teachers_count)
+        for teacher in teachers_count:
+            print("**************************")
+            result = getTeachersUploaded(teacher[0], task_id)
+            print(result, teacher[0])
+            if len(result) == 0:
+                final_result = False
+    elif position == 47:
+        teachers_count = getTeachersCount(41)
+        print(teachers_count)
+        for teacher in teachers_count:
+            print("**************************")
+            result = getTeachersUploaded(teacher[0], task_id)
+            print(result, teacher[0])
+            if len(result) == 0:
+                final_result = False
+    elif position == 48:
+        teachers_count = getTeachersCount(42)
+        print(teachers_count)
+        for teacher in teachers_count:
+            print("**************************")
+            result = getTeachersUploaded(teacher[0], task_id)
+            print(result, teacher[0])
+            if len(result) == 0:
+                final_result = False
+    elif position == 49:
+        teachers_count = getTeachersCount(43)
+        print(teachers_count)
+        for teacher in teachers_count:
+            print("**************************")
+            result = getTeachersUploaded(teacher[0], task_id)
+            print(result, teacher[0])
+            if len(result) == 0:
+                final_result = False
+    elif position == 50:
+        teachers_count = getTeachersCount(44)
+        print(teachers_count)
+        for teacher in teachers_count:
+            print("**************************")
+            result = getTeachersUploaded(teacher[0], task_id)
+            print(result, teacher[0])
+            if len(result) == 0:
+                final_result = False
+    else:
+        print('none')
+
+    dict = {"result": final_result}
+
+    return json.dumps(dict, indent=4, sort_keys=True, default=str)   
 
 
 @app.route("/getTeachers/")
@@ -673,9 +737,9 @@ def updateTask(status, taskID):
         print(gc_status)
         result = updateGCstatus(taskID, gc_status)
         print(result)
-        # principals = get_User_view_position([5])
-        # for user in principals:
-        #     createEvent(session['userID'],taskID,today,user[0],'Task Forward')
+        principals = get_User_view_position([5])
+        for user in principals:
+            createEvent(session['userID'],taskID,today,user[0],'Task Forward')
     if (status == 'Pending District Supervisor'):
         result = updateTaskStatus(status, taskID)
 
