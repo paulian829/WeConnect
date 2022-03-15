@@ -733,10 +733,7 @@ def updateTask(status, taskID):
             gc_status.append(session['position'])
     
         gc_status = ','.join(str(e) for e in gc_status)
-        print("***************************")
-        print(gc_status)
         result = updateGCstatus(taskID, gc_status)
-        print(result)
         principals = get_User_view_position([5])
         for user in principals:
             createEvent(session['userID'],taskID,today,user[0],'Task Forward')
@@ -1070,12 +1067,12 @@ def uploadFile():
         today = datetime.today()
         if request.form.get("taskID"):
             taskID = request.form.get("taskID")
-            principal = [5]
-            users = get_User_view_position(principal)
-            for user in users:
-                print("test 123 ", user)
-                createEvent(session['userID'], taskID,
-                            today, user[0], 'Task Upload')
+            # principal = [5]
+            # users = get_User_view_position(principal)
+            # for user in users:
+            #     print("test 123 ", user)
+            #     createEvent(session['userID'], taskID,
+            #                 today, user[0], 'Task Upload')
                             
             if (session['position'] == 39):
                 users = get_User_view_position([45])
