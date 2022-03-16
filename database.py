@@ -1045,17 +1045,19 @@ def get_tagged_user(fileID):
 
 
 def get_User_view_position(positionID):
+    return_list = []
     for position in positionID:
         try:
             mydb = connectDb()
             mycursor = mydb.cursor()
             sql = f"SELECT * FROM users WHERE Position = {position};"
             mycursor.execute(sql)
-            result = mycursor.fetchall()
-            return result
+            results = mycursor.fetchall()
+            for result in results:
+                return_list.append(result)
         finally:
             mydb.close()
-
+    return return_list
 def get_last_task():
     try:
         mydb = connectDb()

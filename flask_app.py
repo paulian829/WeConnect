@@ -1310,9 +1310,61 @@ def addComment(userID, fileID, comment):
     list_of_users.append(get_tagged_user(fileID))
     list_of_users = list(dict.fromkeys(list_of_users))
     print(list_of_users)
+
+    file = getFileDb(fileID)[0]
+    uploader = getUserData(file[5])[0]
+    uploader_position = uploader[6]
+    print(uploader_position)
+    if file[14] > 0:
+        taskID = file[14]
+        task = getOneTask(taskID)[0]
+        status = task[7]
+        if status == 'Pending Teachers':
+            if uploader_position == 39:
+                users = get_User_view_position([45])
+            elif uploader_position == 40:
+                users = get_User_view_position([46])
+            elif uploader_position == 41:
+                users = get_User_view_position([47])
+            elif uploader_position == 42:
+                users = get_User_view_position([48])
+            elif uploader_position == 43:
+                users = get_User_view_position([49])
+            elif uploader_position == 44:
+                users = get_User_view_position([50])
+
+            for user in users:
+                list_of_users.append(user[0])
+        if status == "Pending District Supervisor":
+            if uploader_position == 39:
+                users = get_User_view_position([45])
+            elif uploader_position == 40:
+                users = get_User_view_position([46])
+            elif uploader_position == 41:
+                users = get_User_view_position([47])
+            elif uploader_position == 42:
+                users = get_User_view_position([48])
+            elif uploader_position == 43:
+                users = get_User_view_position([49])
+            elif uploader_position == 44:
+                users = get_User_view_position([50])
+
+            principals = get_User_view_position([5])
+            for principal in principals:
+                list_of_users.append(principal[0]) 
+
+            dcs = get_User_view_position([2])         
+            for dc in dcs:
+                list_of_users.append(dc[0]) 
+            for user in users:
+                list_of_users.append(user[0])            
+
     today = datetime.today()
+
+    print (list_of_users)
+    list_of_users = list(dict.fromkeys(list_of_users))
     for users in list_of_users:
-        if users is not None:
+        if users is not None and users != session['userID']:
             createEvent(userID, fileID, today, users, "Comment")
     dictOne = {"result": 'result'}
     return json.dumps(dictOne, indent=4, sort_keys=True, default=str)
