@@ -13,7 +13,12 @@
     <script src={{url_for('static', filename='/js/login/pages.js' )}}></script>
     <div class="bg-img">
         <div class="content">
-            <header>Reset Password</header>
+            <header>Change Password</header>
+            {% if newAccount %}
+            <p>Change Password For newly created Accounts</p>
+            {% endif %}
+            <p>Password must be atleast 6 characters with combination of number and letters</p>
+
             <form action="/resetpassword/{{id}}/update" method="POST">
                 <div class="field">
                     <input type="password" required placeholder="New Password" name="pass">
@@ -28,7 +33,7 @@
                 </div>
                 {% if "Error" in result %}
                 <div class=result>
-                    <h3 class="Error">Error in Resetting Password</h3>
+                    <h3 class="Error">Error in Changing Password</h3>
                 </div>
                 {% endif %}
             </form>

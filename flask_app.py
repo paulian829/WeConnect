@@ -62,6 +62,7 @@ def add_security_headers(resp):
 def login():
     result = ""
     session["logged_in"] = False
+    ip = request.remote_addr
     if request.method == "POST":
         email = request.form.get("Email")
         print(email)
@@ -73,26 +74,45 @@ def login():
         if result == "Error":
             return render_template(("login.html"), result=result)
 
+        if result[0][9] == 0 or result[0][9] == None:
+            return redirect(url_for("resetPass", id=result[0][0]))
+
+
         # session['logged_in'] = True
         session["userID"] = result[0][0]
         session["name"] = result[0][3] + " " + result[0][4]
         session["email"] = result[0][1]
         session["profilePic"] = result[0][8]
         session["phone"] = result[0][5]
-        # session['smsverify'] = random.randint(1000,9999)
-        session["smsverify"] = 1235
+        session['smsverify'] = random.randint(1000,9999)
+        # session["smsverify"] = 1235
         session['position'] = result[0][6]
         # Send to phone number
-        # sendMessage()
+        sendMessage()
         if result[0][6] == 1:
             session["admin"] = True
         else:
             session["admin"] = False
         # return redirect(url_for('dashboard'))
-        return render_template(("verify.html"), result="")
+        print(checkLogs(result[0][0], ip))
+        if checkLogs(result[0][0],ip):
+            return render_template(("verify.html"), result="")
+        else:
+            session["logged_in"] = True
+            if session["admin"] == True:
+                return redirect(url_for("admin"))
+
+            return redirect(url_for("dashboard"))
+
         # Direct to the phone verification Screen
     return render_template(("login.html"), result=result)
 
+def checkLogs(id, ip):
+    logs = getLogsDB(id)
+    logs_array = logs[0].split(",")
+    if ip in logs_array:
+        return False
+    return True
 
 @app.route("/verify", methods=["POST", "GET"])
 def verify():
@@ -103,6 +123,9 @@ def verify():
         print(code, session["smsverify"])
 
         if code == str(session["smsverify"]):
+            ip = request.remote_addr
+            logs = getLogsDB(session['userID'])
+            updateLogsDB(session['userID'],ip,logs[0])
             session["logged_in"] = True
             if session["admin"] == True:
                 return redirect(url_for("admin"))
@@ -219,8 +242,8 @@ def reset():
 def resetPass(id):
     user = getUserData(id)
     print(user[0][1])
-    if session["resetPassword"] != user[0][1]:
-        return redirect(url_for("forbidden"))
+    # if session["resetPassword"] != user[0][1]:
+    #     return redirect(url_for("forbidden"))
     result = ""
     if request.args.get("result"):
         result = request.args.get("result")
@@ -232,19 +255,49 @@ def resetPass(id):
 def submitResetPass(id):
     user = getUserData(id)
     result = ''
-    print(user[0][1])
-    if session["resetPassword"] != user[0][1]:
-        return redirect(url_for("forbidden"))
+    # print(user[0][1])
+    # if session["resetPassword"] != user[0][1]:
+    #     return redirect(url_for("forbidden"))
 
     if request.method == "POST":
         password = request.form.get("pass")
         rePass = request.form.get("Repass")
         if password != rePass:
             return redirect(url_for("resetPass", result="Error", id=id))
+
+        if len(password) < 6:
+            return redirect(url_for("resetPass", result="Error", id=id))
+        if checkString(password) == False:
+            return redirect(url_for("resetPass", result="Error", id=id))
+
+
         result = resetPassword(password, id)
+        changePasswordStatus(id)
         return redirect(url_for("login"))
 
     return redirect(url_for("resetPass", id=id, result=result))
+
+def checkString(str):
+   
+    # initializing flag variable
+    flag_l = False
+    flag_n = False
+     
+    # checking for letter and numbers in
+    # given string
+    for i in str:
+       
+        # if string has letter
+        if i.isalpha():
+            flag_l = True
+ 
+        # if string has number
+        if i.isdigit():
+            flag_n = True
+     
+    # returning and of flag
+    # for checking required condition
+    return flag_l and flag_n
 
 
 @app.route("/test")
@@ -896,8 +949,8 @@ def admin(result=""):
             return render_template(
                 "admin.html", title=title, positions=positions, result=result, users=users
             )
-        password = request.form.get("Password")
-        repeatPass = request.form.get("RepeatPass")
+        password = "1weconnect"
+        repeatPass = "1weconnect"
         firstName = request.form.get("FirstName")
         lastName = request.form.get("LastName")
         phoneNumber = str(request.form.get("PhoneNumber"))
@@ -1335,7 +1388,7 @@ def addComment(userID, fileID, comment):
 
             for user in users:
                 list_of_users.append(user[0])
-        if status == "Pending District Supervisor":
+        if status == "Pending District Supervisor" or status == 'Done':
             if uploader_position == 39:
                 users = get_User_view_position([45])
             elif uploader_position == 40:

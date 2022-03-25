@@ -786,6 +786,54 @@ def getAllTask():
     finally:
         mydb.close()
 
+def changePasswordStatus(id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        sql = f"UPDATE users SET Password_status = 1 WHERE ID = {id}"
+        mycursor.execute(sql)
+        mydb.commit()
+        return True
+    except Exception as e:
+        print("**********************")
+
+        print(e)
+        return False
+    finally:
+        mydb.close
+
+def getLogsDB(id):
+    try:
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        sql = f"SELECT logs FROM users WHERE ID = {id};"
+        mycursor.execute(sql)
+        result = mycursor.fetchall()
+        resultList = []
+        for x in result:
+            resultList.append(x[0])
+        resultList = list(dict.fromkeys(resultList))
+        return(resultList)
+    finally:
+        mydb.close()
+
+def updateLogsDB(id,ip,logs):
+    try:
+        updated_logs = logs + ',' + ip
+        mydb = connectDb()
+        mycursor = mydb.cursor()
+        sql = f"UPDATE users SET logs = '{updated_logs}' WHERE ID = {id}"
+        mycursor.execute(sql)
+        mydb.commit()
+        return True
+    except Exception as e:
+        print("**********************")
+
+        print(e)
+        return False
+    finally:
+        mydb.close
+
 
 def getOneTask(id):
     try:

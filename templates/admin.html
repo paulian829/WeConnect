@@ -127,7 +127,7 @@
                 name="PhoneNumber" maxlength="10" minlength="10">
             </div>
             <span v-if='phoneWarning' style="color: red;">Invalid Phone number</span>
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <label for="Password" class="form-label">Password </label>
               <input type="password" required class="form-control" id="Password" name="Password" v-model='pass'
                 v-on:keyup='testPassword()'>
@@ -141,7 +141,7 @@
               <input type="password" required class="form-control" id="rePassword" name="RepeatPass"
                 v-model='RepeatPass' v-on:keyup='testRePassword()'>
               <span v-if='RepassWarning' style="color: red;">Invalid Password or Not the Same</span>
-            </div>
+            </div> -->
             <div class="mb-3">
               <label for="Position" class="form-label">Position</label>
               <select name="Position" class="form-select" aria-label="Default select example" id="Position">
@@ -176,8 +176,8 @@
     delimiters: ['[[', ']]'],
     data: {
       phoneWarning: true,
-      passWarning: true,
-      RepassWarning: true,
+      passWarning: false,
+      RepassWarning: false,
       pass: '',
       RepeatPass: '',
       phone: ''
